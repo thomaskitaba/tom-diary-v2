@@ -33,7 +33,6 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 #====================================================================
 
 
-
 # SESSION Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -115,11 +114,16 @@ def global_catagory_with_parameter(cattype):
     catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id WHERE catagory_type_id = ?", cattype)
     # catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id WHERE catagorytype.catagory_type_id= ? ", cattype )
     return (catagories)
+def user_catagories():
+  catagories = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON usercatagory.cat_type_id_in_uc = catagorytype.catagory_type_id JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ?", session["user_id"]) 
   
+  return catagories
+
 def global_catagory():
     catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id ")
     # catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id WHERE catagorytype.catagory_type_id= ? ", cattype )
     return (catagories)
+  
 def global_catagroy_types():
   catagroy_types = db.execute("SELECT * FROM catagorytype")
   return (catagroy_types)
@@ -809,7 +813,7 @@ def generatecatagory():
     # for i in range(len(catagory_types) ):
     #   if catagory_types[i]["catagory_type_id"] == catagory_type_id :
     #     catagory_types.pop(i)
-        
+    
     for count,cat_type in enumerate(catagory_types):
       if cat_type["catagory_type_id"] == catagory_type_id:
         catagory_types.pop(count)
@@ -834,37 +838,37 @@ def generatecatagory():
           
 @app.route("/takelog" , methods=["GET", "POST"]) #type: ignore
 @login_required
-
 def takelog():
   
-  
-  
   if request.method == "POST":
-    
-    
-    # return render_template("experiment.html")
+                
+    given_date = request.form["given-date"] # works
+    given_time = request.form["given-time"]
     
     multiple_catagories_selected = request.form.getlist("native-select")
-    return render_template("experiment.html", cat_3= multiple_catagories_selected)
+    # return render_template("experiment.html", cat_3 = multiple_catagories_selected )
+    diary_text = request.form["diarytextarea"] # works
+    diary_description = request.form["diary-description"]
     
+    # return render_template("experiment.html", cat_3 = multiple_catagories_selected )
     
-    
-    # return render_template("experiment.html")
-    return render_template("experiment.html", cat_3= request.form.getlist("native-select"))
     catagory_types= db.execute("SELECT * FROM catagorytype")
     
     if not diary_text:
       flash("nothing to save")
-      return render_template("diary.html", catagory_types= catagory_types, current_user_name=global_user_name(), catagories=global_catagory(), writediary= 1)
+      return render_template("takelog.html", catagory_types= catagory_types, catagories = user_catagories())
     # check if user has given his own date diffrent from current writing date
     if not given_date:
-        given_date = currentday() # works
-
+      
+      given_date = currentday() # works
+      
     if not given_time:
-        given_time = currentclock() # works
-
+      given_time = currentclock() # works
+      
+    # return render_template("experiment.html", cat_3=multiple_catagories_selected)
+    
     if len(diary_description) == 0:
-        diary_description = "No Description"
+      diary_description = "No Description"
     #return render_template("experiment.html", cat_1 = given_date, cat_2 = given_time)
     
     
@@ -872,44 +876,67 @@ def takelog():
     #step 1 update diary table with diarytextareas text
     db.execute("INSERT INTO diary (diary_content, description ) VALUES (?, ?)", diary_text, diary_description ) # works
 
-    #step 2  get the diary id
-    #inserted_stock_ld = db.execute("SELECT * FROM stocks ORDER BY id DESC LIMIT 1")
+    #step 2  get the inserted log/diary id
+    
     new_diary_id = db.execute("SELECT * FROM diary ORDER BY diary_id DESC LIMIT 1")  # works
-    #return render_template("experiment.html", test= new_diary_id[0]["diary_id"])
+    
+    #TODO: if edit mode then increment  number_of_edits field by 1
+    
     #step 3   update user diary table with diaryid and and user id
+    
     db.execute("INSERT INTO userdiary (d_id, u_id, given_date, given_time, diary_written_date, diary_written_time) VALUES (?, ?, ?, ?, ?, ?)", new_diary_id[0]["diary_id"], session["user_id"], given_date , given_time, currentday(), currentclock())
     
+    # session["added_user_diary_id"] = db.execute("SELECT * FROM userdiary ORDER BY ud_id DESC LIMIT 1")
+    rows = db.execute("SELECT * FROM userdiary ORDER BY ud_id DESC LIMIT 1")
     
-    #step 4 get the new user daiary id 
+    session["added_user_diary_id"]= rows[0]["ud_id"]
+    
+    
+    #test render_template
+    # return render_template("experiment.html", cat_3=session["added_user_diary_id"])
+    #step 4 get the new user daiary id
+    
     added_user_diary_id = db.execute("SELECT * FROM userdiary ORDER BY ud_id DESC LIMIT 1") #works
+    
     #return render_template("experiment.html", test= added_user_diary_id[0]["ud_id"])
-            
+    
     # add catagory for the diary id
         # find id of Normal
     default = "Normal"
     catagory_normal = db.execute("SELECT * FROM catagory WHERE catagory_name = ?", default) #works
     catagory_normal_id = int(catagory_normal[0]["catagory_id"]) # works
     
+    
+    if multiple_catagories_selected[0] != "":
+      
+      splited_multiple_catagories = multiple_catagories_selected[0].split(",")
+      # return render_template("experiment.html", cat_3= multiple_catagories_selected )
+      
+      for i in range(len(splited_multiple_catagories)):
+        
+        db.execute("INSERT INTO userdiarycatagory (ud_id, c_id, catagory_insertion_date, catagory_insertion_time ) VALUES (?, ?, ?, ? )", int(session["added_user_diary_id"]), int(splited_multiple_catagories[i]), currentday(), currentclock())
+        
+      # return redirect("viewdiary.html")  
+      # return render_template("experiment.html", cat_3= splited_multiple_catagories )
+    else: 
+      
+      #if user didnot select catagory for his log then cattype: general and sub_catagory: Normal will be recorded as default
+      catagory_normal_id = int(catagory_normal[0]["catagory_id"]) # works
+      db.execute("INSERT INTO userdiarycatagory (ud_id, c_id, catagory_insertion_date, catagory_insertion_time ) VALUES (?, ?, ?, ? )", session["added_user_diary_id"], catagory_normal_id, currentday(), currentclock())
+      
+      # return redirect("/viewdiary")
     #return render_template("experiment.html", default=catagory_normal_id ) 
     
-    #======== THIS PART WILL BE REPLACED WITH MULTISELECT DROP DOWN MENU (SELECT element)    
-        # if cat-1 and cat-2 and cat-3  == typical   then assign cat = normal
-    #if cat_1 == 1 and cat_2 == 1 and cat_3 == 1:
-    
-    #db.execute("INSERT INTO userdiarycatagory(ud_id, c_id, catagory_insertion_date, catagory_insertion_time  ) VALUES (?, ?, ?, ?)", added_user_diary_id[0]["ud_id"], catagory_normal_id, currentday(), currentclock() ) # works
-    
-    #added_udc_id = db.execute("SELECT * FROM userdiarycatagory ORDER BY udc_id DESC LIMIT 1") # works
-    
-    
-    
-        # send alert  or flashed message SUCCESS
-
-        # 4 4 2
+    return redirect("/viewdiary")
   else:
     
     catagory_types= db.execute("SELECT * FROM catagorytype JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON users.id= usercatagory.u_id_in_uc WHERE usercatagory.u_id_in_uc = ?", session["user_id"])
-    catagories = db.execute("SELECT * FROM catagory")
-    return render_template("takelog.html", catagory_types= catagory_types, catagories = catagories)
+    
+    # catagories = db.execute("SELECT * FROM catagory")  
+    
+    catagories = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON usercatagory.cat_type_id_in_uc = catagorytype.catagory_type_id JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ?", session["user_id"])
+    
+    return render_template("takelog.html", catagory_types= catagory_types, catagories = user_catagories())
     
     
     
@@ -1101,7 +1128,7 @@ def diaryview():
     edited_diary_element_id= global_edited_diary[0]
 
     if edited_diary_element_id != diary_count:
-        edited_diary_element_id= int(global_edited_diary[0]) + 1
+        edited_diary_element_id= int(global_edited_diary[0]) + 1 #type: ignore
     
     # reset global_edited_dairy[]    variable to 0 
     global_edited_diary[0] = diary_count

@@ -11,10 +11,28 @@
       </div>
     {% endif %}
   
-  <div>
+  <div class="border-red">
+    
     <form action="/takelog" method="POST">
       <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/generatecatagory" >
-      <div>
+
+      <div class="flex-horizontal padding-s border-blue">
+        
+          <div class="center-elements margin-top-s margin-bottom-s border-red">give log DATE</div>
+          <div class="center-elements margin-top-s margin-bottom-s border-red">give log TIME</div>
+      </div>
+          
+      <div class="flex-horizontal padding-s  border-blue">
+      
+        <div class = "center-elements margin-m align-left border-black">
+          <input class="input-width center-text" name = "given-date" type="date"> 
+        </div>
+        <div class = "center-elements margin-m align-left border-black">
+          <input class="input-width center-text padding-m" name = "given-time" type="time"> 
+        </div>
+      
+      </div>
+      <div class="padding-s">
       <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
         <select  name="catagory-type"  placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
           
@@ -49,7 +67,10 @@
     
   </div>
   <div>
-    <input type="text" name="discription" placeholder = "type in description">
+    <input name="diary-description" type="text" name="discription" placeholder = "type in description">
+  </div>
+  <div>
+    <button type="submit" class="my-button-1">Save </button>
   </div>
   
 </form>
