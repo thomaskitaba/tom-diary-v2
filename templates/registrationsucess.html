@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+
+<div class="float-above float-bg-dark magenta-box-shadow padding-b">
+    <div>
+      <h3>{% if firstname %} 
+
+          {{firstname}}
+        {% endif %}
+    <p> </p>
+      {% if lastname %} 
+
+        {{lastname}}
+      {% endif %}
+    </h3>
+
+    </div>
+    <div>
+      Confirmation has been sent to your email Address <a href='{{useremail}}'></a>{{useremail}}
+    </div>
+</div>
+{% endblock %}

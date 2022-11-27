@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Search</title>
+            <!-- CSS only -->
+        <link rel="stylesheet" href="static/style.css">
+
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+              
+                {% if session["user_id"] %}
+
+                <ul class="nav">
+                    <li class="nav-down">Manage Diary
+                        <ul class="profile-popup">
+                            <li> <a href="/managediary">Manage Diary</a></li>
+                            <li> <a href="/writediary">Write Diary</a></li>
+                            <li> <a href="/viewdiary">View Diary</li>
+                            <li> <a href="/editdiary">Edit Diary </a></li>
+                            <li> <a href="/search">Search Diary</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav">
+                    <li><a href="/search">Advanced Search </a></li>
+                </ul>
+
+                <ul class="nav">
+                    <li class="nav-down">Profile
+
+                        <ul class="profile-popup">
+                            <li> <a href="/manageprofile">View Your Profile</a> </li>
+                            <li> <a href="/viewprofile">Edit Profile </a></li>
+                            <li> <a href="/changepassword">change password </a></li>
+                            <li> <a href="/changepersonalinfo">change Email </a> </li>
+                            <li> <a href="/experiment">EXPERIMENT</a></li>
+                        </ul>
+                    </li>
+                    <li ><a href="/logout">LogOut</a>
+                    </li>
+                </ul>
+                {% else %}
+                  <ul class="nav">
+                      <li><a href="/">Home</a> </li>
+                      <li> <a href="/aboutus">About-Us</a>      </li>
+                      <li> <a href="/contactus">Contact us </a> </li>
+                      <li> <a href="/register">Register </a>    </li>
+                      <li> <a href="/login">LOGIN</a></li>
+
+                  </ul>
+                  
+            
+            
+                        {% if get_flashed_messages() %}
+                        <header> 
+                          
+                        </div>
+
+                            <div class="alert">
+                                {{ get_flashed_messages() | join(" ") }}
+                            </div>
+                        </header>
+                        {% endif %}
+                        <div class="center-body ">
+                            {% if not session["user_id"] %}
+                            <div class="fit-content small-title "> <a href="/register">Register </a>for an ACCOUNT
+                                or <a href="/login">LOGIN to you account</a>
+                            </div>
+
+                            <div class="search-heading">
+
+                            </div>
+                            {% endif %}
+                            {% block main %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                    
+                </body>
+            </html>

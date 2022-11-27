@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    {% if warning %}
+      <div class = "alert-red">
+              {{warning}}  
+      </div>
+    {% endif %}
+  
+  <div>
+    <form action="/takelog" method="POST">
+      <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/generatecatagory" >
+      <div>
+      <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
+        <select  name="catagory-type"  placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
+          
+          {% for type in catagory_types %}
+            
+            <option value="{{type['catagory_type_id']}}"> {{ type["catagory_type_name"] }} </option>
+            
+          {% endfor %}
+        
+        </select>
+
+        <select id ="mulitpleSelect" class="mulitple-select" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
+          {% for catagory in catagories %}
+              {% if catagory["catagory_name"]%}
+                  <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
+              {% endif %}
+          {% endfor %}
+        </select>
+  
+  </div>
+  <div><input type="submit" value = "load"></div>
+  <div>
+    <textarea id = "get-diary-text-area" class="diary-box neon-box-shadow" name="diarytextarea" row= "20"
+                            placeholder="Write your diary Here" type="text" style="width: 100%;
+                            min-height: 25vh;"> 
+
+          {% if diary_text %}
+              {{diary_text}}
+          {% endif %}
+                            
+    </textarea>
+    
+  </div>
+  <div>
+    <input type="text" name="discription" placeholder = "type in description">
+  </div>
+  
+</form>
+{% endblock %}
+
+<!-- todo: working backup code-->
+
+<!-- todo: end of working backup code  -->
+
+

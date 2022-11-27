@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Search</title>
+        
+        <!-- CSS only -->
+        <link rel="stylesheet" type="text/css" href="../static/virtual-select.min.css">
+        <link rel="stylesheet" href="static/style.css">
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+        <script defered src="../static/script.js" type = "text/javascript"></script>
+        
+    </head>
+    
+    <body onload = 'showedited()'>
+        <div class="container">
+            <div class="header magenta-box-shadow">
+              <div class = "">
+                <ul class = "date-time nav flex-horizontal  white-background clock-box-shadow">
+                  <li id="day" class = "nav-list"></li>
+                  <li id="today" class = "nav-list"></li>
+                  <li id="clock" class = "nav-list"></li>
+              </ul>
+              </div>
+              
+                {% if session["user_id"] %}
+                
+                <ul class="nav">
+                    <li class="nav-down"> <a href= "/managediary">Manage Diary</a> 
+                        <ul class="profile-popup">
+                            <li> <a href="/managediary">Manage Diary</a></li>
+                            <li> <a href="/writediary">Write Diary</a></li>
+                            <li> <a href="/viewdiary">View|Edit Diary</li>
+                            <li> <a href="/experiment">experiment Diary </a></li>
+                            <li> <a href="/search">Search Diary</a></li>
+                            <li> <a href="/takelog">take log</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav">
+                    <li><a href="/search">Advanced Search </a></li>
+                </ul>
+
+                <ul class="nav">
+                    <li class="nav-down">  <a href="/manageprofile"> {% if current_user_name %} {{current_user_name[0]["username"]}} {% endif %}</a>
+
+                        <ul class="profile-popup">
+                            <li> <a href="/manageprofile">Manage Your Profile</a> </li>
+                            <li> <a href="/viewprofile">View Profile </a></li>
+                            <li> <a href="/changeaccountinfo">Change Account Info </a></li>
+                            <li> <a href="/changepersonalinfo">Change Personal Info </a> </li>
+                            <li> <a href="/catagory">EXPERIMENT</a></li>
+                        </ul>
+                    </li>
+                    <li ><a href="/logout">LogOut</a>
+                    </li>
+                </ul>
+                {% else %}
+                <ul class="nav">
+                    <li><a href="/">Home</a> </li>
+                    <li> <a href="/aboutus">About-Us</a>      </li>
+                    <li> <a href="/contactus">Contact us </a> </li>
+                    <li> <a href="/register">Register </a>    </li>
+                    <li> <a href="/login">LOGIN</a></li>
+                </ul>
+                    {% endif %}
+            </div> <!-- end of header -->
+                        {% if get_flashed_messages() %}
+                        <div class = "alert-red">
+                            
+                            {{ get_flashed_messages() | join(" ") }}
+                            
+                        </div>
+                        {% endif %}
+                        <div class = "image-diary">
+                        <div class="center-body">
+                            
+                            
+                            {% if not session["user_id"] %}
+                            <div class="fit-content small-title"> <a href="/register">Register </a>for an ACCOUNT
+                                or <a href="/login">LOGIN to you account</a>
+                            
+                            </div>
+                            <div class="search-heading">
+                            </div>
+                            
+                                {% endif %}
+                                {% block main %}
+                                {% endblock %}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <script>
+                        
+                        function showedited(){
+                                
+                                var diary_edited = document.getElementById("{{edited_diary_element_id }}");
+                                diary_edited.scrollIntoView();
+                                //TODO: assign 0 to global_diary_edited[0] = 1
+                            
+                        }
+                    </script>
+                    
+                    
+                </body>
+                
+                
+                <script defered src = "../static/jquery.js" type="text/javascript"></script>
+                <script defered src="../static/tomdiarycript.js" type = "text/javascript"></script>
+                <script src="../static/loading.js" type="text/javascript"></script>
+                <script type="text/javascript" src="../static/script.js"> </script> 
+
+                <script type = "text/javascript" src="../static/virtual-select.min.js"></script>
+                    <script>
+                      VirtualSelect.init({ 
+                        ele: '#mulitpleSelect' 
+                      });
+
+                    </script>
+                    <script src="static/script.js" type="text/javascript"></script>
+            </html>

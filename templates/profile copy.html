@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div>
+    <div class="center-text">
+        <h3 class="center-tex center-center-body">Dear:
+            {% if current_user_name %}
+                {{current_user_name[0]['username']}}
+            {% endif %} 
+        </h3>
+<!------------------ Manage diary page-------------------------------------------------------------------------------->        
+        {% if manage_profile %}
+        
+        <div class="">
+            <div class="center-elements"> 
+                <h1 class="magenta-text-shadow"> Manage Your Profile</h1></div>
+            <div class=" manage-diary bring-to-front flex center-elements margin-b float-bg-dark magenta-box-shadow padding-b">
+                
+                <div class="top-part  ">
+                    <a href="/writediary">
+                        <div class="write-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                            <h1> View Profile Details</h1>
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                        </div> 
+                    </a> 
+                    
+                    <a href="/editdiary">
+                        <div class="edit-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                            <h1>View Registration Infomation</h1>
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                        </div>
+                    </a>
+                </div>
+                <div class="bottom-part ">
+                    <a href="/viewdiary">
+                        <div class="view-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                            <h1>Change Account Informatioin</h1>
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                        </div>
+                    </a>
+                    <a href="/searchdiary">
+                        <div class="search-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                            <h1>Change personal Information</h1>
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+            
+        </div>
+
+        {% endif %}
+
+<!------------------ WRITE diary page-------------------------------------------------------------------------------->        
+        {% if view_profile %}
+            <div class="center-center-body magenta-text-shadow margin-b">
+                <h1> View detail of your account information </h1>
+            </div>
+            <div class="float-bg-dark cyan-box-shadow padding-b flex">
+                <div class="float-bg-light magenta-box-shadow padding-b margin-b"> 
+                    <table class="border-none">
+                        
+                        <thead>
+                            <div class=" flex center-elements">
+                                <tr> 
+                                    <th colspan = 2 class="center-text padding-s">  Your Personal Information </th>
+                                </tr>
+                            </div>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                    <td> First Name</td>
+                                    <td> {% if first_name %} {{ first_name }} {% endif %}</td>
+                                </tr>
+                                <tr>
+                                    <td> Last Name</td>
+                                    <td>{% if last_name %} {{ last_name }}  {% endif %}</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td> Date of Birth</td>
+                                    <td> {% if date_of_birth %} {{ date_of_birth }} {% endif %}</td>
+                                </tr>
+                                <tr>
+                                    <td> Primary Phone</td>
+                                    <td> {% if primary_phone %} {{ primary_phone }} {% endif %}</td>
+                                </tr>
+                                <tr>
+                                    <td> Secondary Phone</td>
+                                    <td><p>{% if secondary_phone %} {{ secondary_phone }} {% endif %}</p></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td> Country</td>
+                                    <td> <p> {% if country %} {{country}}  {% endif %}
+                                    </p></td>
+                                </tr>
+                                
+                                
+                                <tr>
+                                    <td> City </td>
+                                    <td>{% if city %} {{ city }}   {% endif %}</td>
+                                </tr>
+                                <tr>
+                                    <td> Address </td>
+                                    <td>{% if address %} {{ address }}   {% endif %}</td>
+                                </tr>
+
+                        </tbody>
+                    </table>
+                </div>   
+                <div class="float-bg-light magenta-box-shadow padding-b margin-b">
+                    <table>
+                        <thead>
+                            <div class=" flex center-elements">
+                                <tr> 
+                                    <th colspan = 2 class="center-text padding-s">  Your Personal Information </th>
+                                </tr>
+                            </div>
+                        </thead>
+                        <tbody>
+                                    <tr>
+                                        <td> Email address </td>
+                                        <td> {% if country %}{{ email }}  {% endif %}</td>
+                                    </tr>
+                                    <td> Password</td>
+                                    <td> {% if country %} {{password}}  {% endif %}</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td> {% if email_confirmation %} {{ email_confirmation }} {% endif %}</td>
+                                </tr>
+                                
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </div>
+        
+        {% endif %}
+
+<!------------------ VIEW diary page-------------------------------------------------------------------------------->        
+        {% if change_account_info %}
+        <h1> Change your account information </h1>
+            
+        {% endif %}
+
+<!------------------ Manage diary page-------------------------------------------------------------------------------->        
+
+        {% if change_personal_info %}
+
+            <h1>Chage personal information of diary owener</h1>
+
+        {% endif %}
+
+    </div>
+
+</div>
+<div>
+
+</div>
+<div>
+
+</div>
+{% endblock %}
+
+
+

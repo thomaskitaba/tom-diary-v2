@@ -1,0 +1,43 @@
+CREATE TABLE users 
+(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+username TEXT NOT NULL, hash TEXT NOT NULL,
+fname type text, 
+lname type text, 
+birthdate integer,
+birthyear integer, 
+email type text, 
+dateregistered datetime  current_timestamp);
+CREATE UNIQUE INDEX username ON users (username);
+
+
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE UNIQUE INDEX username ON users (username);
+
+CREATE TABLE category
+(category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+category_name TEXT NOT NULL,
+insertion_date TEXT);
+
+CREATE TABLE diary
+(diary_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+diary_content TEXT,
+diary_status TEXT DEFAULT Active);
+
+
+CREATE TABLE userdiary
+(ud_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+d_id INTEGER,
+u_id INTEGER,
+given_date TEXT DEFAULT CURRENT_TIMESTAMP,
+diary_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY(d_id) REFERENCES diary(diary_id),
+FOREIGN KEY(u_id) REFERENCES users(id));
+
+
+CREATE TABLE userdiarycategory
+(udc_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+ud_id INTEGER NOT NULL,
+c_id INTEGER NOT NULL,
+ FOREIGN KEY(ud_id) REFERENCES userdiary(userdiary_id),
+              FOREIGN KEY(c_id) REFERENCES category(category_id));
+

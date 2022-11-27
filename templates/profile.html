@@ -1,0 +1,310 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div>
+    <div class="center-text">
+        
+        <h3 class="center-text center-center-body">Dear:
+            {% if current_user_name %}
+                {{current_user_name[0]['username']}}
+            {% endif %} 
+        </h3>
+<!------------------ Manage diary page-------------------------------------------------------------------------------->        
+        {% if manage_profile %}
+        
+        <div class="">
+            <div class="center-elements"> 
+                <h1 class="magenta-text-shadow"> Manage Your Profile</h1></div>
+            <div class=" manage-diary bring-to-front flex center-elements margin-b float-bg-dark magenta-box-shadow padding-b">
+                
+                <div class="top-part  ">
+                    <a href="/viewprofile">
+                        <div class="write-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                            <h1> View Profile Details</h1>
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                        </div> 
+                    </a> 
+                    
+                    <a href="/">
+                        <div class="edit-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                            <h1>View Registration Infomation</h1>
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                        </div>
+                    </a>
+                </div>
+                <div class="bottom-part ">
+                    <a href="/changeaccountinfo">
+                        <div class="view-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                            <h1>Change Account Informatioin</h1>
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                        </div>
+                    </a>
+                    <a href="/changepersonalinfo">
+                        <div class="search-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                            <h1>Change personal Information</h1>
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+
+        {% endif %}
+
+<!------------------ WRITE diary page-------------------------------------------------------------------------------->        
+        {% if view_profile %}
+            
+            <div class="center-center-body magenta-text-shadow margin-m ">
+                <h1 class = "center-text"> View detail of your account information </h1>
+            </div>
+            <div class="float-bg-dark cyan-box-shadow padding-b flex">
+                <div class="float-bg-light magenta-box-shadow padding-b margin-b"> 
+                    <table class="border-none">
+                        
+                        <thead>
+                            <div class=" flex center-elements">
+                                <tr> 
+                                    <th colspan = 2 class="center-text padding-s">  Your Personal Information </th>
+                                </tr>
+                            </div>
+                        </thead>
+                        <tbody>
+                            
+                                <tr>
+                                    <td> First Name</td>
+                                    <td>  {% if profile %}
+                                            {{ profile[0]["fname"] }}  
+                                        {% else %}
+                                            {{ " ------" }}                                        
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Last Name</td>
+                                    <td>
+                                        {% if profile %}
+                                            {{ profile[0]["lname"] }}  
+                                        {% else %}
+                                            {{ " ------" }}                                        
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Gender</td>
+                                    <td>
+                                        {% if profile %}
+                                            {{ profile[0]["gender"] }}  
+                                        {% else %}
+                                            {{ " ------" }}                                        
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Date of Birth</td>
+                                    <td>
+                                        {% if profile %}
+                                            {{ profile[0]["dateofbirth"] }}  
+                                        {% else %}
+                                            {{ " ------" }}                                        
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Primary Phone</td>
+                                    <td> 
+                                        {% if profile %}
+                                            {{ profile[0]["primaryphone"] }}  
+                                        {% else %}
+                                            {{ " ------" }}                                        
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Secondary Phone</td>
+                                    <td>
+                                        {% if profile %}
+                                            {{ profile[0]["secondaryphone"] }}  
+                                        {% else %}
+                                            {{ " ------" }}                                        
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td> Country</td>
+                                    <td>
+                                        {% if profile %}
+                                            {{ profile[0]["country"] }}  
+                                        {% else %}
+                                            {{ " ------" }}                                        
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                
+                                
+                                <tr>
+                                    <td> City </td>
+                                    <td>
+                                        {% if profile %}
+                                            {{ profile[0]["city"] }}  
+                                        {% else %}
+                                            {{ " ------" }}                                        
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Address </td>
+                                    <td>
+                                        {% if profile %}
+                                            {{ profile[0]["address"] }}  
+                                        {% else %}
+                                            {{ " ------" }}                                        
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+                        </tbody>
+                    </table>
+                </div>   
+                <div class="float-bg-light magenta-box-shadow padding-b  margin-b">
+                    <table>
+                        <thead>
+                            <div class=" flex center-elements">
+                                <tr> 
+                                    <th colspan = 2 class="center-text padding-s">  Your Account Information </th>
+                                </tr>
+                            </div>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> Email address </td>
+                                <td> 
+                                    {% if profile %}
+                                        {{ profile[0]["useremail"] }}  
+                                    {% else %}
+                                        {{ "------" }}                                        
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> <h3>username</h3> </td>
+                                <td> 
+                                    {% if profile %}
+                                        {{ profile[0]["username"] }}  
+                                    {% else %}
+                                        {{ "------" }}                                        
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Facebook address </td>
+                                <td> 
+                                    {% if profile %}
+                                        {{ profile[0]["facebookaddress"] }}  
+                                    {% else %}
+                                        {{ "------" }}                                        
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Telegram address </td>
+                                <td> 
+                                    {% if profile %}
+                                        {{ profile[0]["telegramaddress"] }}  
+                                    {% else %}
+                                        {{ "------" }}                                        
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Instagram address </td>
+                                <td> 
+                                    {% if profile %}
+                                        {{ profile[0]["instagramaddress"] }}  
+                                    {% else %}
+                                        {{ "------" }}                                        
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Twitter address </td>
+                                <td> 
+                                    {% if profile %}
+                                        {{ profile[0]["twitteraddress"] }}  
+                                    {% else %}
+                                        {{ "------" }}                                        
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td> Password</td>
+                            <td> 
+                                {% if profile_password %}
+
+                                    {{ "******" }}                                        
+                                {% endif %}
+                            </td>
+                            </tr>
+                                
+                            <tr>
+                                <td> Joined Mydiary on </td>
+                                <td> 
+                                    {% if profile %}
+                                        {{ profile[0]["dateregistered"] }}  
+                                    {% else %}
+                                        {{ " ------" }}                                        
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Profile Info changed </td>
+                                <td> 
+                                    {% if profile %}
+                                        {{ profile[0]["numberofprofilechanges"] }}  
+                                    {% else %}
+                                        {{ " ------" }}                                        
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            
+                            
+                                
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </div>
+        
+        {% endif %}
+
+<!------------------ VIEW diary page-------------------------------------------------------------------------------->        
+        {% if change_account_info %}
+        <h1> Change your account information </h1>
+            
+        {% endif %}
+
+<!------------------ Manage diary page-------------------------------------------------------------------------------->        
+
+        {% if change_personal_info %}
+
+            <h1>Chage personal information of diary owener</h1>
+
+        {% endif %}
+
+    </div>
+
+</div>
+<div>
+
+</div>
+<div>
+
+</div>
+{% endblock %}
+
+
+

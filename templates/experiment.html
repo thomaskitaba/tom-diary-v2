@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+
+<div class="margin-b padding-b">
+  <h3>ud_id{{ test1 }}</h3>
+  <h3>udc_id 1{{ udc1 }}</h3>
+  <h3>udc_id 2{{ udc2 }}</h3>
+  <h3>udc_id 3{{ udc3 }}</h3>
+  <h3>default: {{ default }}</h3>
+  
+  <h3>cat_1: {{cat_1}}</h3>
+  <h3>cat_2: {{cat_2}}</h3>
+  <h3>cat_3: {{cat_3}}</h3>
+  <form action="/register" method="post">
+    <input type="text" name="useremail" placehoder="Email Address">
+    <input type="submit" value="Send_mail">
+
+  </form>
+</div>
+{% endblock %}

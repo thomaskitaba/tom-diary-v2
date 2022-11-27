@@ -1,0 +1,58 @@
+<!-- @format -->
+
+{% extends "layout.html" %} {% block main %} {{testdata}}
+<!-- <h3 class="center-elements">
+  {% if current_user_name %} {{current_user_name[0]["username"]}} {% endif %}
+</h3> -->
+<div class=" flex "><a href="/writediary"><h3>Back</h3></a></div>
+  <div class="float-bg-dark padding-m flex-horizontal">
+    
+
+    <!-- <h3 class="fit-content main-title center-elements">
+      Add New Catagory 
+    </h3> -->
+    <div class="center-elements catagory-page padding-s margin-s">
+      <form action="/catagory" method="post" class = "float-bg-light equal-flex padding-m">
+        <div class="center-text margin-bottom-s"> Insert New Catagories</div>
+        <div class="margin-bottom-s  " >
+          <select name="catagory-type" id="">
+            {% for cat_type in catagory_type %}
+            <option value='{{ cat_type["catagory_type_id"]}}'>
+              {{ cat_type["catagory_type_name"]}}
+            </option>
+
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <input
+            class="padding-m"
+            type="text"
+            name="catagoryname"
+            placeholder="Catagory name "
+          />
+        </div>
+        <div class="center-elements add-space-m">
+          <button
+            id="return-diary-text"
+            class="my-button-1 add-space-s box-shadow"
+            type="submit"
+          >
+            ADD catagory
+          </button>
+        </div>
+      </form>
+    
+
+    
+        <form action="/addcatagorytype" method="POST" class = "float-bg-light padding-m margin-s equal-flex">
+          <div class="margin-bottom-s">  New Catagory Type</div>
+        <input name="catagroy-type-name" class = "margin-s" type="text" placeholder="Catagory type name ">
+        <input name="catagroy-type-description" class = "margin-s" type="text" placeholder="Type description">
+        <button class="my-button-1" class = "margin-s" type="submit" formaction = "/addcatagorytype"> Insert Type</button>
+      </form>
+    
+</div>
+
+  {% endblock %}
+

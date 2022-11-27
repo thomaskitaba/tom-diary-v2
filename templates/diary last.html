@@ -1,0 +1,663 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+
+<div>
+    <div >
+        <!-- <h3 class=" center-center-body"> Dear: 
+            {% if current_user_name %}
+                {{current_user_name[0]['username']}}
+            {% endif %} 
+            <br>
+            
+        </h3> -->
+<!------------------ Manage diary page-------------------------------------------------------------------------------->        
+        {% if manage_diary %}
+        
+            <div class="">
+                <div class=" center-elements padding-zero">
+                    <h1 class="magenta-text-shadow">Manage Your diaries</h1>
+                    </div>
+                <div class=" manage-diary bring-to-front flex center-elements margin-b float-bg-dark magenta-box-shadow padding-b">
+                    <div class="top-part  ">
+                        <a href="/writediary">
+                            <div class="write-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                                <h1> Write Diary</h1>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                            </div> 
+                        </a> 
+                        
+                        <a href="/editdiary">
+                            <div class="edit-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                                <h1>Edit Diary</h1>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="bottom-part ">
+                        <a href="/viewdiary">
+                            <div class="view-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                                <h1>View Diary</h1>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                            </div>
+                        </a>
+                        <a href="/searchdiary">
+                            <div class="search-diary float-bg-light padding-s margin-b cyan-box-shadow"> 
+                                <h1>Search Diary</h1>
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores perspiciatis magni itaque rerum facilis consequatur libero nam quisquam dolorum. Rerum!
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            </div>
+        {% endif %}
+
+<!------------------ WRITE diary page-------------------------------------------------------------------------------->      
+<!------------------ WRITE diary page-------------------------------------------------------------------------------->        
+        {% if writediary %}
+        <table>
+          <form action="/writediary" method="post">
+                <tr>
+
+                    <td colspan="2"><div class =" center-center-body"> Write your diary here </div>  </td>
+                    
+                        
+                </tr>
+                <tr>
+                    
+                        
+                        <td>
+                            <div class="center-elements margin-top-s margin-bottom-s">Change to another DATE</div>
+                            <div class = "center-elements"><input class="input-width center-text padding-m" name = "given-date" type="date"> </div>
+                        </td>
+                        <td>
+                            <div class="center-elements margin-top-s margin-bottom-s">Change to another TIME</div>
+                            <div class = "center-elements"><input class="input-width center-text padding-m" name = "given-time" type="time"> </div>
+                        </td>
+                
+                </tr>
+                
+                <tr>
+                    <td colspan = 2>
+                        <div class="margin-bottom-s">
+                            <select name="catagory-type"  onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
+                           <!-- TODO:  top catagory type selectbox-->                        
+                              {% for cat_type in catagory_types %}
+                              
+                              <option value='{{ cat_type["catagory_type_id"]}}'>
+                                {%  if catagory_type_name %}
+                                  {{catagory_type_name}}
+                                {% else %}
+                                  {{ cat_type["catagory_type_name"]}} 
+                                {% endif %}
+
+                              </option>
+                              
+                    
+                              {% endfor %}
+                            </select>
+                            
+                          
+                          
+                        </div>
+                      </td>
+                </tr>
+                <tr>
+                    <td colspan = 2>
+                        <div class="hidden">
+                          <!-- TODO:  top sub catagories-->
+                            <select name="catagory-type" class = "border-green input-box-100">
+                                {% for catagory in catagories %}
+                                    {% if catagory["catagory_name"]%}
+                                        <option value= "{{catagory['catagory_id']}}" >{{catagory["catagory_name"]}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            
+                        </div>
+                    </td>
+                </tr>
+
+                <tr  >
+                    <td colspan="2">
+                        <div class="max-content margin-top-s">
+                            <select class="select-s" name="catagory-1">
+                                
+                                {% for catagory in catagories %}
+                                    {% if catagory["catagory_name"]%}
+                                        <option value= "{{catagory['catagory_id']}}" >{{catagory["catagory_name"]}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            
+                            <select class="select-s" name="catagory-2">
+                                
+                                {% for catagory in catagories %}
+                                    {% if catagory["catagory_name"]%}
+                                        <option value= "{{catagory['catagory_id']}}" >{{catagory["catagory_name"]}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            
+                            <select class="select-s" name="catagory-3">
+                                
+                                {% for catagory in catagories %}
+                                    {% if catagory["catagory_name"]%}
+                                        <option value= "{{catagory['catagory_id']}}" >{{catagory["catagory_name"]}}</option>
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                        
+                    </td>
+                    
+                    
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea id = "get-diary-text-area" class="diary-box neon-box-shadow" name="diary-content" row= "20"
+                                placeholder="Write your diary Here" type="text" style="width: 100%;
+                                min-height: 25vh;"> 
+
+                                {% if diary_content %}
+                                    {{diary_content}}
+                                {% endif %}
+                                
+                                
+                        </textarea>
+                    </td>
+                </tr>
+                <!-- Description box -->
+                <tr>
+                    <td colspan = "2">
+                        <input type="text" name="diary-description" placeholder="Description for written diary">
+                    </td>
+                </tr>
+                <!-- submit and add catagory buttons -->
+                <tr>
+                  
+                    <td colspan="2"> 
+                        <div class="catagory-flex">
+                            <button class="my-button-1 add-space-m" type="submit">Save</button>
+                            <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/generatecatagory" >
+                            
+                            <!-- <ul class="nav">
+                              <li class="nav-down">  <div id = "get-diary-text" class = "my-button-1 box-shadow add-space-m "> <a href="/catagory">Add Catagory</a> </div>
+                                  <ul class="catagory-popup">
+                                    <div class="center-elements">
+                                    
+                                        <div class="margin-bottom-s">
+                                          <select name="catagory-type" id="">
+                                            {% for cat_type in catagory_type %}
+                                            <option value='{{ cat_type["catagory_type_id"]}}'>
+                                              {{ cat_type["catagory_type_name"]}}
+                                            </option>
+                                            
+                                            {% endfor %}
+                                          </select>
+                                        </div>
+                                        <div>
+                                          <input
+                                            class="padding-m"
+                                            type="text"
+                                            name="catagoryname"
+                                            placeholder="Catagory name "
+                                          />
+                                        </div>
+
+
+
+
+                                        <div class="center-elements add-space-m">
+                                          <button
+                                            id="return-diary-text"
+                                            class="my-button-1 add-space-s box-shadow"
+                                            type="submit" "
+                                          >
+                                            ADD catagory
+                                          </button>
+                                        </div>
+                                      
+                                    </div>
+                                  </ul>
+                              </li>
+                              
+                              </li>
+                          </ul> -->
+                            
+                        </div>
+                    </td>
+                </tr>
+                
+            </form>
+        </table>
+        {% endif %}
+
+
+<!------------------ EDIT DIARY page-------------------------------------------------------------------------------->      
+<!------------------ EDIT DIARY page-------------------------------------------------------------------------------->      
+        <div>
+        {% if editdiary %}
+            {% if diary %}
+            <h1>edit your diary </h1>
+                <table>
+                    <form action="/editediary" method="post">
+                        <tr>
+
+                            <td colspan="2"><div class ="fit-content main-title center-center-body"> Write your diary here </div>  </td>
+                            
+                                
+                        </tr>
+                        <tr>
+                                <td>
+                                    <div class="center-elements margin-top-s margin-bottom-s">Edit Diary Date </div>
+                                    <div></div>
+                                    <div class = "center-elements"><input class="input-width center-text" name = "given-date" type="date" value=' {{diary[0]["given_diary_date"] }}'> </div>
+                                </td>
+
+                                <td>
+                                    <div class="center-elements margin-top-s margin-bottom-s">Change to another TIME</div>
+                                    <div class = "center-elements"><input class="input-width center-text" name = "given-time" type="time"> </div>
+                                </td>
+                            
+                        </tr>
+                        
+                        <tr  >
+                            <td colspan="2">
+                                <div class="max-content margin-top-s">
+                                    <select class="select-s" name="catagory-1">
+                                        
+                                        {% for catagory in catagories %}
+                                            {% if catagory["catagory_name"]%}
+                                                <option value= "{{catagory['catagory_id']}}" >{{catagory["catagory_name"]}}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    
+                                    <select class="select-s" name="catagory-2">
+                                        
+                                        {% for catagory in catagories %}
+                                            {% if catagory["catagory_name"]%}
+                                                <option value= "{{catagory['catagory_id']}}" >{{catagory["catagory_name"]}}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    
+                                    <select class="select-s" name="catagory-3">
+                                        
+                                        {% for catagory in catagories %}
+                                            {% if catagory["catagory_name"]%}
+                                                <option value= "{{catagory['catagory_id']}}" >{{catagory["catagory_name"]}}</option>
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                
+                            </td>
+                                
+                                
+                        </tr>
+                        
+                        <tr>
+                            <td colspan="2">
+                                <textarea id = "get-diary-text-area" class="diary-box neon-box-shadow" name="diarytextarea" row= "20"
+                                        placeholder="Write your diary Here" type="text" style="width: 100%;
+                                        min-height: 50vh;"> 
+
+                                        {% if diary_text %}
+                                            {{diary_text}}
+                                        {% endif %}
+                                        
+                                        
+                                </textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan = "2">
+                                <input type="text" name="diary-description" placeholder="Description for written diary">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"> 
+                                <div class="catagory-flex">
+                                    <button class="my-button-1 add-space-m" type="submit">Save Changes</button>
+                                    
+                                    <div id = "get-diary-text" class = "custom-button box-shadow add-space-m "> <a href="#">Edit Catagory</a>
+                                    <!--    catagory id and catagory 
+                                        table compostion     catagory   + userdiary  + userdiarycatagory
+                                    things that can be changed   1- all catagory names   2--->   
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    </form>
+                </table>
+            {% endif %}
+        {% endif %}
+      </div>
+
+<!------------------ VIEW diary page-------------------------------------------------------------------------------->        
+        {% if viewdiary %}
+
+            <h1>view diary</h1>
+        {% endif %}
+
+<!-- ----------------- VIEW DETAIL DIARY INFO ---------------------------------------------------------------------->
+<!-- ----------------- VIEW DETAIL DIARY INFO ---------------------------------------------------------------------->
+{% if view_all_condensed %}
+
+<!-- <div class="center-elements magenta-text-shadow" {% if global_edited_diary %} onload="showedited()" {% endif %}><h1  >View/ Edit you diary</h1> </div> -->
+
+    <div class="">
+
+        <div class = "float-bg-dark cyan-box-shadow "  >
+                {% if diary %}
+                    {% for diary_info in diary %}
+                <!------- ALL IN ONE -------->
+                <!--todo:   here we have ID-->
+                    <div   class = "  equal-flex flex magenta-box-shadow padding-s ">
+                    <!-------  content and numbering  -------->
+                        <div class = "float-bg-light padding-s equal-flex ">
+                            <p class = "line-space-b diary-text"> <span id = '{{diary_info["number"]}}' class="magenta-box-shadow numbering">{{diary_info["number"]}}-- {{ diary_info["diary_id"]}} </span>
+                            {{ diary_info["diary_content"] }} </p>
+                        </div>
+                    <!------- other informations   -------->
+                        <div class = " padding-s equal-flex no-wrap  flex-vertical-center">
+                            
+                        <!------- other info  CATAGORY -------->
+                            <div class = " flex-wrap padding-s flex-start width-auto">
+      
+                              
+<!-----ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED-->  
+                              {% if diary_info["diary_catagories"] %}
+                                  {% for diary_catagories in diary_info["diary_catagories"] %}
+
+                                    <ul  class=" nav margin-zero">
+                                              
+                                        <li id = "edit-catagory-button" class=" nav-down padding-zero"> 
+                                            
+                                            <h3 class = "my-button-1 cyan-box-shadow" >
+                                              
+                                              {{diary_catagories[1]}}
+                                              
+                                            </h3><!------------------     form action action action -->   
+                                              
+                                                <ul id = '{{diary_catagories[0]}}' class="catagory-popup equal-flex make-visibel">
+                                                        
+                                                    <li>
+                                                        <div class="edit-div flex">
+
+                                                            <form action="/changecatagory" method="POST" class="float-bg-light bring-to-front ">
+                                                                <div class=" padding-s">
+                                                                  <div class = "padding-m">catagory: {{diary_catagories[1]}}</div>
+                                                                  <div>
+                                                                    <select name="catagory-id-list" class="  select-s block margin-bottom-s" >
+                                                                    
+                                                                        {% for catagory in catagories %}
+
+                                                                            {% if catagory["catagory_name"]%}
+                                                                              
+                                                                              <option  value= '{{catagory["catagory_id"]}}' > {{catagory["catagory_name"]}}</option>
+                                                                              
+                                                                            {% endif %}
+
+                                                                        {% endfor %}
+                                                                                
+                                                                    </select>
+                                                                  </div>
+                                                                <!-- to be used in /remove-->
+                                                                    
+                                                                  <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
+                                                                  <input name = "ud-id" type="text" hidden value = '{{diary_info["ud_id"]}}' >
+                                                                  <input name = "catagory-id" type="text" hidden value = '{{diary_catagories[0]}}' >
+                                                                  <input name = "user-diary-catagory-id" type="text" hidden value = '{{diary_catagories[2]}}' >
+                                                                  
+                                                                </div>
+                                                                
+                                                                <div class = " flex-horizontal padding-zero margin-top-s">
+                                                                    <button onclick = 'hidepopups()'  type="submit" class="my-button-1 margin-zero " value="Remove" formaction="/removecatagory"> Remove</button>
+                                                                    <button onclick = 'hidepopups()' type="submit" class="my-button-1 margin-zero " value="Change" formaction="/changecatagory"> Change</button>
+                                                                    <button onclick = 'hidepopups()'type="submit" class="my-button-1 margin-zero" value = "Add New" formaction="/addnewcatagory"> ADD New</button>
+                                                                    
+                                                                </div>
+                                                            
+                                                            </form>
+
+                                                        </div>
+                                                    
+                                                    </li>
+                                                        
+                                                        
+                                                    <!-- <li>Go and Add catagory in <br> <a href="/managecatagrory">manage catagory section</a></li> -->
+                                                    
+                                                </ul>
+                                        
+                                        </li>
+                                        
+                                  </ul>
+
+                                
+                                {% endfor %} <!-- end of diary_catagories in diary_info["diary_catagories"]-->
+
+                              {% endif %}  <!-- end of diary info-->
+                            </div>
+
+<!-----ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED-->  
+
+                            
+                            <!------- other info  DATE-TIME -------->
+                            <div class = "flex ">
+                                <div class=" padding-s flex-end">
+                                  <form action="/addnewcatagory" method="post" class="padding-zero">
+                                
+                                    <ul class=" nav margin-zero ">
+                                        
+                                        <li class="edit-form-popup  nav-down padding-zero "> {{diary_info["given_date"]}} | {{diary_info["given_time"]}}
+                                            <!------------------form action action action -------------------->    
+                                                <ul class="edit-popup equal-flex ">
+                                                        <li>Date: {{diary_info["diary_written_date"]}}</li>
+                                                        <li>Time: {{diary_info["diary_written_date"]}} </li>   
+                                                        <li>
+                                                            
+                                                                <div class = " flex padding-zero margin-top-s">
+                                                                  
+                                                                    <input name = "ud-id" type="text" hidden value = '{{diary_info["ud_id"]}}' >
+                                                                    <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
+                                                                    <input name = "diary-date" type="date" value = '{{diary_info["given_date"]}}'>
+                                                                    <input name = "diary-time" type="time" value = '{{diary_info["given_time"]}}'>
+                                                                    <button  type="submit" class="my-button-1 margin-zero" formaction="/changediarydate"> Change Date/Time</button>
+                                                                    
+                                                                </div>
+                                                            
+                                                        </li>
+                                                      
+                                                </ul>
+                                            
+                                        </li>
+                                        
+                                    </ul> 
+                                    
+                                </form>
+                                
+                                </div>
+                            </div>
+                        </div>
+                        
+                    <!------- other info DESCRIPTI0N -------->
+                        <div class="equal-flex flex-start padding-s">
+                            {{ diary_info["description"]}}
+                        </div>
+                        
+                    <!------- EDIT BUTTONS  --------> 
+                        <div class = " flex-no-wrap"> 
+            <!--=======================================================================================-->
+            <form action="/editdiarycontent" method="post" class="padding-zero">
+              
+                  
+                  <!------------------------>
+                  <ul class=" nav margin-zero ">
+                      
+                      <li class="nav-down padding-zero "> <button  type = "submit" class="my-button-1 cyan-box-shadow" >Edit Content </button>
+                          <!------------------form action action action -------------------->    
+                              <ul class="edit-form-popup diary-popup padding-bottom-s">
+                                <li>Change content of Your Note <br>(your {{diary_info["ud_id"]}} <sup>th</sup> diary log)</li>                                                     <li>
+                                          
+                                            <textarea  class=" border-green diary-box neon-box-shadow" name="diary-content" row= "50" cols="48"
+                                            placeholder="Write your diary Here" type="text" style="width: 100%;
+                                            min-height: 100px;" value = '{{diary_info["diary_content"] }}'> 
+                                            {{diary_info["diary_content"] }}
+                                            
+                                            
+                                            </textarea>
+                                            
+                                            <input name = "user-diary-id" type="text" hidden value = '{{diary_info["diary_id"]}}' >
+                                            <input name ="number-of-edits" type ="text" hidden value = '{{diary_info["number_of_edits"]}}'>
+                                            <input name = "diary-id" type="text" hidden value = '{{diary_info["diary_id"]}}' >
+                                            <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
+
+                                            <button  type="submit" class="my-button-1 margin-zero" >Save</button>
+                                                  
+                                                                                    
+                                      </li>
+                                      
+                          
+                      </li>
+                      
+                  </ul> 
+                  
+              </form>
+
+            <!--=======================================================================================-->
+                            <!--        Edit Diary    
+                            <div class = "nav  ">
+                                <form action="/editdiary" method="post" class="">
+
+                                    <input type="text" hidden name="diary-id" value = '{{diary_info["diary_id"]}}'>
+                                    <input type="text" hidden name="user-diary-id" value = '{{diary_info["ud_id"]}}'>
+                                    <button type = "submit" class=" my-button-1">Edit diary</button>
+                                    
+                                </form>
+                            
+                            </div>   -->
+                            <!--            Add-catagory-->
+                            <div class = "">
+                                <form action="/addnewcatagory" method="post" class="padding-zero">
+                                <!-- 
+                                  <input name = "ud-id" type="text" hidden value = '{{diary_info["ud_id"]}}' >
+                                  <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
+                                  <input type="text" hidden name="diary-id" value = '{{diary_info["diary_id"]}}'>
+                                  <input type="text" hidden name="user-diary-id" value = '{{diary_info["ud_id"]}}'>
+                                  <input name = "catagory-id" type="text" hidden value = '{{diary_info["catagory_id2"]}}' >
+                                  <input name = "user-diary-catagory-id" type="text" hidden value = '{{diary_info["user_diary_catagory_id2"]}}'>
+                                  -->  
+                                    
+                                    <!------------------------>
+                                    <ul class=" nav margin-zero ">
+                                        
+                                        <li class="nav-down padding-zero "> <button  type = "submit" class="my-button-1 cyan-box-shadow" >Add-catagory  </button>
+                                            <!------------------form action action action -------------------->    
+                                                <ul class="edit-popup">
+                                                        <li>Add Catagory for current diary ({{diary_info["ud_id"]}})</li>                                                        <li>
+                                                            <div>
+                                                                <select class="select-s" name="catagory-id-list">
+                                                                    
+                                                                    {% for catagory in catagories %}
+                                                                        {% if catagory["catagory_name"]%}
+                                                                            <option value= "{{catagory['catagory_id']}}" >{{catagory["catagory_name"]}}</option>
+                                                                            
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                            
+                                                                </select>
+                                                            </div>
+                                                                <div class = " flex padding-zero margin-top-s">
+                                                                  
+                                                                    <input name = "ud-id" type="text" hidden value = '{{diary_info["ud_id"]}}' >
+                                                                    <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
+
+                                                                    <button  type="submit" class="my-button-1 margin-zero" > ADD New</button>
+                                                                    
+                                                                </div>
+                                                            
+                                                        </li>
+                                                        <li> <a href="/catagory"> Add New Catagory in</a> </li>
+                                                        
+                                                        <!-- <li>Go and Add catagory in <br> <a href="/managecatagrory">manage catagory section</a></li> -->
+                                                    
+                                                </ul>
+                                            
+                                        </li>
+                                        
+                                    </ul> 
+                                    
+                                </form>
+                            
+                            </div>
+                            <div>
+                              <form action="/deletediary" method = "POST">
+                                <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
+                                <input name = "diary-id" value= '{{diary_info["diary_id"]}}' hidden>
+                                <button type= "submit" class = "my-button-1 cyan-box-shadow"> Delete</button>
+                              </form>
+                            </div>
+                        </div>
+                            
+                                
+                    </div>
+                    
+                    
+                    
+                    {% endfor %}
+                {% endif %}
+                </div>
+
+                <!--
+                <script>
+                    function showedited(){
+                        var diary_edited = document.getElementById('{{ global_edited_diary }}');
+                        diary_edited.scrollIntoView();
+                    }
+                </script>
+                -->
+        
+    </div>
+
+{% endif %}
+<!------------------ Edit diary page-------------------------------------------------------------------------------->        
+        
+        {% if editdiary %}
+
+            <h1>edit diary</h1>
+
+        {% endif %}
+
+<!------------------ Manage diary page-------------------------------------------------------------------------------->        
+
+        {% if searchdiary %}
+
+            <h1>Search diary</h1>
+
+        {% endif %}
+
+    </div>
+
+</div>
+<div>
+
+</div>
+<div>
+
+</div>
+{% endblock %}
+
+
+
