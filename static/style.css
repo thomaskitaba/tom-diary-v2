@@ -399,6 +399,7 @@ background: #5bc0de;
 .position-fixed {
   position: fixed;
 }
+
 .align-left {
   display: flex;
   flex-direction: column;
@@ -532,7 +533,7 @@ background: #5bc0de;
   padding: 0px;
 }
 .padding-s {
-  padding: 10px;
+  padding: 8px;
 }
 .padding-m {
   padding: 20px;
@@ -587,6 +588,11 @@ background: #5bc0de;
   /* background-color: green; */
   background: rgba(243, 237, 237, 0.4);
   border-radius: 20px;
+}
+.float-bg-light-s {
+  /* background-color: green; */
+  background: rgba(243, 237, 237, 0.4);
+  border-radius: 8px;
 }
 .float-bg-cyan {
   background: rgba(45, 251, 234, 0.4);
@@ -765,7 +771,10 @@ select:hover {
 .width-80 {
   width: 80%;
 }
-
+.custom-width-400{
+  min-width: 400px;
+  width: 100%;
+}
 table,
 tr,
 td,

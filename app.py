@@ -939,7 +939,6 @@ def takelog():
     return render_template("takelog.html", catagory_types= catagory_types, catagories = user_catagories())
     
     
-    
 @app.route("/writediary" , methods=["GET", "POST"])
 @login_required
 def diarywrite():
