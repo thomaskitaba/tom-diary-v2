@@ -12,7 +12,7 @@
         
     </head>
     
-    <body onload = 'showedited()'>
+    <body onload = "showedited(); loadCatagories()">
         <div class="container">
             <div class="header magenta-box-shadow">
               <div class = "">
@@ -20,7 +20,7 @@
                   <li id="day" class = "nav-list"></li>
                   <li id="today" class = "nav-list"></li>
                   <li id="clock" class = "nav-list"></li>
-              </ul>
+                </ul>
               </div>
               
                 {% if session["user_id"] %}
@@ -34,11 +34,13 @@
                             <li> <a href="/experiment">experiment Diary </a></li>
                             <li> <a href="/search">Search Diary</a></li>
                             <li> <a href="/takelog">take log</a></li>
+                            <li><a href="/jsonajax">jsonajax</a></li>
+                            <li><a href="/reloadecatagory">test JSON Data</a></li>
 
                         </ul>
                     </li>
                 </ul>
-
+                
                 <ul class="nav">
                     <li><a href="/search">Advanced Search </a></li>
                 </ul>
@@ -49,13 +51,13 @@
                         <ul class="profile-popup">
                             <li> <a href="/manageprofile">Manage Your Profile</a> </li>
                             <li> <a href="/viewprofile">View Profile </a></li>
+                            <li> <a href="/editprofile"> Edit Profile</a></li>
                             <li> <a href="/changeaccountinfo">Change Account Info </a></li>
                             <li> <a href="/changepersonalinfo">Change Personal Info </a> </li>
                             <li> <a href="/catagory">EXPERIMENT</a></li>
                         </ul>
                     </li>
-                    <li ><a href="/logout">LogOut</a>
-                    </li>
+                    <li >   <a href="/logout">LogOut</a> </li>
                 </ul>
                 {% else %}
                 <ul class="nav">
@@ -93,21 +95,33 @@
                       </div>
                     </div>
                     
-                    <script>
-                        
-                        function showedited(){
-                                
-                                var diary_edited = document.getElementById("{{edited_diary_element_id }}");
-                                diary_edited.scrollIntoView();
-                                //TODO: assign 0 to global_diary_edited[0] = 1
-                            
-                        }
-                    </script>
+                    
                     
                     
                 </body>
+                <script>
+                      
+                  function showedited(){
+                    
+                          
+                          var diary_edited = document.getElementById("{{edited_diary_element_id }}");
+                          diary_edited.scrollIntoView();
+                          //TODO: assign 0 to global_diary_edited[0] = 1
+                      
+                  }
+                  function loadCatagories(){
+                    var load_catagories = document.getElementById("load-catagories");
+                    load_catagories.click();
+                  }
+
                 
-                
+              </script>
+              <script>
+              var load_catagories = document.getElementById("load-catagories");
+              if (load_catagories != "")
+                load_catagories.click();
+              
+              </script>
                 <script defered src = "../static/jquery.js" type="text/javascript"></script>
                 <script defered src="../static/tomdiarycript.js" type = "text/javascript"></script>
                 <script src="../static/loading.js" type="text/javascript"></script>
@@ -116,9 +130,9 @@
                 <script type = "text/javascript" src="../static/virtual-select.min.js"></script>
                     <script>
                       VirtualSelect.init({ 
-                        ele: '#mulitpleSelect' 
+                        ele: '#mulitpleSelect'
                       });
 
                     </script>
-                    <script src="static/script.js" type="text/javascript"></script>
+                    <script src="../static/script.js" type="text/javascript"></script>
             </html>

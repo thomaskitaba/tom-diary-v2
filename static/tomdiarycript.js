@@ -1,3 +1,4 @@
+
 /** @format */
 
 window.setInterval(currentdate, 1000);
@@ -9,12 +10,12 @@ function currentdate() {
   date = full_date.getDate();
 
   today = date + " / " + month + " / " + yr;
-
+  
   hr = full_date.getHours();
   min = full_date.getMinutes();
   sec = full_date.getSeconds();
   day = full_date.getDay();
-
+  
   var prepand = hr >= 12 ? " PM " : " AM ";
 
   var datelist = [

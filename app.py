@@ -3,6 +3,7 @@
 import os
 from cs50 import SQL
 import sqlite3
+import json
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from tempfile import mkdtemp
@@ -59,6 +60,7 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
 mail = Mail(app)
+
 @app.route("/sendmail", methods=["GET", "POST"]) #type: ignore
 def sampleindex():
   if request.method =="POST":
@@ -71,8 +73,6 @@ def sampleindex():
     
     
 
-
-
 #---------------------------------------------------------------------------
 #global variables and funcitions
 current_user_name = [""]
@@ -84,6 +84,8 @@ global_edited_diary[0] = 1
 edit_mode = [0]
 task_to_do = ["viewdiary"]
 search_task_to_do = ["search-specific-date"]
+
+task_to_do_profile = [""]
 #diary_text = [0]
 
 # global variables for editing diary data
@@ -124,9 +126,13 @@ def global_catagory():
     # catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id WHERE catagorytype.catagory_type_id= ? ", cattype )
     return (catagories)
   
-def global_catagroy_types():
-  catagroy_types = db.execute("SELECT * FROM catagorytype")
-  return (catagroy_types)
+def global_catagory_types():
+  catagory_types = db.execute("SELECT * FROM catagorytype")
+  return (catagory_types)
+
+def catagory_types():
+  catagory_types= db.execute("SELECT * FROM catagorytype JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON users.id= usercatagory.u_id_in_uc WHERE usercatagory.u_id_in_uc = ?", session["user_id"])
+  return catagory_types
 
 # def currentday():
 #     day = str(datetime.datetime.now().year) + "/" + str(datetime.datetime.now().month) + "/" + str(datetime.datetime.now().day)
@@ -207,7 +213,7 @@ def reloadCatagories():
   catgory_type_id = [""]
   
   for cat in all_catagory_info:
-    
+    temp_cat_dict = { }
     temp_cat_type[0] = cat
     sub_catagories.clear()
     
@@ -232,6 +238,7 @@ def reloadCatagories():
         temp_cat_dict["sub_catagories"] = cat_list
     
     all_catagory_json.append(temp_cat_dict)
+    
     return all_catagory_json
 
 @app.after_request
@@ -373,13 +380,13 @@ def register():
             primary_phone = "------"
         if not seconday_phone:
             seconday_phone = "------"
-        if not city:
-            city = "------"
+        
         if not facebook_address:
             facebook_address = "------"
         if not telegram_address:
             telegram_address = "------"
-        
+        if not instagram_address:
+          instagram_address = "-------"
         if not twitter_address:
             twitter_address = "------"
         
@@ -426,9 +433,6 @@ def register():
             
             link = url_for('confirmUserEmail', token=token, _external=True)    # import url_for from flask
             msg.body = "click this link to confirm your tom-diary account" + link   
-            
-            
-            
             mail.send(msg)
             
             # tell user to go and check thier email for confirmation
@@ -523,7 +527,7 @@ def catagory():
         #diary_text[0] = request.form.get("diarytextarea") # to be written back to the textarea 
         # return render_template("/writediary")
         global_catagory_type[0] = catagory_type
-        #return render_template("diary.html", catagory_types= global_catagroy_types(), current_user_name=global_user_name(), catagories=global_catagory(global_catagory_type[0]), writediary= 1)
+        #return render_template("diary.html", catagory_types= global_catagory_types(), current_user_name=global_user_name(), catagories=global_catagory(global_catagory_type[0]), writediary= 1)
         return render_template("catagory.html", catagory_type=catagory_type, current_user_name= global_user_name())
 
 @app.route("/addcatagorytype", methods=["GET", "POST"])  # type: ignore
@@ -573,7 +577,7 @@ def reloadcatagory():
   
   # all_catagory_info = catTypeAndSubCat(session["user_id"])
   all_catagory_info = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON usercatagory.cat_type_id_in_uc = catagorytype.catagory_type_id JOIN users ON users.id = usercatagory.u_id_in_uc")
-  
+  # return render_template("experiment.html", cat_3= all_catagory_info )
   all_catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id") 
   
   #todo: all_catagory_info = [{a: 1, --}, {c:3,--}, {d: 4}]
@@ -591,9 +595,9 @@ def reloadcatagory():
   catgory_type_id = [""]
   
   for cat in all_catagory_info:
-    
+    temp_cat_dict = { }
     temp_cat_type[0] = cat
-    sub_catagories.clear()
+    # sub_catagories.clear()
     
     #added 
     catgory_type_id[0] = cat["catagory_type_id"]
@@ -616,10 +620,11 @@ def reloadcatagory():
         temp_cat_dict["sub_catagories"] = cat_list
     
     all_catagory_json.append(temp_cat_dict)
-    
+  # return render_template("experiment.html", cat_3= all_catagory_json)
   all_catagory_info = db.execute("SELECT username, catagory_type_name FROM userCatagoryInfo WHERE id = ? ", session["user_id"])
   
   #TODO:
+  return all_catagory_json
   return render_template("experiment.html", cat_2=temp_cat_type[0], cat_3= all_catagory_json)
 @app.route("/editcatagory", methods=["Get", "POST"])
 @login_required
@@ -627,8 +632,6 @@ def editcatagory():
   
     return render_template("/experiment.html")
 # comment goes here    
-
-
 
 # ------------------------ DIARY MANAGMENT -------------------------
 # ------------------------ DIARY MANAGMENT -------------------------
@@ -832,8 +835,8 @@ def generatecatagory():
       #TODO: 
       return render_template("takelog.html", diary_content=diary_content, catagory_types= catagory_types, current_user_name=global_user_name(), catagories=global_catagory_with_parameter(catagory_type_id))
       # return render_template("diary.html", diary_content=diary_content, catagory_types= catagory_types, current_user_name=global_user_name(), catagories=global_catagory_with_parameter(catagory_type_id), writediary= 1)
-    else:
-      return render_template("takelog.html", catagory_types= catagory_types, catagories = catagories)
+    
+    return render_template("takelog.html", catagory_types= catagory_types, catagories = user_catagories())
       # return render_template("diary.html", catagory_types= catagory_types, current_user_name=global_user_name(), catagories=global_catagory(), writediary= 1)
           
 @app.route("/takelog" , methods=["GET", "POST"]) #type: ignore
@@ -864,6 +867,7 @@ def takelog():
       
     if not given_time:
       given_time = currentclock() # works
+      
       
     # return render_template("experiment.html", cat_3=multiple_catagories_selected)
     
@@ -953,7 +957,7 @@ def diarywrite():
         multiple_catagories_selected = request.form.getlist("native-select")
         
         
-        return render_template("experiment.html", cat_3= multiple_catagories_selected)
+        # return render_template("experiment.html", cat_3= multiple_catagories_selected)
         if not diary_text:
           flash("nothing to save")
           return render_template("diary.html", catagory_types= catagory_types, current_user_name=global_user_name(), catagories=global_catagory(), writediary= 1)
@@ -1073,7 +1077,7 @@ def diarywrite():
     else:
       catagory_types= db.execute("SELECT * FROM catagorytype")
       return render_template("diary.html", catagory_types= catagory_types, current_user_name=global_user_name(), catagories=global_catagory(), writediary= 1)
-      #return render_template("diary.html", catagory_types= global_catagroy_types(), current_user_name=global_user_name(), catagories=global_catagory(1), writediary= 1)
+      #return render_template("diary.html", catagory_types= global_catagory_types(), current_user_name=global_user_name(), catagories=global_catagory(1), writediary= 1)
       
 @app.route("/viewdiary", methods=["GET", "POST"])
 @login_required
@@ -1246,7 +1250,7 @@ def diaryedit():
         global_edited_diary[0] = diary_element_id  # type: ignore
         edit_mode[0] = 1
 
-    
+        
         return redirect("/viewdiary")
     else:
         return redirect("/viewdiary")
@@ -1257,6 +1261,7 @@ def diarysearch():
   
   
   if request.method == "POST":
+    
     
     search_catagory_id = request.form.get("search-catagory-id")
     catagories = db.execute("SELECT * FROM catagory")
@@ -1277,7 +1282,11 @@ def searchdates():
   # global_search_end_date[0] = str(end_date)
     catagories = db.execute("SELECT * FROM catagory")
     
-    if search_task_to_do[0] == "start-to-end-date":
+    if search_task_to_do[0] == "start-to-end-date": # or "from-begning-to-end-date":
+      
+      
+      results = db.execute("SELECT * FROM diarydatabaseview WHERE given_date >= ? AND given_date <= ?", session["start_date"], session["end_date"])
+      return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, normal_search= 1, results = results)
       
       return render_template ("experiment.html", cat_1 = global_search_start_date[0])
       # return apology ("thomas kitaba unchecked transfered")
@@ -1289,9 +1298,9 @@ def searchdates():
       results = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id WHERE u_id = ? and userdiary.given_date Like ?", session["user_id"], "%" + global_search_start_date[0] + "%")
       
       
-      # return apology ("thomas kitaba cheked transfered")
       return render_template("search.html", catagories=catagories, results=results, normal_search= 1)
-      
+    
+    return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, normal_search= 1)
       
 @app.route("/simpledate", methods=["GET", "POST"]) # type: ignore
 @login_required
@@ -1300,8 +1309,12 @@ def simpledate():
   if request.method == "POST":
     date_upto = str(request.form.get("date-upto-check-box"))          
     start_date = request.form.get("start-date")
-    end_date = request.form.get("end-date")            
-    
+    end_date = request.form.get("end-date")
+                
+    session["start_date"] = start_date
+    session["end_date"] = end_date
+    rows = db.execute("SELECT * FROM userdiary WHERE u_id = ? lIMIT 1 ", session["user_id"] )
+    begnning_date = rows[0]["given_date"]
     if date_upto == "upto":
       #if check box upto date is selected
       
@@ -1309,32 +1322,60 @@ def simpledate():
       
       if not start_date and not end_date:
         # search todays date
+        session["start_date"] = begnning_date
+        session["end_date"] = currentday()
+        
+        search_task_to_do[0] = "start-to-end-date"
+        return redirect("/searchdate")
+        
         return render_template("experiment.html", cat_3="both date fields empty so search for diary written on current date")
       if not start_date and end_date:
-        if str(end_date) == str(currentday()):
-          # search current day
-          return render_template("experiment.html", cat_3="start date not entered so  start_date= current date  end date entered equals current date so search for current date")
         
-        if str(end_date) != str(currentday()):
+        #TODO: select * from userdiary where given_date < end_date  
+        # find the first diary date
+        
+        session["start_date"] = begnning_date
+        session["end_date"] = end_date
+        search_task_to_do[0] = "start-to-end-date"
+        return redirect("/searchdate")
+        
+      if start_date and end_date:
+        # return render_template("experiment.html" , cat_3= search_task_to_do[0])
+        session["start_date"] = start_date
+        session["end_date"] = end_date
+        search_task_to_do[0] = "start-to-end-date"
+        # return render_template("experiment.html" , cat_3= search_task_to_do[0])
+        return redirect("/searchdate")
+        
+      if start_date and not end_date:
+        session["start_date"] = start_date
+        session["end_date"] = currentday()
+        search_task_to_do[0] = "start-to-end-date"
+        return redirect("/searchdate") 
+      # todo: to be deleted or replaced by the above code
+      # if start_date:
+        
+      #   global_search_start_date[0] = start_date
+      #   session["start_date"] = start_date
+      #   if end_date:
+      #     # global_search_end_date[0] = end_date
+      #     session["end-date"] = end_date
+      #     search_task_to_do[0] = "start-to-end-date"
+      #     return redirect("/searchdate")
+      #     # return render_template("experiment.html", cat_3= "valid start and end date")
+      #   if not end_date:
           
-          return render_template("experiment.html", cat_3="ERROR: end-date  should not be less than start date not allowed")
-        
-      if start_date:
-        
-        global_search_start_date[0] = start_date
-        if end_date:
-          global_search_end_date[0] = end_date
-          
-          return render_template("experiment.html", cat_3= "valid start and end date")
-        if not end_date:
-          global_search_end_date[0] = currentday()
-          return render_template("experiment.html", cat_3= "valid start date provided end date not provided so enddate = currentdate")
+      #     # global_search_end_date[0] = currentday()
+      #     session["end_date"] = currentday()
+      #     search_task_to_do[0] = "stary-to-end-date"
+      #     return redirect("/searchdate")
+      #     # return render_template("experiment.html", cat_3= "valid start date provided end date not provided so enddate = currentdate")
         
         
-        search_task_to_do[0] = "stary-to-end-date"
+      #   search_task_to_do[0] = "stary-to-end-date"
       
-      return redirect("/searchdate")
-      
+      #   return redirect("/searchdate")
+      # todo: end of line for content to be deleted
     else:
       search_task_to_do[0] = "specific-date"
       # return render_template("experiment.html", cat_3= "inside simple single day search")
@@ -1349,7 +1390,7 @@ def simpledate():
       # return apology ("thomas kitaba unchecked")
       return redirect("/searchdate")           
       
-          
+      
   else:
     return redirect("/search")
 
@@ -1358,14 +1399,11 @@ def simpledate():
 def manage_diary():
     """ MAIN diary page """
     
-    
     return render_template("diary.html", current_user_name=global_user_name(), catagories=global_catagory(), manage_diary= 1)
 
 # ----------------------END OF-- DIARY MANAGMENT -------------------------
-
-
 # ----------------------START OF PROFILE MANAGMENT -------------------------
-# ---------------------- START OF PROFILE MANAGMENT -------------------------
+# ----------------------START OF PROFILE MANAGMENT -------------------------
 
 
 @app.route("/manageprofile")
@@ -1374,7 +1412,7 @@ def profilemanagement():
     """ profile managment"""
     
     return render_template("profile.html", current_user_name= global_user_name(), manage_profile= 1)
-
+    
 @app.route("/viewprofile")
 @login_required
 def profilmanagement():
@@ -1383,6 +1421,14 @@ def profilmanagement():
     profile_password = profile[0]["hash"]
     return render_template("profile.html",profile=profile,profile_password= profile_password, current_user_name= global_user_name(), view_profile= 1)
 
+
+@app.route("/editprofile") #type: ignore
+@login_required
+def editprofile():
+  task_to_do_profile[0] = "editprofile"
+  return render_template("profile.html", edit_profile = 1)
+  
+  
 
 @app.route("/changeaccountinfo")
 @login_required
@@ -1410,4 +1456,18 @@ def changeinfo():
 def experiment():
     """ experiment page"""
     return render_template("experiment.html")
+  
+@app.route("/jsonajax", methods=["GET", "POST"]) #type: ignore
+@login_required
+def jsonajax():
+  if request.method == "POST":
+    pass
+  else:
+    
+    
+    catagories = db.execute("select * from catagory")
+    return render_template("jsonajax.html", load_catagories = 1)
+    
+    
+
 
