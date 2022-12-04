@@ -19,7 +19,7 @@
         <div class="search-catagory  normal-flex-veritcal align-center  width-auto border-green">
         
           <div>
-            <select name="search-catagory-id" id="">
+            <select id="multiSelect" name="search-catagory-id" id="">
               {% for cat_info in catagories %}
               <option value='{{ cat_info["catagory_id"]}}'>
                 {{ cat_info["catagory_name"]}}
@@ -36,24 +36,46 @@
           </div>
         </div>  <!-- end of search catagory section-->
 
-      <div class="search-date border-blue width-auto normal-flex-horizontal wrap">
-        <!-- <form action="/seachdate"> -->
-          <div class = "normal-flex-vertical wrap">
-          <input type="date" name="start-date" class = "border-green">
-          <!-- <label for="date-upto">upto</label> -->
-          <div>
-            <input name="date-upto-check-box" type="checkbox" value="upto"> Upto 
+      
+      <div class="border-black">
+        <div class="search-date border-blue width-auto normal-flex-horizontal wrap">
+          <!-- <form action="/seachdate"> -->
+            <div class = "normal-flex-vertical wrap">
+              <input type="date" name="start-date" class = "border-green">
+              <!-- <label for="date-upto">upto</label> -->
+            <div>
+              <input name="date-upto-check-box" type="checkbox" value="upto"> Upto 
+            </div>
+            <div>
+            <input type="date" name="end-date">
+          </div>
+            <button type = "submit" class = "my-button-1 cyan-box-shadow self-align-center"  formaction="/simpledate">Search</button>
+          </div>
+          
+        </div>
+        <div class="padding-s float-bg-light-s">
+          <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
+            <select  name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
+              
+              {% for type in catagory_types %}
+                
+                <option value="{{type['catagory_type_id']}}"> {{ type["catagory_type_name"] }} </option>
+                
+              {% endfor %}
+            
+            </select>
+          </div>
+          <div class=" width-100 margin-s float-bg-light-s">
+            <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
+              {% for catagory in catagories %}
+                  {% if catagory["catagory_name"]%}
+                      <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
+                  {% endif %}
+              {% endfor %}
+            </select>
+          
           </div>
         
-          <input type="date" name="end-date">
-        
-          <button type = "submit" class = "my-button-1 cyan-box-shadow self-align-center"  formaction="/simpledate">Search</button>
-        </div>
-        
-      </div>
-      <div class="border-black">
-        <input type="text" name="discription" placeholder="discription">
-        <button type="submit" class="my-button-1 cyan-box-self-align-center " > Search </button>
       </div>
 
       
@@ -65,6 +87,7 @@
 
   <!-- RESULT PART RESULT CONTAINER  -->
   <div class="search-result border-blue width-100">
+    from date {{start_date }}  --- up to --- {{ end_date }}
     {% if results %} 
     <div class="align-left border-red">
       {% for result in results %}

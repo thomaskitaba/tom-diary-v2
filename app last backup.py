@@ -1282,10 +1282,10 @@ def searchdates():
   # global_search_end_date[0] = str(end_date)
     catagories = db.execute("SELECT * FROM catagory")
     
-    if search_task_to_do[0] == "start-to-end-date":
+    if search_task_to_do[0] == "start-to-end-date": # or "from-begning-to-end-date":
       
       
-      results = db.execute("SELECT * FROM diarydatabaseview given_date  BETWEEN ? AND ? ", session["start_date"], session["end_date"])
+      results = db.execute("SELECT * FROM diarydatabaseview WHERE given_date >= ? AND given_date <= ?", session["start_date"], session["end_date"])
       return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, normal_search= 1, results = results)
       
       return render_template ("experiment.html", cat_1 = global_search_start_date[0])
@@ -1298,9 +1298,9 @@ def searchdates():
       results = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id WHERE u_id = ? and userdiary.given_date Like ?", session["user_id"], "%" + global_search_start_date[0] + "%")
       
       
-      # return apology ("thomas kitaba cheked transfered")
       return render_template("search.html", catagories=catagories, results=results, normal_search= 1)
-      
+    
+    return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, normal_search= 1)
       
 @app.route("/simpledate", methods=["GET", "POST"]) # type: ignore
 @login_required
@@ -1313,7 +1313,8 @@ def simpledate():
                 
     session["start_date"] = start_date
     session["end_date"] = end_date
-    
+    rows = db.execute("SELECT * FROM userdiary WHERE u_id = ? lIMIT 1 ", session["user_id"] )
+    begnning_date = rows[0]["given_date"]
     if date_upto == "upto":
       #if check box upto date is selected
       
@@ -1321,33 +1322,60 @@ def simpledate():
       
       if not start_date and not end_date:
         # search todays date
+        session["start_date"] = begnning_date
+        session["end_date"] = currentday()
+        
+        search_task_to_do[0] = "start-to-end-date"
+        return redirect("/searchdate")
+        
         return render_template("experiment.html", cat_3="both date fields empty so search for diary written on current date")
       if not start_date and end_date:
         
-        if str(end_date) == str(currentday()):
-          # search current day
-          return render_template("experiment.html", cat_3="start date not entered so  start_date= current date  end date entered equals current date so search for current date")
+        #TODO: select * from userdiary where given_date < end_date  
+        # find the first diary date
         
-        if str(end_date) != str(currentday()):
+        session["start_date"] = begnning_date
+        session["end_date"] = end_date
+        search_task_to_do[0] = "start-to-end-date"
+        return redirect("/searchdate")
+        
+      if start_date and end_date:
+        # return render_template("experiment.html" , cat_3= search_task_to_do[0])
+        session["start_date"] = start_date
+        session["end_date"] = end_date
+        search_task_to_do[0] = "start-to-end-date"
+        # return render_template("experiment.html" , cat_3= search_task_to_do[0])
+        return redirect("/searchdate")
+        
+      if start_date and not end_date:
+        session["start_date"] = start_date
+        session["end_date"] = currentday()
+        search_task_to_do[0] = "start-to-end-date"
+        return redirect("/searchdate") 
+      # todo: to be deleted or replaced by the above code
+      # if start_date:
+        
+      #   global_search_start_date[0] = start_date
+      #   session["start_date"] = start_date
+      #   if end_date:
+      #     # global_search_end_date[0] = end_date
+      #     session["end-date"] = end_date
+      #     search_task_to_do[0] = "start-to-end-date"
+      #     return redirect("/searchdate")
+      #     # return render_template("experiment.html", cat_3= "valid start and end date")
+      #   if not end_date:
           
-          return render_template("experiment.html", cat_3="ERROR: end-date  should not be less than start date not allowed")
-        
-      if start_date:
-        
-        global_search_start_date[0] = start_date
-        if end_date:
-          global_search_end_date[0] = end_date
-          
-          return render_template("experiment.html", cat_3= "valid start and end date")
-        if not end_date:
-          global_search_end_date[0] = currentday()
-          return render_template("experiment.html", cat_3= "valid start date provided end date not provided so enddate = currentdate")
+      #     # global_search_end_date[0] = currentday()
+      #     session["end_date"] = currentday()
+      #     search_task_to_do[0] = "stary-to-end-date"
+      #     return redirect("/searchdate")
+      #     # return render_template("experiment.html", cat_3= "valid start date provided end date not provided so enddate = currentdate")
         
         
-        search_task_to_do[0] = "stary-to-end-date"
+      #   search_task_to_do[0] = "stary-to-end-date"
       
-      return redirect("/searchdate")
-      
+      #   return redirect("/searchdate")
+      # todo: end of line for content to be deleted
     else:
       search_task_to_do[0] = "specific-date"
       # return render_template("experiment.html", cat_3= "inside simple single day search")
@@ -1362,7 +1390,7 @@ def simpledate():
       # return apology ("thomas kitaba unchecked")
       return redirect("/searchdate")           
       
-          
+      
   else:
     return redirect("/search")
 
@@ -1370,7 +1398,6 @@ def simpledate():
 @login_required
 def manage_diary():
     """ MAIN diary page """
-    
     
     return render_template("diary.html", current_user_name=global_user_name(), catagories=global_catagory(), manage_diary= 1)
 

@@ -14,6 +14,7 @@ import ethiopian_date
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
 
+from validate_email_address import validate_email
 
 
 # ----------------- Email configuration --------------------------
@@ -58,7 +59,7 @@ app.config['MAIL_USERNAME'] = 'thomas.kitaba@gmail.com'
 app.config['MAIL_PASSWORD'] = 'rmiubtbgjsxscycd'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-
+app.config['TESTING'] = False
 mail = Mail(app)
 
 @app.route("/sendmail", methods=["GET", "POST"]) #type: ignore
@@ -238,8 +239,9 @@ def reloadCatagories():
         temp_cat_dict["sub_catagories"] = cat_list
     
     all_catagory_json.append(temp_cat_dict)
+    session["all_catagory_json"] = all_catagory_json
     
-    return all_catagory_json
+    return session["all_catagory_json"]
 
 @app.after_request
 def after_request(response):
@@ -390,7 +392,12 @@ def register():
         if not twitter_address:
             twitter_address = "------"
         
-        
+        if not validate_email(useremail, verify=True):
+          
+          flash("Email does not Exist")
+          return redirect("/register")
+          
+          
         count_letters = [0]
         # STEP 1  collect submition data data
         if len(firstname) > 0 or len(lastname) > 0 or len(birthday) > 0 or len(useremail) > 0 or len(password) >= 6  or len(confirmation) > 0 or (country):  # type: ignore
@@ -433,7 +440,11 @@ def register():
             
             link = url_for('confirmUserEmail', token=token, _external=True)    # import url_for from flask
             msg.body = "click this link to confirm your tom-diary account" + link   
+            
+            
             mail.send(msg)
+            
+              #TODO: add emailconfirmed    invalidemail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             
             # tell user to go and check thier email for confirmation
             return render_template("registrationsucess.html", firstname=firstname, lastname=lastname, useremail=useremail)
@@ -1286,7 +1297,7 @@ def searchdates():
       
       
       results = db.execute("SELECT * FROM diarydatabaseview WHERE given_date >= ? AND given_date <= ?", session["start_date"], session["end_date"])
-      return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, normal_search= 1, results = results)
+      return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, start_date= session["start_date"] , end_date= session["end_date"], normal_search= 1, results = results)
       
       return render_template ("experiment.html", cat_1 = global_search_start_date[0])
       # return apology ("thomas kitaba unchecked transfered")
@@ -1298,7 +1309,7 @@ def searchdates():
       results = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id WHERE u_id = ? and userdiary.given_date Like ?", session["user_id"], "%" + global_search_start_date[0] + "%")
       
       
-      return render_template("search.html", catagories=catagories, results=results, normal_search= 1)
+      return render_template("search.html", catagories=catagories,  results=results, normal_search= 1)
     
     return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, normal_search= 1)
       

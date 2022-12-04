@@ -1,0 +1,91 @@
+<!-- @format -->
+
+{% extends "layout.html" %} 
+
+{% block main %} 
+
+{% if current_user_name %}
+<h3>username:</h3>
+{{current_user_name["username"]}} 
+{% endif %}
+
+
+{% if normal_search %} 
+
+<div class="search-container float-bg-dark width-100"> <!-- search container  -->
+  <form action="/search" method="POST"> 
+  <div class = "search-header normal-flex-horizontal align-center wrap border-red ">
+    
+        <div class="search-catagory  normal-flex-veritcal align-center  width-auto border-green">
+        
+          <div>
+            <select id="multiSelect" name="search-catagory-id" id="">
+              {% for cat_info in catagories %}
+              <option value='{{ cat_info["catagory_id"]}}'>
+                {{ cat_info["catagory_name"]}}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div >
+            <button name="search-button" type="submit" class="my-button-1 self-align-center"
+              formaction="/search">
+              search
+            </button>
+          </div>
+        </div>  <!-- end of search catagory section-->
+
+      <div class="search-date border-blue width-auto normal-flex-horizontal wrap">
+        <!-- <form action="/seachdate"> -->
+          <div class = "normal-flex-vertical wrap">
+            <input type="date" name="start-date" class = "border-green">
+            <!-- <label for="date-upto">upto</label> -->
+          <div>
+            <input name="date-upto-check-box" type="checkbox" value="upto"> Upto 
+          </div>
+          <div>
+          <input type="date" name="end-date">
+        </div>
+          <button type = "submit" class = "my-button-1 cyan-box-shadow self-align-center"  formaction="/simpledate">Search</button>
+        </div>
+        
+      </div>
+      <div class="border-black">
+        <input type="text" name="discription" placeholder="discription">
+        <button type="submit" class="my-button-1 cyan-box-self-align-center " > Search </button>
+      </div>
+
+      
+  </div> <!-- end of search-catagory division-->
+
+  
+  </div> <!-- end of search-header-->
+</form>
+
+  <!-- RESULT PART RESULT CONTAINER  -->
+  <div class="search-result border-blue width-100">
+    {% if results %} 
+    <div class="align-left border-red">
+      {% for result in results %}
+          
+          <div class="float-bg-light cyan-box-shadow padding-s">
+            {{result["diary_id"]}}--{{result["given_date"]}}--{{result["diary_content"]}}
+          </div>
+          
+          
+          
+      {% endfor %} 
+    </div>  
+    
+      
+    {% else %}
+      <h3> DIsplay all user diaries here search your diary</h3>
+    </div>
+
+    {% endif %} 
+  
+  {% endif %}
+
+</div><!-- end of container div -->
+{% endblock %}
