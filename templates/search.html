@@ -14,13 +14,14 @@
 
 <div class="search-container float-bg-dark width-100"> <!-- search container  -->
   <form action="/search" method="POST"> 
+    <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/advancedsearchcatagories" >
   <div class = "search-header normal-flex-horizontal align-center wrap border-red ">
     
         <div class="search-catagory  normal-flex-veritcal align-center  width-auto border-green">
         
           <div>
             <select id="multiSelect" name="search-catagory-id" id="">
-              {% for cat_info in catagories %}
+              {% for cat_info in all_catagories %}
               <option value='{{ cat_info["catagory_id"]}}'>
                 {{ cat_info["catagory_name"]}}
               </option>
@@ -43,12 +44,14 @@
             <div class = "normal-flex-vertical wrap">
               <input type="date" name="start-date" class = "border-green">
               <!-- <label for="date-upto">upto</label> -->
+            </div>
             <div>
               <input name="date-upto-check-box" type="checkbox" value="upto"> Upto 
             </div>
             <div>
-            <input type="date" name="end-date">
-          </div>
+              <input type="date" name="end-date">
+            </div>
+            <div>
             <button type = "submit" class = "my-button-1 cyan-box-shadow self-align-center"  formaction="/simpledate">Search</button>
           </div>
           
@@ -64,10 +67,11 @@
               {% endfor %}
             
             </select>
+            <input name="date-upto-check-box" type="checkbox" value="upto" class=""> Search By CatagoryType 
           </div>
           <div class=" width-100 margin-s float-bg-light-s">
             <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
-              {% for catagory in catagories %}
+              {% for catagory in all_catagories %}
                   {% if catagory["catagory_name"]%}
                       <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
                   {% endif %}
@@ -81,22 +85,30 @@
       
   </div> <!-- end of search-catagory division-->
 
-  
   </div> <!-- end of search-header-->
 </form>
 
   <!-- RESULT PART RESULT CONTAINER  -->
   <div class="search-result border-blue width-100">
-    from date {{start_date }}  --- up to --- {{ end_date }}
+    <div class = "center-elements ">
+      <h3>
+        {% if start_date %} from date {{start_date }} {% endif %}  
+        {% if end_date %} --- up to --- {{ end_date }} {% endif %}
+      </h3>
+    </div>
     {% if results %} 
     <div class="align-left border-red">
       {% for result in results %}
-          
-          <div class="float-bg-light cyan-box-shadow padding-s">
-            {{result["diary_id"]}}--{{result["given_date"]}}--{{result["diary_content"]}}
-          </div>
-          
-          
+      
+            <table class="float-bg-cyan">
+              <tbody>
+                <tr class = "float-bg-dark">
+                  <td class="align-left "> {{result["diary_id"]}} <h3> {{result["given_date"]}} </h3> </td>
+                  
+                  <td class="align-left "> {{result["diary_content"]}}</td>
+                </tr>
+              </tbody>
+            </table>
           
       {% endfor %} 
     </div>  
