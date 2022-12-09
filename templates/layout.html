@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Search</title>
+        <title>create and manage diary online tom-diary</title>
         
         <!-- CSS only -->
         <link rel="stylesheet" type="text/css" href="../static/virtual-select.min.css">
@@ -28,9 +28,11 @@
                 <ul class="nav">
                     <li class="nav-down"> <a href= "/managediary">Manage Diary</a> 
                         <ul class="profile-popup">
+                          
                             <li> <a href="/managediary">Manage Diary</a></li>
                             <li> <a href="/writediary">Write Diary</a></li>
                             <li> <a href="/viewdiary">View|Edit Diary</li>
+                            <li> <a href="/diaryreference"> Diary reference</a></li>
                             <li> <a href="/experiment">experiment Diary </a></li>
                             <li> <a href="/search">Search Diary</a></li>
                             <li> <a href="/takelog">take log</a></li>
@@ -102,7 +104,6 @@
                 <script>
                       
                   function showedited(){
-                    
                           
                           var diary_edited = document.getElementById("{{edited_diary_element_id }}");
                           diary_edited.scrollIntoView();

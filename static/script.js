@@ -1,4 +1,7 @@
 
+
+f
+
 var global_user_catagories = '';
 var catagory_type_id = document.getElementById("catagory-type");
 var sub_catagory_id = document.getElementById("mulitpleSelect");

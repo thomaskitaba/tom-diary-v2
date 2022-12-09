@@ -797,16 +797,24 @@ th {
   .flex {
     flex-direction: row;
   }
+  .special-flex{
+    display: flex;
+
+  }
   .flex-end {
     margin: 0 100%;
     transform: translateX(-100%);
   }
+
 }
 @media (max-width: 750px) {
   .form-element {
     width: 90%;
   }
 
+  .special-flex{
+    flex-direction: column;
+  }
   img {
     width: 500px;
   }

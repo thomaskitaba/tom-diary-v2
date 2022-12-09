@@ -1,0 +1,210 @@
+
+<!-- @format -->
+
+{% extends "layout.html" %} 
+
+{% block main %} 
+
+
+
+<div class="search-container float-bg-dark width-100"> <!-- search container  -->
+  <form action="/search" method="POST"> 
+    <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/advancedsearchcatagories" >
+  <div class = "search-header normal-flex-horizontal align-center wrap border-red ">
+    
+        
+      
+      <div class="border-black">
+        <div class="search-date border-blue width-auto normal-flex-horizontal wrap">
+          <!-- <form action="/seachdate"> -->
+            <div class = "normal-flex-vertical wrap">
+              <input type="date" name="start-date" class = "border-green">
+              <!-- <label for="date-upto">upto</label> -->
+            </div>
+            <div>
+              <input name="date-upto-check-box" type="checkbox" value="upto"> Upto 
+            </div>
+            <div>
+              <input type="date" name="end-date">
+            </div>
+            <div>
+            
+          </div>
+          
+        </div>
+        <div class="padding-s float-bg-light-s">
+          <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
+            <select  name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
+              
+              {% for type in catagory_types %}
+                
+                <option value="{{type['catagory_type_id']}}"> {{ type["catagory_type_name"] }} </option>
+                
+              {% endfor %}
+            
+            </select>
+            <input name="date-upto-check-box" type="checkbox" value="upto" class=""> Search By CatagoryType 
+          </div>
+          <div class=" width-100 margin-s float-bg-light-s">
+            <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
+              {% for catagory in all_catagories %}
+                  {% if catagory["catagory_name"]%}
+                      <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
+                  {% endif %}
+              {% endfor %}
+            </select>
+          
+          </div>
+          <div class="center-elements float-bg-cyan">
+              <button type = "submit" class = "my-button-1 cyan-box-shadow self-align-center"  formaction="/simpledate">Search</button>
+          </div>
+        </div>
+
+      
+  </div> <!-- end of search-catagory division-->
+
+  </div> <!-- end of search-header-->
+</form>
+
+  <!-- RESULT PART RESULT CONTAINER  -->
+  <div class="search-result border-blue width-100">
+    <div class = "center-elements ">
+      <h3>
+        {% if start_date %} from date {{start_date }} {% endif %}  
+        {% if end_date %} --- up to --- {{ end_date }} {% endif %}
+      </h3>
+    </div>
+    {% if results %} 
+    <div class="align-left border-red">
+      {% for result in results %}
+      
+            <table class="float-bg-cyan">
+              <tbody>
+                <tr class = "float-bg-dark">
+                  <td class="align-left "> {{result["diary_id"]}} <h3> {{result["given_date"]}} </h3> </td>
+                  
+                  <td class="align-left "> {{result["diary_content"]}}</td>
+                </tr>
+              </tbody>
+            </table>
+          
+      {% endfor %} 
+    </div>  
+    
+      
+    {% else %}
+    <!-- TODO: -->
+    <div class="">
+
+      <div class = "float-bg-dark cyan-box-shadow "  >
+              {% if diary %}
+                  {% for diary_info in diary %}
+              <!------- ALL IN ONE -------->
+              <!--todo:   here we have ID-->
+                  <div   class = "  equal-flex flex magenta-box-shadow padding-s ">
+                  <!-------  content and numbering  -------->
+                      <div class = "float-bg-light padding-s equal-flex ">
+                          <p class = "line-space-b diary-text"> <span id = '{{diary_info["number"]}}' class="magenta-box-shadow numbering">{{diary_info["number"]}}-- {{ diary_info["diary_id"]}} </span>
+                          {{ diary_info["diary_content"] }} </p>
+                      </div>
+                  <!------- other informations   -------->
+                      <div class = " padding-s equal-flex no-wrap  flex-vertical-center">
+                          
+                      <!------- other info  CATAGORY -------->
+                          <div class = " flex-wrap padding-s flex-start width-auto">
+    
+                            
+<!-----ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED-->  
+                            {% if diary_info["diary_catagories"] %}
+                                {% for diary_catagories in diary_info["diary_catagories"] %}
+
+                                  <ul  class=" nav margin-zero">
+                                            
+                                      <li id = "edit-catagory-button" class=" nav-down padding-zero"> 
+                                          
+                                          <h3 class = "my-button-1 cyan-box-shadow" >
+                                            
+                                            {{diary_catagories[1]}}
+                                            
+                                          </h3><!------------------     form action action action -->   
+                                            
+                                              <ul id = '{{diary_catagories[0]}}' class= "equal-flex make-visibel">
+                                                      
+                                                  <li>
+                                                      <div class = "padding-m">catagory: {{diary_catagories[1]}}</div> 
+                                                    
+                                                  </li>
+                                                      
+                                                      
+                                                  <!-- <li>Go and Add catagory in <br> <a href="/managecatagrory">manage catagory section</a></li> -->
+                                                  
+                                              </ul>
+                                      
+                                      </li>
+                                      
+                                </ul>
+
+                              
+                              {% endfor %} <!-- end of diary_catagories in diary_info["diary_catagories"]-->
+
+                            {% endif %}  <!-- end of diary info-->
+                          </div>
+
+<!-----ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED-->  
+
+                          
+                          <!------- other info  DATE-TIME -------->
+                          <div class = "flex ">
+                            
+                            <div> {{diary_info["given_date"]}} | {{diary_info["given_time"]}}</div>
+                              
+                                                                  
+                          </div>
+                      </div>
+                      
+                  <!------- other info DESCRIPTI0N -------->
+                      <div class="equal-flex flex-start padding-s">
+                          {{ diary_info["description"]}}
+                      </div>
+                      
+                  <!------- EDIT BUTTONS  --------> 
+                      
+          <!--=======================================================================================-->
+          <div class = " flex-no-wrap"> 
+            <div> {{diary_info["diary_content"] }}
+          </div>  
+
+          <input name = "user-diary-id" type="text" hidden value = '{{diary_info["diary_id"]}}' >
+          <input name ="number-of-edits" type ="text" hidden value = '{{diary_info["number_of_edits"]}}'>
+          <input name = "diary-id" type="text" hidden value = '{{diary_info["diary_id"]}}' >
+          <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
+                <!------------------------>
+          <!-- ================================================-->
+          
+        <div>
+        
+        </div>
+      
+      </div>
+                  
+                  
+                  
+                  {% endfor %}
+              {% endif %}
+              </div>
+
+      
+      
+  </div>
+  
+<!-- TODO: --- -- -->
+
+{% endfor %} 
+    </div>
+
+    {% endif %} 
+  
+  
+
+</div><!-- end of container div -->
+{% endblock %}

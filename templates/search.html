@@ -20,7 +20,7 @@
         <div class="search-catagory  normal-flex-veritcal align-center  width-auto border-green">
         
           <div>
-            <select id="multiSelect" name="search-catagory-id" id="">
+            <select id="multiSelect" name="search-catagory-id">
               {% for cat_info in all_catagories %}
               <option value='{{ cat_info["catagory_id"]}}'>
                 {{ cat_info["catagory_name"]}}
@@ -52,12 +52,13 @@
               <input type="date" name="end-date">
             </div>
             <div>
-            <button type = "submit" class = "my-button-1 cyan-box-shadow self-align-center"  formaction="/simpledate">Search</button>
+            
           </div>
           
         </div>
         <div class="padding-s float-bg-light-s">
           <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
+            <!-- TODO: catagory type -->
             <select  name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
               
               {% for type in catagory_types %}
@@ -67,11 +68,11 @@
               {% endfor %}
             
             </select>
-            <input name="date-upto-check-box" type="checkbox" value="upto" class=""> Search By CatagoryType 
+            <input name="search-type-check-box" type="checkbox" value="search-by-type" class=""> Search By CatagoryType 
           </div>
           <div class=" width-100 margin-s float-bg-light-s">
-            <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
-              {% for catagory in all_catagories %}
+            <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="sub-catagory" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
+              {% for catagory in catagories %}
                   {% if catagory["catagory_name"]%}
                       <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
                   {% endif %}
@@ -79,8 +80,10 @@
             </select>
           
           </div>
-        
-      </div>
+          <div class="center-elements float-bg-cyan">
+              <button type = "submit" class = "my-button-1 cyan-box-shadow self-align-center"  formaction="/simpledate">Search</button>
+          </div>
+        </div>
 
       
   </div> <!-- end of search-catagory division-->
@@ -113,11 +116,13 @@
       {% endfor %} 
     </div>  
     
-      
+    
     {% else %}
-      <h3> DIsplay all user diaries here search your diary</h3>
-    </div>
 
+      <h3> Display all user diaries here search your diary</h3>
+
+    </div>
+    
     {% endif %} 
   
   {% endif %}

@@ -87,6 +87,7 @@ global_edited_diary[0] = 1
 edit_mode = [0]
 task_to_do = ["viewdiary"]
 search_task_to_do = ["search-specific-date"]
+search_task_to_do_additional = [""]
 
 task_to_do_profile = [""]
 #diary_text = [0]
@@ -102,9 +103,11 @@ global_diary_number_of_edits = [" "]
 global_search_start_date = [" "]
 global_search_end_date = [" "]
 global_catagory_type = [9]
-
+global_catagory_type_id = [0]
+results = [""]
 
 catagories = db.execute("SELECT * FROM catagory")
+
 
 def global_user_name():
     current_user_name= db.execute("SELECT username FROM users WHERE id = ?", session["user_id"])
@@ -189,11 +192,16 @@ def get_diary_content(diaryid):
 def get_all_user_diary(userid):
     diary = db.execute("SELECT * FROM userdiaryview WHERE id= ? and diary_status = ?", userid, "Active")
     return diary
-
+  
+def get_all_user_diary_detail(userid):
+  diary = db.execute("SELECT * FROM diarydatabaseview JOIN diarycatagoryview on diarydatabaseview.ud_id = diarycatagoryview.ud_id WHERE diarydatabaseview.id = ? and diarydatabaseview.diary_status=?", session["user_id"], "Active")
+  # diary = db.execute("SELECT * FROM userdiarycatagoryview  WHERE user_id = ? and diary_status=?", userid, "Active")
+  return diary
 def backtoedited(udcid,diaryelementid):
     db.execute ("DELETE FROM userdiarycatagory WHERE udc_id = ?", udcid)
     global_edited_diary[0] = diaryelementid
     edit_mode[0] = 1
+    
     
 def reloadCatagories():
   
@@ -210,6 +218,7 @@ def reloadCatagories():
   temp_cat_type = {}
   sub_catagories = []
   temp_cat_dict = {}
+  
   
   #added 
   catagory_type_name = [""]
@@ -450,7 +459,7 @@ def register():
             
             # tell user to go and check thier email for confirmation
             return render_template("registrationsucess.html", firstname=firstname, lastname=lastname, useremail=useremail)
-            return render_template("diary.html", current_user_name=global_user_name(), catagories=global_catagory(), manage_diary=1)
+            
         else:
             return apology("Insuficent information to process your registration")  
             
@@ -954,9 +963,21 @@ def takelog():
     catagories = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON usercatagory.cat_type_id_in_uc = catagorytype.catagory_type_id JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ?", session["user_id"])
     
     return render_template("takelog.html", catagory_types= catagory_types, catagories = user_catagories())
+  
+  
+@app.route("/diaryreference", methods = ["GET", "POST"]) #type: ignore
+@login_required
+def diaryreference():
+  
+  if request.method == "POST":
+    return render_template("diaryreference.html")
+    
+  else: 
+    # return render_template("experiment.html", cat_3=  get_all_user_diary(session["user_id"]))
+    return render_template("diaryreference.html",catagory_types= catagory_types(), catagories = user_catagories(), user_diary = get_all_user_diary_detail(session["user_id"]))    
     
     
-@app.route("/writediary" , methods=["GET", "POST"])
+@app.route("/writediary" , methods=["GET", "POST"]) 
 @login_required
 def diarywrite():
     """Buy shares of stock"""
@@ -1217,7 +1238,6 @@ def removecatagory():
     if request.method == "POST":
         
         
-        
         user_diary_catagory_id = request.form.get("user-diary-catagory-id")
         user_diary_id = request.form.get("ud-id")
         edited_diary_id = request.form.get("diary-id")
@@ -1285,7 +1305,8 @@ def advancedsearchcatagories():
     
     #make selected catagory type the head of the list
     
-    catagory_types = db.execute("SELECT * FROM catagorytype")
+    
+    catagory_types = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ?", session["user_id"])
     
     # remove the catagory type from the list to add it later at the begning of the list
     # for i in range(len(catagory_types) ):
@@ -1299,17 +1320,17 @@ def advancedsearchcatagories():
         
     #TODO:   this is the main part to display catagories based on catagory type
     catagory_types.insert(0, {"catagory_type_id": catagory_type_id , "catagory_type_name": catagory_type_name} )
+    
     session["catagory_types"] = catagory_types
     # return render_template("experiment.html", cat_3 = "right befor printing search results")
     if catagory_type_id != 0:
       
       # return render_template("search.html",catagory_types= catagory_types(), catagories = user_catagories(), all_catagories= all_catagories, normal_search= 1)   
-      #TODO: 
+      #TODO:
+      global_catagory_type_id[0] = catagory_type_id #type: ignore
       return render_template("search.html",catagory_types= catagory_types, catagories = global_catagory_with_parameter(catagory_type_id), all_catagories= all_catagories, normal_search= 1)    
       
-      
-      
-    # return render_template("experiment.html", cat_3 = " catagory id not empty")
+      # return render_template("experiment.html", cat_3 = " catagory id not empty")
     
     return render_template("search.html",catagory_types= catagory_types, catagories = global_catagory_with_parameter(catagory_type_id), all_catagories= all_catagories, normal_search= 1)
   
@@ -1324,8 +1345,13 @@ def diarysearch():
     catagories = db.execute("SELECT * FROM catagory")
     all_catagories = db.execute("SELECT * FROM catagory")
     results = db.execute("SELECT * FROM diarydatabaseview WHERE c_id= ? and u_id = ? ", search_catagory_id, session["user_id"] )  
-    return render_template("search.html",current_user_name=global_user_name(), catagory_types= session["catagory_types"], catagories = user_catagories(), all_catagories= all_catagories, normal_search= 1, results = results)
     
+    if session["catagory_type"]:
+      return render_template("search.html",current_user_name=global_user_name(), catagory_types= "hello thomas", catagories=user_catagories(), all_catagories= all_catagories, normal_search= 1, results = results)
+    
+    
+    all_catagories = db.execute("SELECT * FROM catagory")
+    return render_template("search.html",current_user_name=global_user_name(), catagory_types= catagory_types(), catagories = user_catagories(), all_catagories= all_catagories, normal_search= 1, results = results)
     
   else:
     
@@ -1339,12 +1365,22 @@ def searchdates():
   # global_search_start_date[0] = str(start_date)
   # global_search_end_date[0] = str(end_date)
     catagories = db.execute("SELECT * FROM catagory")
-    
-    if search_task_to_do[0] == "start-to-end-date": # or "from-begning-to-end-date":
+    catagory_types = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ?", session["user_id"])
+    all_catagory = user_catagories()
+    results = [""]
+    if search_task_to_do[0] == "start-to-end-date": # or "from-begning-ifto-end-date":
       
+      if search_task_to_do_additional[0] == "all-sub-catagories":
+        return render_template("experiment.html", cat_3 = "we are here")
       
-      results = db.execute("SELECT * FROM diarydatabaseview WHERE given_date >= ? AND given_date <= ?", session["start_date"], session["end_date"])
-      return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, start_date= session["start_date"] , end_date= session["end_date"], normal_search= 1, results = results)
+      if search_task_to_do_additional[0] == "all-sub-catagories":
+        return render_template("experiment.html", cat_3 = "we are here")
+      
+      if search_task_to_do_additional[0] == "all-sub-catagories":
+        return render_template("experiment.html", cat_3 = "we are here")
+        results[0] = db.execute("SELECT * FROM diarydatabaseview WHERE given_date >= ? AND given_date <= ?", session["start_date"], session["end_date"])
+        
+      return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, start_date= session["start_date"] , end_date= session["end_date"], catagory_types= catagory_types,all_catagory = user_catagories(), normal_search= 1, results = results[0])
             
       start_date = "%"+ str(global_search_start_date[0]) + "%"
     if search_task_to_do[0] == "specific-date":
@@ -1352,23 +1388,45 @@ def searchdates():
       results = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id WHERE u_id = ? and userdiary.given_date Like ?", session["user_id"], "%" + global_search_start_date[0] + "%")
       
       
-      return render_template("search.html", catagories=catagories,catagory_types= session["catagory_types"] , results=results, normal_search= 1)
+      return render_template("search.html", catagories=catagories,catagory_types= catagory_types , all_catagory = user_catagories(), results=results, normal_search= 1)
     
-    return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, normal_search= 1)
+    return render_template("search.html", all_catagory = user_catagories(), catagories=catagories,catagory_types= catagory_types, normal_search= 1)
       
 @app.route("/simpledate", methods=["GET", "POST"]) # type: ignore
 @login_required
 def simpledate():
   # return apology("test thomas kitaba")
   if request.method == "POST":
-    date_upto = str(request.form.get("date-upto-check-box"))          
+    date_upto = str(request.form.get("date-upto-check-box"))  
+    search_by_catagory_type = str(request.form.get("search-type-check-box"))       
     start_date = request.form.get("start-date")
     end_date = request.form.get("end-date")
-                
+    catagory_type_id = request.form.get("catagory-type")
+    sub_catagory_ids = request.form.getlist("sub-catagory")     
+    # return render_template("experiment.html", cat_3 = sub_catagory_id)       
     session["start_date"] = start_date
     session["end_date"] = end_date
     rows = db.execute("SELECT * FROM userdiary WHERE u_id = ? lIMIT 1 ", session["user_id"] )
     begnning_date = rows[0]["given_date"]
+    
+    # return render_template("experiment.html", cat_3= request.form.get("catagory_type"))
+  
+    if search_by_catagory_type != "search-by-type": # if not checked
+      
+      if sub_catagory_ids[0] != '':
+        # return render_template("experiment.html",cat_1= sub_catagory_ids, cat_2= len(sub_catagory_ids) ,cat_3 = "search with provided sub catagories")
+        search_task_to_do_additional[0]  = "add-sub-catagories"
+        session["sub_catatory_ids"] = sub_catagory_ids
+        
+      else:
+        # return render_template("experiment.html", cat_3 = "search all catagories")
+        search_task_to_do_additional[0] = "all-sub-catagories"
+    else: #todo: if search by catagory type is not selected
+      # return render_template("experiment.html", cat_3 = "catagoroy check box checked")
+      search_task_to_do_additional[0] ="add-catagory-type"
+      
+      session["search_catagory_type"] = catagory_type_id
+      
     if date_upto == "upto":
       #if check box upto date is selected
       # return render_template("experiment.html", cat_1="empty date")
@@ -1378,6 +1436,8 @@ def simpledate():
         session["start_date"] = begnning_date
         session["end_date"] = currentday()
         
+        
+          
         search_task_to_do[0] = "start-to-end-date"
         return redirect("/searchdate")
         
@@ -1415,9 +1475,7 @@ def simpledate():
       if start_date:       
         global_search_start_date[0] = str(start_date)
       
-      
       return redirect("/searchdate")           
-      
       
   else:
     return redirect("/search")
@@ -1493,10 +1551,9 @@ def jsonajax():
     pass
   else:
     
-    
     catagories = db.execute("select * from catagory")
     return render_template("jsonajax.html", load_catagories = 1)
     
-    
+
 
 
