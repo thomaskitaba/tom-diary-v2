@@ -1364,13 +1364,13 @@ def diarysearch():
     
     
     all_catagories = default_all_user_catagories()
-    return render_template("search.html",current_user_name=global_user_name(), catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories= all_catagories, normal_search= 1, results = results)
+    return render_template("search.html",current_user_name=global_user_name(), catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories= default_all_user_catagories(), normal_search= 1, results = results)
     
   else:
     
     all_catagories = db.execute("SELECT * FROM catagory")
     
-    return render_template("search.html",catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories= all_catagories, normal_search= 1)    
+    return render_template("search.html",catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories= default_all_user_catagories(), normal_search= 1)    
     
 @app.route("/searchdate", methods=["GET", "POST"] )#type: ignore
 @login_required
@@ -1391,7 +1391,7 @@ def searchdates():
         results[0] = db.execute("SELECT * FROM diarydatabaseview WHERE cat_type_id = ? AND (given_date >= ? AND given_date <= ?)", session["catagory_type_id"], session["start_date"], session["end_date"])
         
         number_of_results = len(results[0])
-        return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, start_date= session["start_date"] , end_date= session["end_date"], catagory_types= catagory_types,all_catagory = user_catagories(), normal_search= 1, number_of_results = number_of_results, results = results[0])
+        return render_template("search.html", all_catagories= default_all_user_catagories(),catagories=catagories, start_date= session["start_date"] , end_date= session["end_date"], catagory_types= catagory_types,all_catagory = default_all_user_catagories(), normal_search= 1, number_of_results = number_of_results, results = results[0])
         
       if search_task_to_do_additional[0] == "add-sub-catagories":
         # return render_template("experiment.html", cat_3 = "search using provided sub catagories")
