@@ -18,9 +18,11 @@
   <div class = "search-header normal-flex-horizontal align-center wrap border-red ">
     
         <div class="search-catagory  normal-flex-veritcal align-center  width-auto border-green">
-        
-          <div>
-            <select class="padding-s" name="search-catagory-id" data-search="True">
+          <div class="margin-top-m center-text">
+            Search Sub_catagory
+          </div>
+          <div class = "margin-s ">
+            <select id= "multipleSelect" class="padding-s" name="search-catagory-id" data-search="True">
               {% for cat_info in all_catagories %}
               <option value='{{ cat_info["catagory_id"]}}'>
                 {{ cat_info["catagory_name"]}}
@@ -38,7 +40,7 @@
         </div>  <!-- end of search catagory section-->
 
       
-      <div class="border-black">
+      <div class="float-bg-cyan">
         <div class="search-date border-blue width-auto normal-flex-horizontal wrap">
           <!-- <form action="/seachdate"> -->
             <div class = "normal-flex-vertical wrap">
@@ -46,7 +48,7 @@
               <!-- <label for="date-upto">upto</label> -->
             </div>
             <div>
-              <input name="date-upto-check-box" type="checkbox" value="upto"> Upto 
+              <input class = "chekbox-size-m" name="date-upto-check-box" type="checkbox" value="upto"> Upto 
             </div>
             <div>
               <input type="date" name="end-date">
@@ -68,7 +70,7 @@
               {% endfor %}
             
             </select>
-            <input name="search-type-check-box" type="checkbox" value="search-by-type" class=""> Search By CatagoryType 
+            <input class ="chekbox-size-m" name="search-type-check-box" type="checkbox" value="search-by-type" class=""> Search By CatagoryType 
           </div>
           <div class=" width-100 margin-s float-bg-light-s">
             <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="sub-catagory" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
@@ -92,7 +94,7 @@
 </form>
 
   <!-- RESULT PART RESULT CONTAINER  -->
-  <div class="search-result border-blue width-100">
+  <div class="search-result width-100">
     <div class = "center-elements ">
 
       <div class= "flex-horizontal">

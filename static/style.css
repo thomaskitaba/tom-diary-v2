@@ -605,6 +605,17 @@ background: #5bc0de;
 .border-blue {
   border: 2px dashed blue;
 }
+
+input.chekbox-size-m{
+  width: 30px;
+  height: 30px;
+}
+.chekbox-size-b{
+  width: 20px;
+  height: 20px;
+}
+
+
 .float-bg-light {
   /* background-color: green; */
   background: rgba(243, 237, 237, 0.4);
