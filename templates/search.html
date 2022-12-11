@@ -20,7 +20,7 @@
         <div class="search-catagory  normal-flex-veritcal align-center  width-auto border-green">
         
           <div>
-            <select id="mulitpleSelect" name="search-catagory-id" data-search="True" data-silent-initial-value-set="true">
+            <select class="padding-s" name="search-catagory-id" data-search="True">
               {% for cat_info in all_catagories %}
               <option value='{{ cat_info["catagory_id"]}}'>
                 {{ cat_info["catagory_name"]}}

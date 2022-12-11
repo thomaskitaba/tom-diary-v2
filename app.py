@@ -1439,8 +1439,9 @@ def searchdates():
       if search_task_to_do_additional[0] == "add-catagory-type":
         # return render_template("experiment.html", cat_3 = session["catagory_type_id"])
         results.clear()
-        results = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id WHERE u_id = ? AND catagory_id = ? AND userdiary.given_date Like ? AND diary_status = ?", session["user_id"], session["catagory_type_id"], "%" + global_search_start_date[0] + "%", "Active")
+        # results = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id WHERE u_id = ? AND catagory_id = ? AND userdiary.given_date Like ? AND diary_status = ?", session["user_id"], session["catagory_type_id"], "%" + global_search_start_date[0] + "%", "Active")
         
+        results= db.execute("SELECT * FROM diarydatabaseview WHERE cat_type_id = ? AND id = ? AND given_date Like ? AND diary_status= ?", session["catagory_type_id"], session["user_id"], "%" + global_search_start_date[0] + "%",  "Active")
         number_of_results = len(results)
         return render_template("search.html",current_user_name=global_user_name(), catagories=catagories, start_date= global_search_start_date[0], catagory_types= catagory_types,all_catagory = user_catagories(), normal_search= 1, number_of_results = number_of_results, results = results)
         
@@ -1540,7 +1541,7 @@ def simpledate():
           
         search_task_to_do[0] = "start-to-end-date"
         return redirect("/searchdate")
-        
+      
         return render_template("experiment.html", cat_3="both date fields empty so search for diary written on current date")
       if not start_date and end_date:
         
