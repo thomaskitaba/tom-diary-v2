@@ -94,10 +94,14 @@
   <!-- RESULT PART RESULT CONTAINER  -->
   <div class="search-result border-blue width-100">
     <div class = "center-elements ">
-      <h3>
-        {% if start_date %} from date {{start_date }} {% endif %}  
-        {% if end_date %} --- up to --- {{ end_date }} {% endif %}
-      </h3>
+
+      <div class= "flex-horizontal">
+        <h3 class="margin-right-s">  {% if results %}  {{ number_of_results }} results  {% endif %} </h3>
+        <h3 class="margin-right-s">
+          {% if start_date %} {{start_date }} {% endif %}  
+          {% if end_date %} - {{ end_date }} {% endif %}
+        </h3>
+      </div>
     </div>
     {% if results %} 
     <div class="align-left border-red">
@@ -106,7 +110,7 @@
             <table class="float-bg-cyan">
               <tbody>
                 <tr class = "float-bg-dark">
-                  <td class="align-left "> {{result["diary_id"]}} <h3> {{result["given_date"]}} </h3> </td>
+                  <td class="align-left "> {{result["diary_id"]}} <h3> {{result["given_date"]}} </h3> {{result["catagory_name"]}} </td>
                   
                   <td class="align-left "> {{result["diary_content"]}}</td>
                 </tr>
@@ -118,9 +122,9 @@
     
     
     {% else %}
-
+    
       <h3> Display all user diaries here search your diary</h3>
-
+    
     </div>
     
     {% endif %} 
@@ -129,3 +133,4 @@
 
 </div><!-- end of container div -->
 {% endblock %}
+  

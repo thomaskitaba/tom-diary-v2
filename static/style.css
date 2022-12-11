@@ -525,6 +525,27 @@ background: #5bc0de;
 .margin-bottom-b {
   margin-bottom: 100px;
 }
+.margin-right-s{
+  margin-right: 10px;
+}
+.margin-right-m{
+  margin-right: 20px;
+}
+.margin-right-b{
+  margin-right: 100px;
+}
+.margin-left-s{
+  margin-left: 10px;
+}
+.margin-left-m{
+  margin-left: 20px;
+}
+.margin-left-b{
+  margin-left: 100px;
+}
+
+
+
 .margin-zero {
   margin: 0px;
 }

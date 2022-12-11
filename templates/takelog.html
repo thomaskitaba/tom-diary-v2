@@ -44,11 +44,13 @@
       </div>
       <div class=" width-100 margin-s float-bg-light-s">
         <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
-          {% for catagory in catagories %}
-              {% if catagory["catagory_name"]%}
-                  <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
-              {% endif %}
-          {% endfor %}
+          {% if catagories %}
+            {% for catagory in catagories %}
+                {% if catagory["catagory_name"]%}
+                    <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
+                {% endif %}
+            {% endfor %}
+          {% endif %}
         </select>
   
       </div>
