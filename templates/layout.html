@@ -72,6 +72,17 @@
                     {% endif %}
             </div> <!-- end of header -->
                         {% if get_flashed_messages() %}
+                          {% if info %}
+                            <div class = "alert-yellow">
+                          {% endif %}
+                          {% if error %}
+                              <div class = "alert-red">
+                          {% endif %}
+                          {% if success %}
+                              <div class = "alert-green">
+                          {% endif %}
+                          
+                          
                         <div class = "alert-red">
                             
                             {{ get_flashed_messages() | join(" ") }}

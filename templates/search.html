@@ -30,7 +30,7 @@
               {% endfor %}
             </select>
           </div>
-
+          
           <div >
             <button name="search-button" type="submit" class="my-button-1 self-align-center"
               formaction="/search">
@@ -72,7 +72,7 @@
             </select>
             <input class ="chekbox-size-m" name="search-type-check-box" type="checkbox" value="search-by-type" class=""> Search By CatagoryType 
           </div>
-          <div class=" width-100 margin-s float-bg-light-s">
+          <div class=" width-100 margin-m ">
             <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="sub-catagory" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
               {% for catagory in catagories %}
                   {% if catagory["catagory_name"]%}
@@ -82,7 +82,7 @@
             </select>
           
           </div>
-          <div class="center-elements float-bg-cyan">
+          <div class="center-elements ">
               <button type = "submit" class = "my-button-1 cyan-box-shadow self-align-center"  formaction="/simpledate">Search</button>
           </div>
         </div>
@@ -93,17 +93,18 @@
   </div> <!-- end of search-header-->
 </form>
 
-  <!-- RESULT PART RESULT CONTAINER  -->
+  <!--TODO: RESULT PART RESULT CONTAINER  --------------------------------------------------------------->
   <div class="search-result width-100">
-    <div class = "center-elements ">
-
-      <div class= "flex-horizontal">
-        <h3 class="margin-right-s">  {% if results %}  {{ number_of_results }} results  {% endif %} </h3>
-        <h3 class="margin-right-s">
-          {% if start_date %} {{start_date }} {% endif %}  
-          {% if end_date %} - {{ end_date }} {% endif %}
-        </h3>
-      </div>
+    <div class = "center-elements flex">
+      <div class="width-100 float-bg-light flex-horizontal">
+        <div class= "flex-horizontal  center-text">
+          <h3 class="margin-right-s">  {% if results %}  {{ number_of_results }} results  {% endif %} </h3>
+          <h3 class="margin-right-s">
+            {% if start_date %} {{start_date }} {% endif %}  
+            {% if end_date %} to {{ end_date }} {% endif %}
+          </h3>
+        </div>
+    </div>
     </div>
     {% if results %} 
     <div class="align-left border-red">

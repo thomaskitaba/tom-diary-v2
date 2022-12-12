@@ -13,57 +13,54 @@
   
   <div class="float-bg-dark width-100">
     
-      <input id="load-catagories" type="submit" onclick = 'selectCatagoryTypes()'>    
+    <form action="/jsonajax" method="POST">
+      
+      <!-- <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/generatecatagory" > -->
     
-    <form action="/takelog" method="POST">
-      <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/generatecatagory" >
-
-    
-          
+      
       <div class="flex-horizontal  padding-s float-bg-cyan">
         
         <div class = "margin-m align-left  align-left float-bg-light-s padding-s">
-          <div class="margin-top-s margin-bottom-s">give log DATE</div>
+          <div class="margin-top-s margin-bottom-s">give log Date</div>
           <input class="input-width center-text border-radius-s" name = "given-date" type="date"> 
         </div>
         <div class = "center-elements margin-m align-left float-bg-light-s padding-s">
-          <div class="center-elements margin-top-s margin-bottom-s">give log TIME</div>
+          <div class="center-elements margin-top-s margin-bottom-s">give log Time</div>
           <input class="input-width center-text padding-m border-radius-s" name = "given-time" type="time"> 
         </div>
       
       </div>
+      <!-- TODO: catagory type and sub catagory -->
       <div class="padding-s float-bg-light-s">
       <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
-        <!-- <select  name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'> -->
+        <select  name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" >
           
+          {% for type in catagory_types %}
             
-            <select  id = "catagory-type" name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" onchange='selectCatagoryTypes()' onload="loadCatagories()">
-            {% for type in catagory_types %}
-              
-              <!-- <option value="{{type['catagory_type_id']}}"> {{ type["catagory_type_name"] }} </option> -->
-              
-            {% endfor %}
+            <option value="{{type['catagory_type_id']}}"> {{ type["catagory_type_name"] }} </option>
             
-          
-          </select>
+          {% endfor %}
+        
+        </select>
       </div>
       <div class=" width-100 margin-s float-bg-light-s">
         <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
-          <!-- {% for catagory in catagories %}
-              {% if catagory["catagory_name"]%}
-                  <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
-              {% endif %}
-              
-          {% endfor %} -->
+          {% if catagories %}
+            {% for catagory in catagories %}
+                {% if catagory["catagory_name"]%}
+                    <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
+                {% endif %}
+            {% endfor %}
+          {% endif %}
         </select>
+      
+      </div>
   
-  </div>
-  
-  <div>
+    <div>
     <textarea id = "get-diary-text-area" class="diary-box neon-box-shadow" name="diarytextarea" row= "20"
                             placeholder="Write your diary Here" type="text" style="width: 100%;
                             min-height: 25vh;"> 
-            
+
           {% if diary_text %}
               {{diary_text}}
           {% endif %}
