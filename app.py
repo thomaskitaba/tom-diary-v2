@@ -36,6 +36,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
 # SESSION Configure session to use filesystem (instead of signed cookies)
+
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
@@ -107,8 +108,8 @@ global_catagory_type = [9]
 global_catagory_type_id = [0]
 results = [""]
 
-catagories = db.execute("SELECT * FROM catagory")
 
+catagories = db.execute("SELECT * FROM catagory")
 
 def global_user_name():
     current_user_name= db.execute("SELECT username FROM users WHERE id = ?", session["user_id"])
@@ -210,7 +211,59 @@ def backtoedited(udcid,diaryelementid):
     global_edited_diary[0] = diaryelementid
     edit_mode[0] = 1
     
+def reloadJsonCatagory():
+  
+  
+  # all_catagory_info = catTypeAndSubCat(session["user_id"])
+  all_catagory_info = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON usercatagory.cat_type_id_in_uc = catagorytype.catagory_type_id JOIN users ON users.id = usercatagory.u_id_in_uc")
+  # return render_template("experiment.html", cat_3= all_catagory_info )
+  all_catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id") 
+  
+  #todo: all_catagory_info = [{a: 1, --}, {c:3,--}, {d: 4}]
+  #todo: to new catagory_info_json = [{id:1, catagories:[a,b,-]}, {id:2, catagories:[c,d,-]} ]
+  all_catagory_json = []
+  temp_sub_cat = {}
+  temp_sub = []
+  temp_cat_type = {}
+  sub_catagories = []
+  temp_cat_dict = {}
+  
+  #added
+  
+  catagory_type_name = [""]
+  catgory_type_id = [""]
+  
+  for cat in all_catagory_info:
+    temp_cat_dict = { }
+    temp_cat_type[0] = cat
+    # sub_catagories.clear()
     
+    #added 
+    catgory_type_id[0] = cat["catagory_type_id"]
+    catagory_type_name[0] = cat["catagory_type_name"]
+    
+    # if not all_catagory_json:
+    temp_cat_dict["catagory_type_id"] = catgory_type_id[0]
+    temp_cat_dict["catagory_type_name"] = catagory_type_name[0]
+    cat_list= []
+    for sub_cat in all_catagories: 
+      
+      if sub_cat["cat_type_id"] == cat["catagory_type_id"]:
+        
+        #todo: catagories = [ [sub cat 1, c_type_id],[sub2, cat_type_id], --]
+        # temp_sub.append('a': 1)
+        # temp_sub = [ [key:value], [key:value]]
+        
+        temp_sub=  dict({"catagory_id": sub_cat["catagory_id"], "catagory_name": sub_cat["catagory_name"] })
+        cat_list.append(temp_sub)  # todo: [-------]
+        temp_cat_dict["sub_catagories"] = cat_list
+    
+    all_catagory_json.append(temp_cat_dict)
+  # return render_template("experiment.html", cat_3= all_catagory_json)
+  all_catagory_info = db.execute("SELECT username, catagory_type_name FROM userCatagoryInfo WHERE id = ? ", session["user_id"])
+  
+  #TODO:
+  return all_catagory_json
 def reloadCatagories():
   
   # all_catagory_info = catTypeAndSubCat(session["user_id"])
@@ -670,9 +723,9 @@ def editcatagory():
 @app.route("/managediary")  # type: ignore
 @login_required
 def diarymanagment():
-    
+  
   return render_template("diary.html", current_user_name= global_user_name(), catagories=global_catagory(), manage_diary= 1)
-
+  
 
 @app.route("/editdiary")  # type: ignore
 @login_required
@@ -764,7 +817,7 @@ def editdiary():
       return redirect("/viewdiary")
     if task_to_do[0] == "222222222":
       return render_template("experiment.html", cat_1 = "edit diary")
-  
+      
 
 @app.route("/deletediary", methods=["Get", "POST"])
 @login_required
@@ -868,7 +921,7 @@ def generatecatagory():
     
     return render_template("takelog.html", catagory_types= catagory_types, catagories = user_catagories())
           
-@app.route("/takelog" , methods=["GET", "POST"]) #type: ignore
+@app.route("/takelog", methods=["GET", "POST"]) #type: ignore
 @login_required
 def jsonajax():
   
@@ -973,8 +1026,8 @@ def jsonajax():
     catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ? AND catagorytype.catagory_type_id = ?", session["user_id"], 1)
     
     # catagories = db.execute("SELECT * FROM catagory")
-    return render_template("takelog.html", catagory_types= catagory_types, catagories = catagories)
-  
+    return render_template("takelog.html", catagory_types= catagory_types, catagories = catagories, current_user_name=global_user_name())
+    
   
 @app.route("/diaryreference", methods = ["GET", "POST"]) #type: ignore
 @login_required
@@ -1374,7 +1427,7 @@ def diarysearch():
     
     all_catagories = db.execute("SELECT * FROM catagory")
     
-    return render_template("search.html",catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories= default_all_user_catagories(), normal_search= 1)    
+    return render_template("search.html",current_user_name=global_user_name(), catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories= default_all_user_catagories(), normal_search= 1)    
     
 @app.route("/searchdate", methods=["GET", "POST"] )#type: ignore
 @login_required
@@ -1484,10 +1537,6 @@ def searchdates():
         number_of_results = len(results)
         return render_template("search.html",all_catagories= default_all_user_catagories(), catagories=catagories,start_date= global_search_start_date[0], catagory_types= catagory_types,all_catagory = user_catagories(), normal_search= 1, number_of_results = number_of_results, results = results)
         
-      
-      
-      
-      
       
       
       #TODO: ----------------------------------------------------------------------------------------------------------------------------------------
@@ -1671,7 +1720,7 @@ def takelog():
     
     if not diary_text:
       flash("nothing to save")
-      return render_template("takelog.html", catagory_types= catagory_types, catagories = user_catagories())
+      return render_template("takelog.html", current_user_name=global_user_name(), catagory_types= catagory_types, catagories = user_catagories())
     # check if user has given his own date diffrent from current writing date
     if not given_date:
       
@@ -1744,6 +1793,7 @@ def takelog():
     #return render_template("experiment.html", default=catagory_normal_id ) 
     
     return redirect("/viewdiary")
+  
   else:
     
     catagory_types= db.execute("SELECT * FROM catagorytype JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON users.id= usercatagory.u_id_in_uc WHERE usercatagory.u_id_in_uc = ?", session["user_id"])
@@ -1755,7 +1805,11 @@ def takelog():
     catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ? AND catagorytype.catagory_type_id = ?", session["user_id"], 1)
     
     # catagories = db.execute("SELECT * FROM catagory")
-    return render_template("jsonajax.html", catagory_types= catagory_types, catagories = catagories)
+    json_catagories = reloadJsonCatagory()
+    # return render_template("experiment.html", cat_3= json_catagories)
+    return render_template("jsonajax.html", json_catagories = reloadJsonCatagory(), catagory_types= catagory_types, catagories = catagories, current_user_name= global_user_name())
+    
+  
   
 
     
