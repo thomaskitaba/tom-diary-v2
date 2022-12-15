@@ -1545,7 +1545,7 @@ def searchdates():
       return render_template("search.html", catagories=catagories,catagory_types= catagory_types , all_catagory = user_catagories(), results=results, normal_search= 1)
     
     return render_template("search.html", all_catagory = user_catagories(), catagories=catagories,catagory_types= catagory_types, normal_search= 1)
-      
+
 @app.route("/simpledate", methods=["GET", "POST"]) # type: ignore
 @login_required
 def simpledate():
