@@ -75,7 +75,7 @@ def sampleindex():
   if request.method == "GET":
     return render_template("experiment.html")
     
-    
+
 
 #---------------------------------------------------------------------------
 #global variables and funcitions
@@ -112,10 +112,15 @@ results = [""]
 catagories = db.execute("SELECT * FROM catagory")
 
 def global_user_name():
-    current_user_name= db.execute("SELECT username FROM users WHERE id = ?", session["user_id"])
-    return (current_user_name)
+  current_user_name= db.execute("SELECT username FROM users WHERE id = ?", session["user_id"])
+  return (current_user_name)
 
+def user_profile_information():
+  name = global_user_name()
+  user_profile_information = db.execute("SELECT * FROM users WHERE username = ?", name[0]["username"])
 
+  return user_profile_information
+  
 def global_catagories():
   catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id")
   return catagories
@@ -124,6 +129,7 @@ def global_catagory_with_parameter(cattype):
     catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id WHERE catagory_type_id = ?", cattype)
     # catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id WHERE catagorytype.catagory_type_id= ? ", cattype )
     return (catagories)
+  
 def user_catagories():
   catagories = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON usercatagory.cat_type_id_in_uc = catagorytype.catagory_type_id JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ? ", session["user_id"]) 
 def default_user_catagories():
@@ -1537,9 +1543,7 @@ def searchdates():
         number_of_results = len(results)
         return render_template("search.html",all_catagories= default_all_user_catagories(), catagories=catagories,start_date= global_search_start_date[0], catagory_types= catagory_types,all_catagory = user_catagories(), normal_search= 1, number_of_results = number_of_results, results = results)
         
-      
-      
-      #TODO: ----------------------------------------------------------------------------------------------------------------------------------------
+        #TODO: ----------------------------------------------------------------------------------------------------------------------------------------
       
       
       return render_template("search.html", catagories=catagories,catagory_types= catagory_types , all_catagory = user_catagories(), results=results, normal_search= 1)
@@ -1661,29 +1665,97 @@ def profilmanagement():
     profile = db.execute("SELECT * FROM users WHERE id= ?", session["user_id"])
     profile_password = profile[0]["hash"]
     return render_template("profile.html",profile=profile,profile_password= profile_password, current_user_name= global_user_name(), view_profile= 1)
+    
+    
 
-
-@app.route("/editprofile") #type: ignore
+@app.route("/editprofile" , methods=["GET", "POST"]) #type: ignore
 @login_required
 def editprofile():
-  task_to_do_profile[0] = "editprofile"
-  return render_template("profile.html", edit_profile = 1)
+  if request.method == "POST":
+    
+    user_email = request.form.get("username")
+    old_password = request.form.get("password")
+    new_password= request.form.get("newpassword")
+    confrim_password= request.form.get("confirmpassword")
+    facebook_address= request.form.get("facebookaddress")
+    telegram_address= request.form.get("telegramaddress")
+    instagram_address= request.form.get("instagramaddress")
+    teleagram_address= request.form.get("telegramaddress")
+    twitter_address= request.form.get("twitteraddress")
+    country= request.form.get("country")
+    city = request.form.get("city")
+    gender= request.form.get("gender")
+    primary_phone= request.form.get("primaryphone")
+    secondary_phone= request.form.get("secondaryphone")
+    user_address= request.form.get("useraddress")
+    dateofbirth= request.form.get("dateofbirth")
+    
+    #TODO: step 1 validate password related information
+    if not old_password or not new_password or not confrim_password:
+      flash("password filds not provided correctly")
+      return redirect("/editprofile")
+    
+        
+    #TODO:   step 2 check if empty then assign origninal value of user profile information to variables
+    upi= user_profile_information()[0] #type: ignore
+    if not upi:
+      return render_template("experiment.html", cat_3= "try again")
+    
+    
+    if not user_email:
+      user_email = upi["useremail"]
+    if not facebook_address:
+      facebook_address = upi["facebookaddress"]
+    if not twitter_address:#type: ignore
+      twitter_address = upi["twitteraddress"]
+    if not telegram_address:#type: ignore
+      telegram_address = upi["telegramaddress"]
+    if not instagram_address: #type: ignore
+      instagram_address = upi["instagramaddress"]
+    if not primary_phone: #type: ignore
+      primary_phone = upi["primaryphone"]
+    if not secondary_phone:
+      secondary_phone = upi["secondaryphone"]
+    if not country:
+      country = upi["country"]
+    if not city:
+      city = upi["city"]      
+    if not user_address:
+      user_address = upi["useraddress"]
+    if not dateofbirth:
+      dateofbirth = upi["dateofbirth"]
+    if not gender:
+      gender = upi["gender"]
+      
+    
+    return render_template("experiment.html", cat_3= country)
   
-  
+  else:
+    
+    task_to_do_profile[0] = "editprofile"
+    #TODO: NB;   upi  = user profile information
+    # return render_template("experiment.html", cat_3= user_profile_information()[0]["username"])
+    upi= user_profile_information()[0] #type: ignore
+    return render_template("profile.html",current_user_name= global_user_name(), upi= upi, edit_profile = 1)
+    
 
-@app.route("/changeaccountinfo")
+@app.route("/changeaccountinfo") #type: ignore
 @login_required
 def changeaccountinfo():
     """ change account information   username and password """
-    
-    return render_template("profile.html", current_user_name= global_user_name(), change_account_info= 1)
+    if request.method == "POST":
+      pass
+    else:
+      return render_template("profile.html", current_user_name= global_user_name(),upi= user_profile_information()[0], change_account_info= 1)
 
 
-@app.route("/changepersonalinfo")
+@app.route("/changepersonalinfo") #type: ignore
 @login_required
 def changeinfo():
-
-  return render_template("profile.html", current_user_name= global_user_name(), change_personal_info= 1)
+  if request.method == "POST":
+    pass
+  else:
+    return render_template("profile.html", current_user_name= global_user_name(), upi= user_profile_information()[0], change_personal_info= 1)
 
 
 #############################################################
