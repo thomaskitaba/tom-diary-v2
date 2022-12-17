@@ -1672,12 +1672,15 @@ def manage_diary():
 # ----------------------START OF PROFILE MANAGMENT -------------------------
 
 
-@app.route("/manageprofile")
+@app.route("/manageprofile", methods=["GET", "POST"]) #type: ignore
 @login_required
 def profilemanagement():
     """ profile managment"""
+    if request.method == "POST":
+      return render_template("profile.html", current_user_name= global_user_name(), manage_profile= 1)
+    else:
+      return render_template("profile.html", current_user_name= global_user_name(), manage_profile= 1)
     
-    return render_template("profile.html", current_user_name= global_user_name(), manage_profile= 1)
     
 @app.route("/viewprofile")
 @login_required
@@ -1783,7 +1786,9 @@ def editprofile():
         flash("Password shold be more than 5 character long and should contain at least 1 letter")
         return redirect ("/editprofile")
     
-      
+      if not validate_email(user_email, verify=True):
+        flash("Email does not Exist")
+        return redirect("/editprofile")
 
       number_of_changes = rows[0]["numberofprofilechanges"] + 1
       updated_profile = db.execute("UPDATE users SET useremail = ?, hash = ?, facebookaddress = ?,  telegramaddress = ?, instagramaddress = ?, twitteraddress = ?, country = ?, city = ?, gender = ?, primaryphone = ?, secondaryphone = ? , useraddress = ?, dateofbirth = ?, numberofprofilechanges = ?", user_email, generate_password_hash(str(new_password)), facebook_address, telegram_address, instagram_address, twitter_address, country, city, gender, primary_phone,secondary_phone, user_address, dateofbirth, number_of_changes)
@@ -1806,16 +1811,23 @@ def editprofile():
     else:
       # return render_template("experiment.html", cat_3 = "password match")
       #todo: calculate number profile changes
+      
+      
+      if not validate_email(user_email, verify=True):
+        flash("Email does not Exist")
+        return redirect("/editprofile")
+      
+      #todo: increment the number of total edits made on users profile
       number_of_changes = rows[0]["numberofprofilechanges"] + 1
       
-      updated_profile = db.execute("UPDATE users SET useremail = ?, facebookaddress = ?,  telegramaddress = ?, instagramaddress = ?, twitteraddress = ?, country = ?, city = ?, gender = ?, primaryphone = ?, secondaryphone = ? , useraddress = ?, dateofbirth = ?, numberofprofilechanges = ?", user_email, facebook_address, telegram_address, instagram_address, twitter_address, country, city, gender, primary_phone,secondary_phone, user_address, dateofbirth, number_of_changes)
+      db.execute("UPDATE users SET useremail = ?, facebookaddress = ?,  telegramaddress = ?, instagramaddress = ?, twitteraddress = ?, country = ?, city = ?, gender = ?, primaryphone = ?, secondaryphone = ? , useraddress = ?, dateofbirth = ?, numberofprofilechanges = ?", user_email, facebook_address, telegram_address, instagram_address, twitter_address, country, city, gender, primary_phone,secondary_phone, user_address, dateofbirth, number_of_changes)
       
       #TODO: send email confirmation
       msg = Message('Dear' + ':' + upi["fname"] + '  ' + upi["lname"] + '/n', sender = 'thomas.kitaba@gmail.com', recipients = [user_email])
       msg.body = "your profile has been updated: number of profile edits including today =" + str(number_of_changes)
       mail.send(msg)
       return redirect("/editprofile")
-    
+      
     
     # db.execute("UPDATE users SET ")
     return render_template("experiment.html", cat_3= country)

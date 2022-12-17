@@ -285,19 +285,19 @@
 
 <h1>Edit your Profile</h1>
   {% if upi %}
-  
+  <div class = "flex">
     <form action="/editprofile" method="post">
-      <div class = "float-bg-dark flex">
+      <div class = "float-bg-dark flex equal-flex ">
         
 
-        <div class=" flex  margin-b float-bg-light magenta-box-shadow">
+        <div class="flex margin-b float-bg-light magenta-box-shadow">
           <table>
             <tbody>
               <tr>
-                <td>
+                <td colspan="2">
                 <div class="flex-horizontal margin-m">
                   
-                  <button class="my-button-1" type="submit" formaction="/editprofile"> Cancel</button>
+                  <button class="my-button-1" type="submit" formaction="/manageprofile"> Back</button>
                   <button class ="my-button-1" type="submit">Save</button>
                 </div>
               </td>
@@ -312,10 +312,12 @@
               </td>
             
             </tr>
+
               <tr>
                 <td>Username</td>
                 <td class="flex-horizontal "> <div class="center-text">{{upi["username"]}} </div></td>
               </tr>
+
               <tr>
                 <td>Email Address</td>
                 <td><input type="text" name="useremail" value='{{upi["useremail"]}}' placeholder="email address"></td>
@@ -348,15 +350,12 @@
                 <td>Instagram Address</td>
                 <td><input name= "instagramaddress" type="text" value='{{upi["instagramaddress"]}}'placeholder="Instagram Address"></td>
               </tr>
-              <tr>
-                <tr>
-                  <td>Twitter Address</td>
-                  <td><input name= "twitteraddress" type="text" value='{{upi["twitteraddress"]}}' placeholder="Twitter Address"></td>
-                </tr>
-                
-                
-              </tr>
               
+              <tr>
+                <td>Twitter Address</td>
+                <td><input name= "twitteraddress" type="text" value='{{upi["twitteraddress"]}}' placeholder="Twitter Address"></td>
+              </tr>
+                
               <tr>
                 <td>Number of Profile Edits</td>
 
@@ -366,7 +365,7 @@
           </table>
         </div>
         <!-- todo: end of account information -->
-        <div class=" margin-b float-bg-light magenta-box-shadow">
+        <div class="flex margin-b float-bg-light magenta-box-shadow">
           <table>
             <tbody>
               <tr>
@@ -381,7 +380,7 @@
                 <tr>
                   <td>Country</td>
                   <td>
-                    <select class="select-s" name="country">
+                    <select class="select-s select-width-m" name="country">
                       
                       <option value='{{upi["country"]}}'>{{upi["country"]}}</option>  
                       <option value="Afghanistan">Afghanistan</option>
@@ -661,7 +660,7 @@
                 <tr>
                   <td colspan="2">
                     <div class="flex-horizontal margin-m">
-                      <button class="my-button-1" > Cancel</button>
+                      <button class="my-button-1" formaction = "/manageprofile"> Back</button>
                       <button class ="my-button-1" type="submit" formaction="/editprofile">Save</button>
                     </div>
                   </td>
@@ -670,9 +669,9 @@
               </tbody>
           </table>
         </div>
-        
+      </div>
     </form>
-  
+  </div>
   {% endif %}
 
 
