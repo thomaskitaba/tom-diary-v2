@@ -216,10 +216,12 @@ def backtoedited(udcid,diaryelementid):
     db.execute ("DELETE FROM userdiarycatagory WHERE udc_id = ?", udcid)
     global_edited_diary[0] = diaryelementid
     edit_mode[0] = 1
-    
+
+
+              
+
 def reloadJsonCatagory():
-  
-  
+    
   # all_catagory_info = catTypeAndSubCat(session["user_id"])
   all_catagory_info = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON usercatagory.cat_type_id_in_uc = catagorytype.catagory_type_id JOIN users ON users.id = usercatagory.u_id_in_uc")
   # return render_template("experiment.html", cat_3= all_catagory_info )
@@ -270,6 +272,25 @@ def reloadJsonCatagory():
   
   #TODO:
   return all_catagory_json
+
+
+def check_password_format(password):
+  count_letters = [0]
+        # STEP 1  collect submition data data
+  if len(password) >= 6:  # type: ignore
+      
+      #validate Password
+    for i in range(len(password)):  # type: ignore
+        if (ord(str(password)[i]) >= 65 and ord(str(password)[i]) <= 90) or (ord(str(password)[i]) >= 97 and ord(str(password)[i]) <= 122):
+            count_letters[0] += 1
+              
+    if count_letters[0] <= 0:
+      return False
+    else:
+      return True
+  
+  return False
+    
 def reloadCatagories():
   
   # all_catagory_info = catTypeAndSubCat(session["user_id"])
@@ -997,7 +1018,7 @@ def jsonajax():
         # find id of Normal
     default = "Normal"
     catagory_normal = db.execute("SELECT * FROM catagory WHERE catagory_name = ?", default) #works
-    catagory_normal_id = int(catagory_normal[0]["catagory_id"]) # works
+    catagory_normal_id = int(catagory_normal[0]["catagory_id"]) # works 
     
     
     if multiple_catagories_selected[0] != "":
@@ -1673,14 +1694,15 @@ def profilmanagement():
 def editprofile():
   if request.method == "POST":
     
-    user_email = request.form.get("username")
+    user_email = request.form.get("useremail")
     old_password = request.form.get("password")
     new_password= request.form.get("newpassword")
-    confrim_password= request.form.get("confirmpassword")
+    confirm_password= request.form.get("confrimpassword")
+    # return render_template("experiment.html", cat_3 = confirm_password)
     facebook_address= request.form.get("facebookaddress")
     telegram_address= request.form.get("telegramaddress")
     instagram_address= request.form.get("instagramaddress")
-    teleagram_address= request.form.get("telegramaddress")
+    telegram_address= request.form.get("telegramaddress")
     twitter_address= request.form.get("twitteraddress")
     country= request.form.get("country")
     city = request.form.get("city")
@@ -1689,17 +1711,21 @@ def editprofile():
     secondary_phone= request.form.get("secondaryphone")
     user_address= request.form.get("useraddress")
     dateofbirth= request.form.get("dateofbirth")
+    rows = db.execute("SELECT * FROM users WHERE id LIKE ?", session["user_id"])
     
-    #TODO: step 1 validate password related information
-    if not old_password or not new_password or not confrim_password:
-      flash("password filds not provided correctly")
-      return redirect("/editprofile")
+    # rows = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
+    # if check_password_hash(rows[0]["hash"], str(old_password)):
+    #   flash("Incorrect old password entry!  Try again")
+    #   return render_template("/editprofile")
     
-        
-    #TODO:   step 2 check if empty then assign origninal value of user profile information to variables
+    #TODO:   step 1 check if empty then assign origninal value of user profile information to variables
+    
+    
+    
     upi= user_profile_information()[0] #type: ignore
     if not upi:
       return render_template("experiment.html", cat_3= "try again")
+    
     
     
     if not user_email:
@@ -1726,8 +1752,72 @@ def editprofile():
       dateofbirth = upi["dateofbirth"]
     if not gender:
       gender = upi["gender"]
+    
+    #TODO: step 2 validate date field
+    #todo: set validate_date value to true after checking the date fiels
+    valid_date = True
+    
+    #TODO: step 3 validate password related information
+    if old_password:
+    #   flash("check your password fields")
       
     
+    # if not old_password:
+    #   flash("Check your old_password field")
+    #   return redirect("/editprofile")
+      if not new_password or not confirm_password:
+        flash("Check your new_password and/or cofirm password fields")
+        return redirect("/editprofile")
+      
+      
+      if not check_password_hash(rows[0]["hash"], old_password):
+        flash("Incorrect old password entry!  Try again")
+        return redirect("/editprofile")
+        # if not confirm_password:
+        #   flash("Check your confirm_password field")
+        #   return redirect("/editprofile")
+      if new_password != confirm_password:
+        flash("new password and new password confirmation doesnot match")
+        
+      if not check_password_format(new_password):
+        flash("Password shold be more than 5 character long and should contain at least 1 letter")
+        return redirect ("/editprofile")
+    
+      
+
+      number_of_changes = rows[0]["numberofprofilechanges"] + 1
+      updated_profile = db.execute("UPDATE users SET useremail = ?, hash = ?, facebookaddress = ?,  telegramaddress = ?, instagramaddress = ?, twitteraddress = ?, country = ?, city = ?, gender = ?, primaryphone = ?, secondaryphone = ? , useraddress = ?, dateofbirth = ?, numberofprofilechanges = ?", user_email, generate_password_hash(str(new_password)), facebook_address, telegram_address, instagram_address, twitter_address, country, city, gender, primary_phone,secondary_phone, user_address, dateofbirth, number_of_changes)
+      
+      #TODO: send email message telling user that he has successfully changed his profile
+      msg = Message('Dear' + ':' + upi["fname"] + '  ' + upi["lname"] + '/n', sender = 'thomas.kitaba@gmail.com', recipients = [user_email])
+      msg.body = "your profile has been updated:  number of profile edits including today =" + str(number_of_changes)
+      
+      
+    #todo: check new password and confrm password validity
+    
+    
+      #TODO: check if old password matchs users existing password
+    
+    
+    # rows = db.execute("SELECT * FROM users WHERE id LIKE ?", session["user_id"])
+    # if not check_password_hash(rows[0]["hash"], old_password):
+    #   flash("Incorrect old password entry!  Try again")
+    #   return redirect("/editprofile")
+    else:
+      # return render_template("experiment.html", cat_3 = "password match")
+      #todo: calculate number profile changes
+      number_of_changes = rows[0]["numberofprofilechanges"] + 1
+      
+      updated_profile = db.execute("UPDATE users SET useremail = ?, facebookaddress = ?,  telegramaddress = ?, instagramaddress = ?, twitteraddress = ?, country = ?, city = ?, gender = ?, primaryphone = ?, secondaryphone = ? , useraddress = ?, dateofbirth = ?, numberofprofilechanges = ?", user_email, facebook_address, telegram_address, instagram_address, twitter_address, country, city, gender, primary_phone,secondary_phone, user_address, dateofbirth, number_of_changes)
+      
+      #TODO: send email confirmation
+      msg = Message('Dear' + ':' + upi["fname"] + '  ' + upi["lname"] + '/n', sender = 'thomas.kitaba@gmail.com', recipients = [user_email])
+      msg.body = "your profile has been updated: number of profile edits including today =" + str(number_of_changes)
+      mail.send(msg)
+      return redirect("/editprofile")
+    
+    
+    # db.execute("UPDATE users SET ")
     return render_template("experiment.html", cat_3= country)
   
   else:
