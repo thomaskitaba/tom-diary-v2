@@ -1,0 +1,39 @@
+
+CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL, fname type text, lname type text, useremail text, dateregistered type text, dateofbirth type text, primaryphone type text, country type text, secondaryphone type text, city type text, gender type text, facebookaddress type text, telegramaddress type text, instagramaddress type text, twitteraddress type text, useraddress type text, numberofprofilechanges type integer default 0, emailconfirmed type text default 'False');
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE UNIQUE INDEX username ON users (username);
+CREATE TABLE diary
+(diary_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+diary_content TEXT,
+diary_status TEXT DEFAULT Active, description type text);
+CREATE TABLE userdiary
+(ud_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+d_id INTEGER,
+u_id INTEGER,
+given_date TEXT DEFAULT CURRENT_TIMESTAMP,
+diary_written_date type text, diary_written_time type text, given_time type text, number_of_edits type integer default 0, number_of_ edits type integer default 0,
+FOREIGN KEY(d_id) REFERENCES diary(diary_id),
+FOREIGN KEY(u_id) REFERENCES users(id));
+CREATE TABLE userdiarycatagory (udc_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, ud_id INTEGER NOT NULL, c_id INTEGER NOT NULL, catagory_insertion_time type text, catagory_insertion_date type text, number_of_edits_made type integer default 0, FOREIGN KEY(ud_id) REFERENCES userdiary(ud_id), FOREIGN KEY(c_id) REFERENCES catagory(catagory_id));
+CREATE VIEW diarycatagoryview AS SELECT * FROM userdiarycatagory JOIN catagory ON catagory.catagory_id = userdiarycatagory.c_id
+/* diarycatagoryview(udc_id,ud_id,c_id,catagory_insertion_time,catagory_insertion_date,number_of_edits_made,catagory_id,cat_type_id,catagory_name,insertion_date,insertion_time) */;
+CREATE VIEW userdiaryview AS
+SELECT * FROM users
+JOIN userdiary ON userdiary.u_id = users.id
+JOIN diary ON diary.diary_id = userdiary.d_id
+/* userdiaryview(id,username,hash,fname,lname,useremail,dateregistered,dateofbirth,primaryphone,country,secondaryphone,city,gender,facebookaddress,telegramaddress,instagramaddress,twitteraddress,useraddress,numberofprofilechanges,emailconfirmed,ud_id,d_id,u_id,given_date,diary_written_date,diary_written_time,given_time,number_of_edits,number_of_,diary_id,diary_content,diary_status,description) */;
+CREATE VIEW diarydatabaseview AS
+SELECT * FROM userdiaryview
+LEFT JOIN diarycatagoryview
+ON diarycatagoryview.ud_id = userdiaryview.ud_id
+/* diarydatabaseview(id,username,hash,fname,lname,useremail,dateregistered,dateofbirth,primaryphone,country,secondaryphone,city,gender,facebookaddress,telegramaddress,instagramaddress,twitteraddress,useraddress,numberofprofilechanges,emailconfirmed,ud_id,d_id,u_id,given_date,diary_written_date,diary_written_time,given_time,number_of_edits,number_of_,diary_id,diary_content,diary_status,description,udc_id,"ud_id:1",c_id,catagory_insertion_time,catagory_insertion_date,number_of_edits_made,catagory_id,cat_type_id,catagory_name,insertion_date,insertion_time) */;
+CREATE TABLE catagory(catagory_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, cat_type_id type INTEGER NOT NULL default 1, catagory_name text NOT NULL, insertion_date type text, insertion_time type text, FOREIGN KEY (cat_type_id) REFERENCES catagorytype(catagory_type_id));
+CREATE TABLE catagorytype (catagory_type_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, catagory_type_name type text NOT NULL, catagory_type_creation_date type text, catagory_type_creation_time type text, type_description type text);
+CREATE TABLE diaryreference (diary_reference_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, reference_by_id TYPE INTEGER, referenced_id TYPE INTEGER, refrence_related TEXT, refrence_description, FOREIGN KEY(reference_by_id) REFERENCES userdiary(d_id), FOREIGN KEY(referenced_id) REFERENCES diary(diary_id) );
+CREATE TABLE usercatagory(user_catagory_id  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, u_id_in_uc TYPE INTEGER, cat_type_id_in_uc TYPE INTEGER, type_creation_date TYPE TEXT, type_creation_time TYPE TEXT, FOREIGN KEY(u_id_in_uc) REFERENCES users(id), FOREIGN KEY(cat_type_id_in_uc) REFERENCES catagorytype(catagory_type_id));
+CREATE VIEW userCatagoryInfo AS
+SELECT * FROM catagory
+JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id
+JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc
+JOIN users ON usercatagory.u_id_in_uc = users.id
+/* userCatagoryInfo(catagory_id,cat_type_id,catagory_name,insertion_date,insertion_time,catagory_type_id,catagory_type_name,catagory_type_creation_date,catagory_type_creation_time,type_description,user_catagory_id,u_id_in_uc,cat_type_id_in_uc,type_creation_date,type_creation_time,id,username,hash,fname,lname,useremail,dateregistered,dateofbirth,primaryphone,country,secondaryphone,city,gender,facebookaddress,telegramaddress,instagramaddress,twitteraddress,useraddress,numberofprofilechanges,emailconfirmed) */;

@@ -1,7 +1,7 @@
 
 
 var catagory_type_id = document.getElementById ("catagory-type");
-var sub_catagory_id = document.querySelector(".mulitple-select");
+var sub_catagory_id = document.getElementById("mulitpleSelect");
 var temp_catagory = document.getElementById("new-catagory");
 
 var last_index_of_sub_cat;
@@ -38,7 +38,7 @@ function getCatagories()
 {
   console.log("hello thomas kitaba")
   var user_catagories = new XMLHttpRequest();
-
+  
   user_catagories.open('GET', 'reloadecatagory');
   user_catagories.onload = function(){
     if (user_catagories.status == 200 && user_catagories.readyState == 4)
@@ -90,12 +90,16 @@ last_index_of_sub_cat = json_catagories[0].sub_catagories.length - 1;
       
         console.log("---" + sub_catagory[ii].catagory_name);
         last_index_of_sub_cat += 1;
-
         
         
         html_sub_catagory+=  "<option value=" + sub_catagory[ii].catagory_id + ">" + sub_catagory[ii].catagory_name + "</option>";
+
+        console.log( html_sub_catogory)
+
+        // html_sub_catagory += "<div><input type= 'checkbox'><label>" + sub_catagory[ii].catagory_name + "</label></div>"
+
         // html_sub_catagory += "<div role= option  aria-selected= false id= " + "vscomp-option" + suffix + "-" + last_index_of_sub_cat + " class= vscomp-option " + "data-value= " +  sub_catagory[ii].catagory_id + " data-index= " + last_index_of_sub_cat + " data-visible-index= " + last_index_of_sub_cat + " style= height: 40px" + ";" + ">" + "<span class=" + "checkbox-icon> </span>" + "<span class= " + " vscomp-option-text data-tooltip= " + "Natrural Disasters data-tooltip-enter-delay= 200 data-tooltip-z-index=  2 data-tooltip-font-size= 14px data-tooltip-alignment= center data-tooltip-max-width= 300px data-tooltip-ellipsis-only= true data-tooltip-allow-html= true>" + sub_catagory[ii].catagory_name + " </span> </div>";
-      
+        
       
       } // todo: end of loop ii
         console.log("==========");
@@ -110,9 +114,11 @@ last_index_of_sub_cat = json_catagories[0].sub_catagories.length - 1;
 
         
         sub_catagory_id.insertAdjacentHTML('beforeend', html_sub_catagory);
+        reload()
         // sub_catagory_id.innerHTML= html_sub_catagory;
         
         temp_catagory.insertAdjacentHTML('beforeend', html_sub_catagory);
+        reload()
     }
   
   } // todo: end of loadCatagories() function

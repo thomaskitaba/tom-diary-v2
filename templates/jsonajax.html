@@ -44,6 +44,7 @@
         
         </select>
       </div>
+
       <div class=" width-100 margin-s float-bg-light-s">
         <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
           {% if catagories %}
@@ -54,6 +55,7 @@
             {% endfor %}
           {% endif %}
         </select>
+
         <div id="new-sub-catagory" >
           <select name="field2" id="field2" class = "width-100" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="3" onchange="console.log(this.selectedOptions)">
             {% if catagories %}
@@ -65,6 +67,7 @@
           {% endif %}
         
         </select>
+        
         <select name="" id="new-catagory">
           
         </select>
@@ -94,7 +97,6 @@
 </form>
 {{json_catagories}}
 {% endblock %}
-
 
 <!-- todo: working backup code-->
 

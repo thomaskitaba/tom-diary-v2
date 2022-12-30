@@ -14,8 +14,9 @@
     <div class="center-elements catagory-page padding-s margin-s">
       <form action="/catagory" method="post" class = "float-bg-light equal-flex padding-m">
         <div class="center-text margin-bottom-s"> Insert New Catagories</div>
-        <div class="margin-bottom-s  " >
-          <select name="catagory-type" id="">
+        <div class="margin-bottom-s" >
+
+          <select name="catagory-type" class= "select-s" id="">
             {% for cat_type in catagory_type %}
             <option value='{{ cat_type["catagory_type_id"]}}'>
               {{ cat_type["catagory_type_name"]}}
@@ -23,6 +24,7 @@
 
             {% endfor %}
           </select>
+          
         </div>
         <div>
           <input
@@ -43,7 +45,6 @@
         </div>
       </form>
     
-
     
         <form action="/addcatagorytype" method="POST" class = "float-bg-light padding-m margin-s equal-flex">
           <div class="margin-bottom-s">  New Catagory Type</div>
