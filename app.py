@@ -1096,7 +1096,7 @@ def jsonajax():
       
       # return redirect("/viewdiary")
     #return render_template("experiment.html", default=catagory_normal_id ) 
-    
+      
     return redirect("/viewdiary")
   else:
     
@@ -1107,6 +1107,7 @@ def jsonajax():
     # catagories = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON usercatagory.cat_type_id_in_uc = catagorytype.catagory_type_id JOIN users ON users.id = usercatagory.u_id_in_uc WHERE id = ?", session["user_id"])
     
     catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ? AND catagorytype.catagory_type_id = ?", session["user_id"], 1)
+    
     
     # catagories = db.execute("SELECT * FROM catagory")
     return render_template("takelog.html", catagory_types= catagory_types, catagories = catagories, current_user_name=global_user_name())
