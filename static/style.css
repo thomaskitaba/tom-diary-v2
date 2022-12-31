@@ -876,3 +876,44 @@ th {
   display: none;
 }
 /* Spacing size and padding for input box and buttons */
+
+/* Checkboxes style */
+
+/* todo: Advanced Search page elements */
+#referenced-id{
+  visibility: hidden;
+}
+#referencer-text{
+  visibility: hidden;
+}
+#referenced-text{
+  visibility: hidden;
+}
+
+#link-button{
+  visibility: hidden;
+  display: none;
+}
+
+#save-reference
+{
+  position: fixed;
+  display: flex;
+  width: 100px;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  top: 300px;
+  border-radius: 50%;
+  background: linear-gradient( to left,  rgba(248, 4, 244),   rgba(4, 228, 248) );
+  z-index: 2;
+  visibility: hidden;
+}
+
+.save-reference-text{
+  font-family: 'Times New Roman', Times, serif, Courier, monospace;
+}
+
+
+
+

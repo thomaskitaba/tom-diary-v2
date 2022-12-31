@@ -13,6 +13,9 @@
 {% if normal_search %} 
 
 <div class="search-container float-bg-dark width-100"> <!-- search container  -->
+  <div id="save-reference" onclick="showReferencerCheckboxes()"> 
+    <div class = "save-reference-text"> Save Ref</div>
+  </div>
   <form action="/search" method="POST"> 
     <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/advancedsearchcatagories" >
   <div class = "search-header normal-flex-horizontal align-center wrap border-red ">
@@ -114,11 +117,28 @@
       
             <table class="float-bg-cyan">
               <tbody>
+                <div class="float-bg-cyan">
+                <tr class="float-bg-dark">
+                  <td>
+                  <div class = "flex-horizontal float-bg-dark">
+
+                    <input type="text" id="referenced-diary-id" hidden name="user-diary-id" value = ''>
+                    <input type="text" id="referencer-diary-id" hidden name="user-diary-id" value = '{{result["diary_id"]}}'>
+                    
+                      <input type="checkbox" id = "referenced-by-id" value='{{result["diary_id"]}}' onchange = 'diaryReference()'> <span id = "referencer-text">Ref </span> 
+                      <input type="checkbox" id = "referenced-id" value= '{{result["diary_id"]}}'> <span id = "referenced-text">Add</span> 
+                      
+                      <button class="my-button-1" id = "link-button" onclick="showReferencerCheckboxes()">Link</button>
+                    
+                  </div>
+                </td>
                 <tr class = "float-bg-dark">
-                  <td class="align-left "> {{result["diary_id"]}} <h3> {{result["given_date"]}} </h3> {{result["catagory_name"]}} </td>
-                  
-                  <td class="align-left "> {{result["diary_content"]}}</td>
+                  <td class="align-left "> {{result["diary_id"]}} <h3> {{result["given_date"]}} </h3> {{result["catagory_name"]}}  </td>
+                  <td class="align-left "> {{result["diary_content"]}} </td>
                 </tr>
+                
+                </tr>
+              </div>
               </tbody>
             </table>
           

@@ -191,20 +191,19 @@
 		</view>
 	</schema>
 	<layout name="Layout" id="Layout-2c0" show_relation="columns" >
-		<comment><![CDATA[tom-diary-db-schema]]></comment>
-		<entity schema="public" name="catagory" color="BED3F4" x="1376" y="496" />
-		<entity schema="public" name="catagorytype" color="BED3F4" x="1568" y="512" />
-		<entity schema="public" name="diary" color="BED3F4" x="912" y="512" />
-		<entity schema="public" name="diarycatagoryview" color="3986C1" x="208" y="112" />
-		<entity schema="public" name="diarydatabaseview" color="3986C1" x="208" y="272" />
-		<entity schema="public" name="diaryreference" color="C7F4BE" x="608" y="208" />
-		<entity schema="public" name="referencename" color="C7F4BE" x="576" y="480" />
-		<entity schema="public" name="sqlite_sequence" color="3986C1" x="208" y="192" />
-		<entity schema="public" name="userCatagoryInfo" color="BED3F4" x="208" y="48" />
-		<entity schema="public" name="usercatagory" color="BED3F4" x="1600" y="240" />
-		<entity schema="public" name="userdiary" color="BED3F4" x="896" y="256" />
-		<entity schema="public" name="userdiarycatagory" color="BED3F4" x="1360" y="304" />
-		<entity schema="public" name="userdiaryview" color="BED3F4" x="208" y="336" />
+		<entity schema="public" name="catagory" color="BED3F4" x="544" y="496" />
+		<entity schema="public" name="catagorytype" color="BED3F4" x="736" y="688" />
+		<entity schema="public" name="diary" color="BED3F4" x="1120" y="128" />
+		<entity schema="public" name="diarycatagoryview" color="3986C1" x="224" y="112" />
+		<entity schema="public" name="diarydatabaseview" color="3986C1" x="400" y="112" />
+		<entity schema="public" name="diaryreference" color="C7F4BE" x="528" y="352" />
+		<entity schema="public" name="referencename" color="C7F4BE" x="592" y="144" />
+		<entity schema="public" name="sqlite_sequence" color="3986C1" x="528" y="48" />
+		<entity schema="public" name="userCatagoryInfo" color="BED3F4" x="224" y="48" />
+		<entity schema="public" name="usercatagory" color="BED3F4" x="1152" y="688" />
+		<entity schema="public" name="userdiary" color="BED3F4" x="864" y="128" />
+		<entity schema="public" name="userdiarycatagory" color="BED3F4" x="832" y="432" />
+		<entity schema="public" name="userdiaryview" color="BED3F4" x="400" y="48" />
 		<entity schema="public" name="users" color="BED3F4" x="1088" y="272" />
 		<callout x="48" y="160" pointer="Round" >
 			<comment><![CDATA[Add tables to the layout diagram (here) by drag & drop from the Project Tree.
