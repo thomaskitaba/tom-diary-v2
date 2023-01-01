@@ -602,6 +602,7 @@ background: #5bc0de;
 .border-red {
   border: 2px dashed red;
 }
+
 .border-black {
   border: 2px dashed black;
 }
@@ -899,17 +900,32 @@ th {
 {
   position: fixed;
   display: flex;
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   justify-content: center;
   align-items: center;
-  top: 300px;
-  border-radius: 50%;
-  background: linear-gradient( to left,  rgba(248, 4, 244),   rgba(4, 228, 248) );
+  top: 450px;
+  left: 50px;
+  border-radius: 50% 0 0 50%;
+  background: linear-gradient( to left,  rgba(248, 4, 244, 0.7),   rgba(4, 228, 248,0.7) );
   z-index: 2;
   visibility: hidden;
 }
-
+#cancel-reference
+{
+  position: fixed;
+  display: flex;
+  width: 60px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  top: 450px;
+  left: 150px;
+  border-radius: 0 50% 50% 0;
+  background: linear-gradient( to left,  rgba(248, 4, 244, 0.7),   rgba(4, 228, 248,0.7) );
+  z-index: 2;
+  visibility: hidden;
+}
 .save-reference-text{
   font-family: 'Times New Roman', Times, serif, Courier, monospace;
 }

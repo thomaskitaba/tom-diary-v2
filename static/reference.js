@@ -6,37 +6,38 @@ var referenced_text = document.querySelectorAll("#referenced-text");
 var referencer_text = document.querySelectorAll("#referencer-text");
 var link_button = document.querySelectorAll("#link-button");
 var save_reference = document.getElementById("save-reference");
+var cancel_reference = document.getElementById("cancel-reference");
 var referencer_diary_id;
 var referenced_diary_id;
 var selected_index = -1;
 
 // var checkedValue = document.querySelector('.messageCheckbox:checked').value
 
-function showReferencedCheckbox()
+function showReferencedCheckbox() // todo: referenced
 {
   for (let i = 0; i < referenced_id.length; i++)
   {
     referenced_id[i].style.visibility = "visible";
     referenced_text[i].style.visibility = "visible";
-    link_button[i].style.visibility = "visible";
+    // link_button[i].style.visibility = "visible";
     
-
   }
 }
 
-function hideReferencedCheckbox()
+function hideReferencedCheckbox() // todo: referenced       show
 {
   for (let i = 0; i < referenced_id.length; i++)
   {
     referenced_id[i].style.visibility = "hidden";
     // referenced_text[i].innerHTML = "";
-    link_button[i].style.visibility = "hidden";
-    referenced_text[i].style.visibility = "hidden"
-
+    // link_button[i].style.visibility = "hidden";
+    referenced_text[i].style.visibility = "hidden";
+    
   }
+  // cancel_reference.style.visiblity = "hidden";
 }
 
-function showReferencerCheckboxes()
+function showReferencerCheckboxes() // todo: references          show
 {
   for (let i = 0; i < referenced_by.length; i++)
   {
@@ -44,14 +45,15 @@ function showReferencerCheckboxes()
     // referencer_text[i].innerHTML = "Add";
     referenced_by[i].checked = false;
     save_reference.style.visibility = "hidden";
-  }
-  hideReferencedCheckbox();
+    referenced_by[i].disabled = false;
+  } 
+  hideReferencedCheckbox();  // todo: referenced          hide
+  cancel_reference.style.visibility = "hidden";
 }
 function showSaveReference()
 {
   save_reference.inne = "hidden";
 }
-
 
 // TODO: main function
 function diaryReference()
@@ -63,7 +65,8 @@ function diaryReference()
     if (referenced_by[i].checked)
     {
       save_reference.style.visibility = "visible";
-      
+      cancel_reference.style.visibility = "visible";
+      referenced_by[i].disabled = true;
       // put the value of the diary_id in hidden inputbox 
       //TODO: hide all checkboxes except the one that is selected
       for (let ii= 0; ii< referenced_by.length; ii++)

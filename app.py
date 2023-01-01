@@ -1347,9 +1347,17 @@ def diaryview():
     #return render_template("diary.html",current_user_name=global_user_name(), catagories=global_catagory(global_catagory_type[0]), viewdiary=1)
     #------------------------ WORKS ------------------------------------------------------------------------------
 
-
-
+@app.route("/addreference",  methods=["Get", "POST"]) #type: ignore
+@login_required
+def addDiaryReference():
+  if request.method == "POST":
+    
+    return render_template("experiment.html")
   
+  else:
+    
+    return apology("hello thomas kitaba")
+    
   
 
 #|||||||||||||||||| -- CATAGORY -- |||||||||||||||||||
