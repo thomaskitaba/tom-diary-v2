@@ -926,6 +926,10 @@ th {
   z-index: 2;
   visibility: hidden;
 }
+
+#referenced-id::after{
+  content: " - Add";
+}
 .save-reference-text{
   font-family: 'Times New Roman', Times, serif, Courier, monospace;
 }

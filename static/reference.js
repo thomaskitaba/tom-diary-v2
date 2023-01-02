@@ -15,10 +15,10 @@ var selected_index = -1;
 
 function showReferencedCheckbox() // todo: referenced
 {
-  for (let i = 0; i < referenced_id.length; i++)
+  for (let k = 0; k < referenced_id.length; k++)
   {
-    referenced_id[i].style.visibility = "visible";
-    referenced_text[i].style.visibility = "visible";
+    referenced_id[k].style.visibility = "visible";
+    referenced_text[k].style.visibility = "visible";
     // link_button[i].style.visibility = "visible";
     
   }
@@ -34,7 +34,7 @@ function hideReferencedCheckbox() // todo: referenced       show
     referenced_text[i].style.visibility = "hidden";
     
   }
-  // cancel_reference.style.visiblity = "hidden";
+  cancel_reference.style.visiblity = "hidden";
 }
 
 function showReferencerCheckboxes() // todo: references          show
@@ -45,14 +45,17 @@ function showReferencerCheckboxes() // todo: references          show
     // referencer_text[i].innerHTML = "Add";
     referenced_by[i].checked = false;
     save_reference.style.visibility = "hidden";
+    cancel_reference.style.visibility = "hidden";
     referenced_by[i].disabled = false;
+    referenced_id[i].style.visibility = "hidden";
   } 
-  hideReferencedCheckbox();  // todo: referenced          hide
-  cancel_reference.style.visibility = "hidden";
+  
+  // hideReferencedCheckbox();  // todo: referenced          hide
+  
 }
 function showSaveReference()
 {
-  save_reference.inne = "hidden";
+  save_reference.style.visibility = "visible";
 }
 
 // TODO: main function
@@ -67,21 +70,46 @@ function diaryReference()
       save_reference.style.visibility = "visible";
       cancel_reference.style.visibility = "visible";
       referenced_by[i].disabled = true;
+      
       // put the value of the diary_id in hidden inputbox 
       //TODO: hide all checkboxes except the one that is selected
       for (let ii= 0; ii< referenced_by.length; ii++)
       {
+          referenced_id[ii].style.visibility = "visible";
           if ( ii != i){
             referenced_by[ii].style.visibility = "hidden";
             
           }
-          
+          // showReferencedCheckbox();
       }
-      showReferencedCheckbox();
-      
-      
+      // showReferencedCheckbox();
       
     }
 
   }
+}
+
+
+function addDiaryReference()
+{
+  console.log("Thomas Kitaba");
+  $(document).ready(function() {
+    $("#save-reference").on('click', function(event) {
+      $.ajax({
+        data : {
+            referencer_id : $("#referencer-diary-id").val(),
+            referenced_id: $("#referenced-diary-id").val(),
+            reference_name_id: 1
+
+                },
+            type : 'POST',
+            url : '/adddiaryreference'
+          })
+      .done(function(data) {
+        alert("diaries succesfully linked")
+    });
+    event.preventDefault();
+    });
+});
+
 }

@@ -130,7 +130,7 @@
             </div>
               <form  method ="POST" >
                 <div  class="flex-vertical-center" >
-                  <div class = "save-reference-text"> <button id="save-reference" type="submit" formaction="/addreference"  >Save</button> </div>
+                  <div class = "save-reference-text"> <button id="save-reference" type="submit" onclick= "addDiaryReference()"  >Save</button> </div>
                   <!-- <div>..|.. </div> -->
                   <!-- <div class = "save-reference-text" ><button id="cancel-reference"  onclick="showReferencerCheckboxes()" >Cancel</button> </div> -->
                   
@@ -145,8 +145,16 @@
                     <input type="text" id="referencer-diary-id" hidden name="user-diary-id" value = '{{result["diary_id"]}}'>
                     
                       <input type="checkbox" id = "referenced-by-id" value='{{result["diary_id"]}}' onchange = 'diaryReference()'> <span id = "referencer-text">Ref </span> 
-                      <input type="checkbox" id = "referenced-id" value= '{{result["diary_id"]}}'> <span id = "referenced-text">Add</span> 
-                      
+                      <input type="checkbox" id = "referenced-id" value= '{{result["diary_id"]}}'>
+                      <!-- {% if reference_name %}
+                        <select name="reference-name" id="">
+                        
+                          {% for ref_name in reference_name %}
+                            <option value= 'ref_name["reference_name_id"]}}'> {{ref_name["reference_name"]}} </option>
+                          {% endfor %}
+                        
+                        </select>
+                      {% endif %} -->
                       <button type="submit" class= "my-button-1" id = "link-button" onclick="showReferencerCheckboxes()">Link</button>
                     
                   </div>
