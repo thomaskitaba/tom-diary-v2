@@ -7,35 +7,15 @@ var referencer_text = document.querySelectorAll("#referencer-text");
 var link_button = document.querySelectorAll("#link-button");
 var save_reference = document.getElementById("save-reference");
 var cancel_reference = document.getElementById("cancel-reference");
+var reference_name_list = document.querySelectorAll("#reference-name-list");
+var reference_form = document.getElementById("reference-form");
 var referencer_diary_id;
 var referenced_diary_id;
 var selected_index = -1;
 
 // var checkedValue = document.querySelector('.messageCheckbox:checked').value
 
-function showReferencedCheckbox() // todo: referenced
-{
-  for (let k = 0; k < referenced_id.length; k++)
-  {
-    referenced_id[k].style.visibility = "visible";
-    referenced_text[k].style.visibility = "visible";
-    // link_button[i].style.visibility = "visible";
-    
-  }
-}
 
-function hideReferencedCheckbox() // todo: referenced       show
-{
-  for (let i = 0; i < referenced_id.length; i++)
-  {
-    referenced_id[i].style.visibility = "hidden";
-    // referenced_text[i].innerHTML = "";
-    // link_button[i].style.visibility = "hidden";
-    referenced_text[i].style.visibility = "hidden";
-    
-  }
-  cancel_reference.style.visiblity = "hidden";
-}
 
 function showReferencerCheckboxes() // todo: references          show
 {
@@ -45,9 +25,13 @@ function showReferencerCheckboxes() // todo: references          show
     // referencer_text[i].innerHTML = "Add";
     referenced_by[i].checked = false;
     save_reference.style.visibility = "hidden";
+    
+    reference_form.style.visibility = "hidden";
     cancel_reference.style.visibility = "hidden";
     referenced_by[i].disabled = false;
     referenced_id[i].style.visibility = "hidden";
+    reference_name_list[i].style.visibility = "hidden";
+    
   } 
   
   // hideReferencedCheckbox();  // todo: referenced          hide
@@ -68,6 +52,7 @@ function diaryReference()
     if (referenced_by[i].checked)
     {
       save_reference.style.visibility = "visible";
+      reference_form.style.visibility = "visible";
       cancel_reference.style.visibility = "visible";
       referenced_by[i].disabled = true;
       
@@ -75,9 +60,12 @@ function diaryReference()
       //TODO: hide all checkboxes except the one that is selected
       for (let ii= 0; ii< referenced_by.length; ii++)
       {
-          referenced_id[ii].style.visibility = "visible";
+          // referenced_id[ii].style.visibility = "visible";
+          // reference_name_list[ii].style.visibility = "visible";
           if ( ii != i){
             referenced_by[ii].style.visibility = "hidden";
+            referenced_id[ii].style.visibility = "visible";
+            reference_name_list[ii].style.visibility = "visible";
             
           }
           // showReferencedCheckbox();

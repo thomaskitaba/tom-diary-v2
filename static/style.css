@@ -390,6 +390,14 @@ background: #5bc0de;
   align-items: center;
 }
 
+.flex-form
+{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  flex-basis: 100%;
+}
+
 .flex,
 .edit-flex {
   display: flex;
@@ -595,6 +603,9 @@ background: #5bc0de;
 }
 .width-100 {
   width: 100%;
+}
+.width-190 {
+  width: 190px;
 }
 .width-auto {
   width: auto;
@@ -929,6 +940,25 @@ th {
 
 #referenced-id::after{
   content: " - Add";
+}
+
+#reference-name-list{
+  visibility: hidden;
+}
+#reference-form{
+  position: fixed;
+  display: flex;
+  width: 200px;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  top: 520px;
+  left: 50px;
+  border-radius: 20px;
+  
+  background: linear-gradient( to left,  rgba(248, 4, 244, 0.7),   rgba(4, 228, 248,0.7) );
+  z-index: 2;
+  visibility: hidden;
 }
 .save-reference-text{
   font-family: 'Times New Roman', Times, serif, Courier, monospace;

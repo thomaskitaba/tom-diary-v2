@@ -1353,8 +1353,9 @@ def diaryview():
 @login_required
 def addDiaryReference():
   if request.method == "POST":
-    
-    return render_template("experiment.html")
+    data = json.loads(request.data)
+    data = data['requested_id']
+    return data
   
   else:
     
@@ -1436,11 +1437,11 @@ def diaryedit():
         ud_id = request.form.get("ud-id")
 
         db.execute("INSERT INTO userdiarycatagory (ud_id, c_id, catagory_insertion_date, catagory_insertion_time) VALUES(?, ?, ?, ? )" , ud_id, catagory_tobe_added_id, currentday(), currentclock())
-
+        
 
         global_edited_diary[0] = diary_element_id  # type: ignore
         edit_mode[0] = 1
-
+        
         
         return redirect("/viewdiary")
     else:
@@ -1486,11 +1487,11 @@ def advancedsearchcatagories():
       # return render_template("search.html",catagory_types= catagory_types(), catagories = user_catagories(), all_catagories= all_catagories, normal_search= 1)   
       #TODO:
       global_catagory_type_id[0] = catagory_type_id #type: ignore
-      return render_template("search.html",catagory_types= catagory_types, catagories = global_catagory_with_parameter(catagory_type_id), all_catagories= all_catagories, normal_search= 1)    
+      return render_template("search.html", reference_name = get_reference_name(), catagory_types= catagory_types, catagories = global_catagory_with_parameter(catagory_type_id), all_catagories= all_catagories, normal_search= 1)    
       
       # return render_template("experiment.html", cat_3 = " catagory id not empty")
     
-    return render_template("search.html",catagory_types= catagory_types, catagories = global_catagory_with_parameter(catagory_type_id), all_catagories= all_catagories, normal_search= 1)
+    return render_template("search.html",  reference_name = get_reference_name(), catagory_types= catagory_types, catagories = global_catagory_with_parameter(catagory_type_id), all_catagories= all_catagories, normal_search= 1)
   
 #TODO: return render_template("search.html",catagory_types= catagory_types(), catagories = user_catagories(), all_catagories= all_catagories, normal_search= 1)    
 @app.route("/search", methods=["GET", "POST"])
@@ -1515,13 +1516,13 @@ def diarysearch():
     rows= db.execute("SELECT catagory_name FROM catagory WHERE catagory_id = ?", search_catagory_id )
     if rows:
       sub_catagory_name[0] = rows[0]["catagory_name"]
-    return render_template("search.html",current_user_name=global_user_name(), catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories= default_all_user_catagories(), normal_search= 1, sub_catagory_name = sub_catagory_name[0], number_of_results = number_of_results, results = results)
+    return render_template("search.html",  reference_name = get_reference_name(), current_user_name=global_user_name(), catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories= default_all_user_catagories(), normal_search= 1, sub_catagory_name = sub_catagory_name[0], number_of_results = number_of_results, results = results)
     
   else:
     
     all_catagories = db.execute("SELECT * FROM catagory")
     
-    return render_template("search.html",current_user_name=global_user_name(), catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories= default_all_user_catagories(), normal_search= 1)    
+    return render_template("search.html",  reference_name = get_reference_name(), current_user_name=global_user_name(), catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories= default_all_user_catagories(), normal_search= 1)    
     
 @app.route("/searchdate", methods=["GET", "POST"] )#type: ignore
 @login_required
@@ -1595,7 +1596,7 @@ def searchdates():
         
         results= db.execute("SELECT * FROM diarydatabaseview WHERE cat_type_id = ? AND id = ? AND given_date Like ? AND diary_status= ? ORDER BY given_date DESC" , session["catagory_type_id"], session["user_id"], "%" + global_search_start_date[0] + "%",  "Active")
         number_of_results = len(results)
-        return render_template("search.html",reference_name = get_reference_name(), all_catagories= default_all_user_catagories(), catagories=catagories, start_date= global_search_start_date[0], catagory_types= catagory_types,all_catagory = user_catagories(), normal_search= 1, number_of_results = number_of_results, results = results)
+        return render_template("search.html", reference_name = get_reference_name(), all_catagories= default_all_user_catagories(), catagories=catagories, start_date= global_search_start_date[0], catagory_types= catagory_types,all_catagory = user_catagories(), normal_search= 1, number_of_results = number_of_results, results = results)
         
       if search_task_to_do_additional[0] == "add-sub-catagories":
         # return render_template("experiment.html", cat_3 = session["sub_catagory_id"][0])
@@ -1619,7 +1620,7 @@ def searchdates():
         
         number_of_results = len(results)
         # return render_template("experiment.html", cat_2= number_of_results, cat_3= results)
-        return render_template("search.html",reference_name = get_reference_name(), all_catagories= default_all_user_catagories(), catagories=catagories, start_date= global_search_start_date[0], catagory_types= catagory_types,all_catagory = user_catagories(), normal_search= 1, number_of_results = number_of_results,  results = results)
+        return render_template("search.html", reference_name = get_reference_name(), all_catagories= default_all_user_catagories(), catagories=catagories, start_date= global_search_start_date[0], catagory_types= catagory_types,all_catagory = user_catagories(), normal_search= 1, number_of_results = number_of_results,  results = results)
         
       
       

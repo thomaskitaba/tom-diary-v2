@@ -120,7 +120,31 @@
     <div class="align-left border-red">
       
       {% for result in results %}
-      
+            <div id = "reference-form" class="flex-form">
+              <div class="margin-bottom-s">  
+                <select name="reference-type"  id="reference-type" class = "width-190 padding-s">
+                  <option value="11">18888</option>
+                  <option value="2">2jhgh</option>
+                  <option value="3">3iuhoi</option>
+                  <option value="4">4oluh</option>
+                  <option value="5">5555</option>
+                </select>
+              </div>
+
+              <div>
+                <select name="reference-type" id="reference-type" class = " width-190 padding-s">
+                  <option value="11">18888</option>
+                  <option value="2">2jhgh</option>
+                  <option value="3">3iuhoi</option>
+                  <option value="4">4oluh</option>
+                  <option value="5">5555</option>
+                </select>
+                  
+                
+              </div>
+              
+              
+            </div>
             <table class="float-bg-cyan">
               <div  class="flex-vertical-center" >
               <!-- <div class = "save-reference-text"> <button id="save-reference" type="submit" formaction="/addreference"  >Save</button> </div> -->
@@ -143,18 +167,22 @@
 
                     <input type="text" id="referenced-diary-id" hidden name="user-diary-id" value = ''>
                     <input type="text" id="referencer-diary-id" hidden name="user-diary-id" value = '{{result["diary_id"]}}'>
-                    
+                      
                       <input type="checkbox" id = "referenced-by-id" value='{{result["diary_id"]}}' onchange = 'diaryReference()'> <span id = "referencer-text">Ref </span> 
                       <input type="checkbox" id = "referenced-id" value= '{{result["diary_id"]}}'>
-                      <!-- {% if reference_name %}
-                        <select name="reference-name" id="">
-                        
+                      
+                      <!-- todo: if there is a reference name then display it in drop down option -->
+                      {% if reference_name %}
+                        <select name="reference-name-list" id="reference-name-list">
+                          <option value="1">Default-Link</option>
                           {% for ref_name in reference_name %}
                             <option value= 'ref_name["reference_name_id"]}}'> {{ref_name["reference_name"]}} </option>
                           {% endfor %}
-                        
+                          
                         </select>
-                      {% endif %} -->
+                      {% endif %}
+
+
                       <button type="submit" class= "my-button-1" id = "link-button" onclick="showReferencerCheckboxes()">Link</button>
                     
                   </div>
