@@ -5,29 +5,41 @@
 {% block main %} 
 
 {% if current_user_name %}
-<h3>username:</h3>
-{{current_user_name["username"]}} 
+  <h3>username:</h3>
+  {{current_user_name["username"]}} 
+  
 {% endif %}
 
 
 {% if normal_search %} 
 
 <div class="search-container float-bg-dark width-100"> <!-- search container  -->
+  
+  <!-- <div id="save-reference" class="flex-vertical-center" > 
+    <div class = "save-reference-text" formaction = "/addreference"> <a href="/addreference" >Save</a> </div>
+    <div>..|.. </div>
+    <div class = "Cancel-reference-text" onclick="showReferencerCheckboxes()"><a href="#">Cancel</a></div>
+    
+  </div> -->
+
   <form action="/search" method="POST"> 
+    <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/advancedsearchcatagories" >
   <div class = "search-header normal-flex-horizontal align-center wrap border-red ">
     
         <div class="search-catagory  normal-flex-veritcal align-center  width-auto border-green">
-        
-          <div>
-            <select id="multiSelect" name="search-catagory-id" id="">
-              {% for cat_info in catagories %}
+          <div class="margin-top-m center-text">
+            Search Sub_catagory
+          </div>
+          <div class = "margin-s ">
+            <select id= "multipleSelect" class="padding-s" name="search-catagory-id" data-search="True">
+              {% for cat_info in all_catagories %}
               <option value='{{ cat_info["catagory_id"]}}'>
                 {{ cat_info["catagory_name"]}}
               </option>
               {% endfor %}
             </select>
           </div>
-
+          
           <div >
             <button name="search-button" type="submit" class="my-button-1 self-align-center"
               formaction="/search">
@@ -35,57 +47,172 @@
             </button>
           </div>
         </div>  <!-- end of search catagory section-->
+      
+      <div class="float-bg-cyan">
+        <div class="search-date border-blue width-auto normal-flex-horizontal wrap">
+          <!-- <form action="/seachdate"> -->
+            <div class = "normal-flex-vertical wrap">
+              <input type="date" name="start-date" class = "border-green">
+              <!-- <label for="date-upto">upto</label> -->
+            </div>
 
-      <div class="search-date border-blue width-auto normal-flex-horizontal wrap">
-        <!-- <form action="/seachdate"> -->
-          <div class = "normal-flex-vertical wrap">
-            <input type="date" name="start-date" class = "border-green">
-            <!-- <label for="date-upto">upto</label> -->
-          <div>
-            <input name="date-upto-check-box" type="checkbox" value="upto"> Upto 
+            <div>
+              <input class = "chekbox-size-m" name="date-upto-check-box" type="checkbox" value="upto"> Upto 
+            </div>
+
+            <div>
+              <input type="date" name="end-date">
+            </div>
+
+            <div>
+            
+            </div>
+          
+        </div>
+        <div class="padding-s float-bg-light-s">
+          <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
+            <!-- TODO: catagory type -->
+            <select  name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
+              
+              {% for type in catagory_types %}
+                
+                <option value="{{type['catagory_type_id']}}"> {{ type["catagory_type_name"] }} </option>
+                
+              {% endfor %}
+            
+            </select>
+            <input class ="chekbox-size-m" name="search-type-check-box" type="checkbox" value="search-by-type" class=""> Search By CatagoryType 
           </div>
-          <div>
-          <input type="date" name="end-date">
+          <div class=" width-100 margin-m ">
+            <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="sub-catagory" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
+              {% for catagory in catagories %}
+                  {% if catagory["catagory_name"]%}
+                      <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
+                  {% endif %}
+              {% endfor %}
+            </select>
+          
+          </div>
+          <div class="center-elements ">
+              <button type = "submit" class = "my-button-1 cyan-box-shadow self-align-center"  formaction="/simpledate">Search</button>
+          </div>
         </div>
-          <button type = "submit" class = "my-button-1 cyan-box-shadow self-align-center"  formaction="/simpledate">Search</button>
-        </div>
-        
-      </div>
-      <div class="border-black">
-        <input type="text" name="discription" placeholder="discription">
-        <button type="submit" class="my-button-1 cyan-box-self-align-center " > Search </button>
-      </div>
-
       
   </div> <!-- end of search-catagory division-->
 
-  
   </div> <!-- end of search-header-->
 </form>
 
-  <!-- RESULT PART RESULT CONTAINER  -->
-  <div class="search-result border-blue width-100">
+  <!--TODO: RESULT PART RESULT CONTAINER  --------------------------------------------------------------->
+  <div class="search-result width-100">
+    <div class = "center-elements flex">
+      <div class="width-100 float-bg-light flex-horizontal">
+        <div class= "flex-horizontal  center-text">
+          <h3 class="margin-right-s">  {% if results %}  {{ number_of_results }} results  {% endif %} </h3>
+          <h3 class="margin-right-s">
+            {% if start_date %} {{start_date }} {% endif %}  
+            {% if end_date %} to {{ end_date }} {% endif %}
+          </h3>
+        </div>
+    </div>
+    </div>
     {% if results %} 
     <div class="align-left border-red">
+      
       {% for result in results %}
-          
-          <div class="float-bg-light cyan-box-shadow padding-s">
-            {{result["diary_id"]}}--{{result["given_date"]}}--{{result["diary_content"]}}
-          </div>
-          
+            <div id = "reference-form" class="flex-form">
+              <div class="margin-bottom-s">  
+                <select name="reference-type"  id="reference-type" class = "width-190 padding-s">
+                  <option value="11">18888</option>
+                  <option value="2">2jhgh</option>
+                  <option value="3">3iuhoi</option>
+                  <option value="4">4oluh</option>
+                  <option value="5">5555</option>
+                </select>
+              </div>
+
+              <div>
+                <select name="reference-type" id="reference-type" class = " width-190 padding-s">
+                  <option value="11">18888</option>
+                  <option value="2">2jhgh</option>
+                  <option value="3">3iuhoi</option>
+                  <option value="4">4oluh</option>
+                  <option value="5">5555</option>
+                </select>
+                  
+                
+              </div>
+              
+              
+            </div>
+            <table class="float-bg-cyan">
+              <div  class="flex-vertical-center" >
+              <!-- <div class = "save-reference-text"> <button id="save-reference" type="submit" formaction="/addreference"  >Save</button> </div> -->
+              <!-- <div>..|.. </div> -->
+              <div class = "save-reference-text" ><button id="cancel-reference"  onclick="showReferencerCheckboxes()" >Cancel</button> </div>
+              
+            </div>
+              <form  method ="POST" >
+                <div  class="flex-vertical-center" >
+                  <div class = "save-reference-text"> <button id="save-reference" type="submit" onclick= "addDiaryReference()"  >Save</button> </div>
+                  <!-- <div>..|.. </div> -->
+                  <!-- <div class = "save-reference-text" ><button id="cancel-reference"  onclick="showReferencerCheckboxes()" >Cancel</button> </div> -->
+                  
+                </div>
+              <tbody>
+                <div class="float-bg-cyan">
+                <tr class="float-bg-dark">
+                  <td>
+                  <div class = "flex-horizontal float-bg-dark">
+
+                    <input type="text" id="referenced-diary-id" hidden name="user-diary-id" value = ''>
+                    <input type="text" id="referencer-diary-id" hidden name="user-diary-id" value = '{{result["diary_id"]}}'>
+                      
+                      <input type="checkbox" id = "referenced-by-id" value='{{result["diary_id"]}}' onchange = 'diaryReference()'> <span id = "referencer-text">Ref </span> 
+                      <input type="checkbox" id = "referenced-id" value= '{{result["diary_id"]}}'>
+                      
+                      <!-- todo: if there is a reference name then display it in drop down option -->
+                      {% if reference_name %}
+                        <select name="reference-name-list" id="reference-name-list">
+                          <option value="1">Default-Link</option>
+                          {% for ref_name in reference_name %}
+                            <option value= 'ref_name["reference_name_id"]}}'> {{ref_name["reference_name"]}} </option>
+                          {% endfor %}
+                          
+                        </select>
+                      {% endif %}
+
+
+                      <button type="submit" class= "my-button-1" id = "link-button" onclick="showReferencerCheckboxes()">Link</button>
+                    
+                  </div>
+                </td>
+                <tr class = "float-bg-dark">
+                  <td class="align-left "> {{result["diary_id"]}} <h3> {{result["given_date"]}} </h3> {{result["catagory_name"]}}  </td>
+                  <td class="align-left "> {{result["diary_content"]}} </td>
+                </tr>
+                
+                </tr>
+              </div>
+              </tbody>
+            </form>
+            </table>
           
           
       {% endfor %} 
     </div>  
     
-      
+    
     {% else %}
-      <h3> DIsplay all user diaries here search your diary</h3>
+    
+      <h3> Display all user diaries here search your diary</h3>
+    
     </div>
-
+    
     {% endif %} 
   
   {% endif %}
 
 </div><!-- end of container div -->
 {% endblock %}
+  

@@ -41,8 +41,6 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-
-
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///diary.db")
 
@@ -219,8 +217,8 @@ def backtoedited(udcid,diaryelementid):
     global_edited_diary[0] = diaryelementid
     edit_mode[0] = 1
 
-def generate_json_diary():
-  pass
+def generate_json_reference():
+  return "thomas Kitaba"
 def generateJsonDiary():
   
   # all_catagory_info = catTypeAndSubCat(session["user_id"])
@@ -1262,7 +1260,18 @@ def diarywrite():
       catagory_types= db.execute("SELECT * FROM catagorytype")
       return render_template("diary.html", catagory_types= catagory_types, current_user_name=global_user_name(), catagories=global_catagory(), writediary= 1)
       #return render_template("diary.html", catagory_types= global_catagory_types(), current_user_name=global_user_name(), catagories=global_catagory(1), writediary= 1)
-      
+
+@app.route("/adddiaryreference" , methods=["GET", "POST"]) #type: ignore
+@login_required
+def diaryReference():
+  
+  if request.method == "POST":
+    
+    return render_template("experiment.html", cat_3 = "thomas kitaba")
+  else:
+    return render_template("experiment.html", cat_3 = "thomas kitba GET")
+
+  
 @app.route("/viewdiary", methods=["GET", "POST"])
 @login_required
 def diaryview():
@@ -1299,11 +1308,10 @@ def diaryview():
         
         temp_diary["diary_catagories"] = diary_catagories    
         
-        
         diary.append(temp_diary)
         #sort diary then send it to be displayed
         #     
-
+    
     diary.reverse()
     global_diary = diary
 
@@ -1331,7 +1339,8 @@ def diaryview():
     
     return render_template("diary.html",  current_user_name=global_user_name(),catagories= global_catagories(), diary=diary, view_all_condensed = 1)
     #return render_template("diary.html",  current_user_name=global_user_name(),catagories= global_catagory(global_catagory_type[0]), diary=diary, view_all_condensed = 1)
-    
+
+
 # --------------------------- works to view all data with duplicate ------------------------------
     diary = db.execute("SELECT * FROM diarydatabaseview WHERE id = ?", session["user_id"])
     #return render_template("viewdiary.html", diary=diary, view_all= 1)
@@ -1349,19 +1358,26 @@ def diaryview():
     #return render_template("diary.html",current_user_name=global_user_name(), catagories=global_catagory(global_catagory_type[0]), viewdiary=1)
     #------------------------ WORKS ------------------------------------------------------------------------------
 
-@app.route("/adddiaryreference",  methods=["Get", "POST"]) #type: ignore
+@app.route("/addreference", methods=["GET", "POST"])#type: ignore
 @login_required
 def addDiaryReference():
-  if request.method == "POST":
-    data = json.loads(request.data)
-    data = data['requested_id']
-    return data
   
+  if request.method == "POST": #type: ignore
+    user_diary_id = request.form.get("user-diary-id")
+    referenced_id = request.form.getlist("referenced-id")
+    referenced_by_id = request.form.get("referenced-by-id")
+    check_box = request.form.getlist("check-box")
+    # data = json.loads(request.data)
+    # data = data['requested_id']                           
+    # if not referenced_id: #type: ignore
+    # return render_template("experiment.html", cat_2 = "no diary refrenced")
+    
+    return render_template ("experiment.html", cat_1 = referenced_id , cat_2 = user_diary_id, cat_3 = check_box)
+    
   else:
     
     return apology("hello thomas kitaba")
-    
-  
+
 
 #|||||||||||||||||| -- CATAGORY -- |||||||||||||||||||
 @app.route("/changecatagory", methods=["Get", "POST"])  # type: ignore
@@ -1413,7 +1429,7 @@ def removecatagory():
         #TODO: send udc_id   to be used as ID  - inorder to take user back to the editeded row
 
         db.execute ("DELETE FROM userdiarycatagory WHERE udc_id = ?", user_diary_catagory_id)
-
+        
         global_edited_diary[0] = diary_element_id     # type: ignore
         edit_mode[0] = 1
         

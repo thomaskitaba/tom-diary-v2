@@ -34,7 +34,7 @@ function showReferencerCheckboxes() // todo: references          show
     
   } 
   
-  // hideReferencedCheckbox();  // todo: referenced          hide
+  // hideReferencedCheckbox();  // todo: referenced hide
   
 }
 function showSaveReference()
@@ -78,26 +78,26 @@ function diaryReference()
 }
 
 
-function addDiaryReference()
-{
-  console.log("Thomas Kitaba");
-  $(document).ready(function() {
-    $("#save-reference").on('click', function(event) {
-      $.ajax({
-        data : {
-            referencer_id : $("#referencer-diary-id").val(),
-            referenced_id: $("#referenced-diary-id").val(),
-            reference_name_id: 1
+// function addDiaryReference()
+// {
+//   console.log("Thomas Kitaba");
+//   $(document).ready(function() {
+//     $("#save-reference").on('click', function(event) {
+//       $.ajax({
+//         data : {
+//             referencer_id : $("#referencer-diary-id").val(),
+//             referenced_id: $("#referenced-diary-id").val(),
+//             reference_name_id: 1
 
-                },
-            type : 'POST',
-            url : '/adddiaryreference'
-          })
-      .done(function(data) {
-        alert("diaries succesfully linked")
-    });
-    event.preventDefault();
-    });
-});
+//                 },
+//             type : 'POST',
+//             url : '/adddiaryreference'
+//           })
+//       .done(function(data) {
+//         alert("diaries succesfully linked")
+//     });
+//     event.preventDefault();
+//     });
+// });
 
-}
+// }

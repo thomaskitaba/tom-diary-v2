@@ -4,10 +4,6 @@
 
 {% block main %} 
 
-{% if current_user_name %}
-<h3>username:</h3>
-{{current_user_name["username"]}} 
-{% endif %}
 
 
 {% if normal_search %} 
@@ -21,10 +17,11 @@
     
   </div> -->
 
+<!-- TODO: ============= START OF TOP ADVANCED SEARCH PART ======================= -->
   <form action="/search" method="POST"> 
     <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/advancedsearchcatagories" >
   <div class = "search-header normal-flex-horizontal align-center wrap border-red ">
-    
+  
         <div class="search-catagory  normal-flex-veritcal align-center  width-auto border-green">
           <div class="margin-top-m center-text">
             Search Sub_catagory
@@ -101,7 +98,8 @@
   </div> <!-- end of search-catagory division-->
 
   </div> <!-- end of search-header-->
-</form>
+<!-- </form> -->
+<!-- TODO: ============= END OF  OF TOP ADVANCED SEARCH PART ======================= -->
 
   <!--TODO: RESULT PART RESULT CONTAINER  --------------------------------------------------------------->
   <div class="search-result width-100">
@@ -146,15 +144,17 @@
               
             </div>
             <table class="float-bg-cyan">
-              <div  class="flex-vertical-center" >
-              <!-- <div class = "save-reference-text"> <button id="save-reference" type="submit" formaction="/addreference"  >Save</button> </div> -->
-              <!-- <div>..|.. </div> -->
-              <div class = "save-reference-text" ><button id="cancel-reference"  onclick="showReferencerCheckboxes()" >Cancel</button> </div>
-              
-            </div>
-              <form  method ="POST" >
+             
+            <!-- TODO: ============= START OF TOP BOTTOM DISPLAY FORM ======================= -->
+              <!-- <form  action = "/addreference" method ="POST" > -->
                 <div  class="flex-vertical-center" >
-                  <div class = "save-reference-text"> <button id="save-reference" type="submit" onclick= "addDiaryReference()"  >Save</button> </div>
+                  <!-- <div class = "save-reference-text"> <button id="save-reference" type="submit" formaction="/addreference"  >Save</button> </div> -->
+                  <!-- <div>..|.. </div> -->
+                  <div class = "save-reference-text" ><button id="cancel-reference"  onclick="showReferencerCheckboxes()" >Cancel</button> </div>
+                  
+                </div>
+                <div  class="flex-vertical-center" >
+                  <div class = "save-reference-text"> <button id="save-reference" type="submit" formaction="/addreference">Save</button> </div>
                   <!-- <div>..|.. </div> -->
                   <!-- <div class = "save-reference-text" ><button id="cancel-reference"  onclick="showReferencerCheckboxes()" >Cancel</button> </div> -->
                   
@@ -165,26 +165,28 @@
                   <td>
                   <div class = "flex-horizontal float-bg-dark">
 
-                    <input type="text" id="referenced-diary-id" hidden name="user-diary-id" value = ''>
-                    <input type="text" id="referencer-diary-id" hidden name="user-diary-id" value = '{{result["diary_id"]}}'>
+                    <input type="text" id="referenced-diary-id" hidden name="user-diary-id" value = '{{result["diary_id"]}}' >
+                    <input type="text" id="referencer-diary-id" hidden name="user-diary-id------" value = '{{result["diary_id"]}}'>
+                      <!-- TODO: Check boxes -------------------------------------------------- -->
+                      <input type="checkbox" name = "referenced-by-id" id = "referenced-by-id" value='{{result["diary_id"]}}' onchange = 'diaryReference()'> <span id = "referencer-text" class="align-left">Ref </span> 
+                      <input type="checkbox" name = "referenced-id" id = "referenced-id" value='{{result["diary_id"]}}'>link
+                      <!-- <input type="checkbox" name = "check-box" value = "tom" > -->
                       
-                      <input type="checkbox" id = "referenced-by-id" value='{{result["diary_id"]}}' onchange = 'diaryReference()'> <span id = "referencer-text">Ref </span> 
-                      <input type="checkbox" id = "referenced-id" value= '{{result["diary_id"]}}'>
-                      
+                      <!-- TODO: end of check boxes------------------------------------------------- -->
                       <!-- todo: if there is a reference name then display it in drop down option -->
+                      
                       {% if reference_name %}
                         <select name="reference-name-list" id="reference-name-list">
                           <option value="1">Default-Link</option>
+
                           {% for ref_name in reference_name %}
                             <option value= 'ref_name["reference_name_id"]}}'> {{ref_name["reference_name"]}} </option>
                           {% endfor %}
                           
                         </select>
                       {% endif %}
-
-
                       <button type="submit" class= "my-button-1" id = "link-button" onclick="showReferencerCheckboxes()">Link</button>
-                    
+                      
                   </div>
                 </td>
                 <tr class = "float-bg-dark">
@@ -195,24 +197,24 @@
                 </tr>
               </div>
               </tbody>
-            </form>
+            <!-- </form> -->
             </table>
-          
+            <!-- TODO: ============= START OF TOP BOTTOM DISPLAY FORM ======================= -->
           
       {% endfor %} 
     </div>  
-    
     
     {% else %}
     
       <h3> Display all user diaries here search your diary</h3>
     
-    </div>
+  </div>
     
     {% endif %} 
+  </form>
   
   {% endif %}
 
 </div><!-- end of container div -->
+
 {% endblock %}
-  
