@@ -1,5 +1,6 @@
 
 
+
 var catagory_type_id = document.getElementById ("catagory-type");
 var sub_catagory_id = document.getElementById("mulitpleSelect");
 var temp_catagory = document.getElementById("new-catagory");
@@ -33,6 +34,7 @@ function get_multipleSelects_suffix(string)
   console.log(suffix);
 }
 
+
 // todo:=========================================================================
 function getCatagories()
 {
@@ -47,7 +49,7 @@ function getCatagories()
       // console.log(recived_data);
       console.log("start rendering -----------------------------------------")
       loadCatagories(recived_data);
-      
+    
     }
   }
   user_catagories.send();

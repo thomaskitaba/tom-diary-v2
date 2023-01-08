@@ -1234,7 +1234,7 @@ def diarywrite():
             # 4 3  4
         
             #return render_template("experiment.html", test1=get_ud_id(), test2 = get_udc_id(), cat_2= cat_2, cat_1= cat_1, cat_3 = cat_3) 
-
+            
             # 3 4 4
         if cat_2 == cat_3 and cat_2 != cat_1:
             insert_user_diary_catagory(get_ud_id(), cat_1)
@@ -1258,20 +1258,20 @@ def diarywrite():
         
     else:
       catagory_types= db.execute("SELECT * FROM catagorytype")
-      return render_template("diary.html", catagory_types= catagory_types, current_user_name=global_user_name(), catagories=global_catagory(), writediary= 1)
+      return render_template("diary.html", catagory_types = catagory_types, current_user_name = global_user_name(), catagories=global_catagory(), writediary= 1)
       #return render_template("diary.html", catagory_types= global_catagory_types(), current_user_name=global_user_name(), catagories=global_catagory(1), writediary= 1)
-
-@app.route("/adddiaryreference" , methods=["GET", "POST"]) #type: ignore
-@login_required
-def diaryReference():
+      
+# @app.route("/adddiaryreference" , methods=["GET", "POST"]) #type: ignore
+# @login_required
+# def diaryReference():
   
-  if request.method == "POST":
+#   if request.method == "POST":
     
-    return render_template("experiment.html", cat_3 = "thomas kitaba")
-  else:
-    return render_template("experiment.html", cat_3 = "thomas kitba GET")
+#     return render_template("experiment.html", cat_3 = "thomas kitaba")
+#   else:
+#     return render_template("experiment.html", cat_3 = "thomas kitba GET")
 
-  
+
 @app.route("/viewdiary", methods=["GET", "POST"])
 @login_required
 def diaryview():
@@ -1362,22 +1362,61 @@ def diaryview():
 @login_required
 def addDiaryReference():
   
+  
   if request.method == "POST": #type: ignore
-    user_diary_id = request.form.get("user-diary-id")
+    user_diary_id = request.form.get("referenced-by-diary-id")
     referenced_id = request.form.getlist("referenced-id")
-    referenced_by_id = request.form.get("referenced-by-id")
-    check_box = request.form.getlist("check-box")
+    referenced_by_id = request.form.getlist("referenced-by-id")
+    reference_by_id = int(reference_by_id[0]) #type: ignore
+    reference_name_id = [request.form.get("reference_name_id")]
+    last_inserted_id = [-1]
+    rows = ['']
+    
+    if not reference_name_id:
+      reference_name_id[0] = 1 #type: ignore
+      
+    
+    
+    
+    
+    converted_referenced_id = []
+    # diary_ref_insertion_date = 1
+    #todo: convert strings in referenced_id checkbox list to integers (by eliminating duplicate)
+    for i in range(len(referenced_id)):
+      if len(converted_referenced_id) != 0:
+        for j in range(len(converted_referenced_id)):
+          if converted_referenced_id[j] == int(referenced_id[i]) :
+            break
+          if j == len(converted_referenced_id) - 1 and int(referenced_id[i]) != user_diary_id:
+            converted_referenced_id.append(int(referenced_id[i]))
+      else:
+        if referenced_id != user_diary_id:
+          converted_referenced_id.append(int(referenced_id[i]))       
     # data = json.loads(request.data)
     # data = data['requested_id']                           
     # if not referenced_id: #type: ignore
     # return render_template("experiment.html", cat_2 = "no diary refrenced")
-    
-    return render_template ("experiment.html", cat_1 = referenced_id , cat_2 = user_diary_id, cat_3 = check_box)
+    for i in range(len(converted_referenced_id)):
+      #TODO:  add referenced_id and referencer_id in diary reference
+      db.execute("INSERT INTO diaryreference (referenced_by_ud_id, referenced_ud_id, ref_name_id, diary_ref_insertion_date, diary_ref_insertion_time) VALUES (?, ?, ?, ?, ?)", referenced_by_id, converted_referenced_id[i], reference_name_id[0], currentday(), currentclock() )
+      
+      
+      #TODO: find ref_id of last inserted data in diaryreference
+      index = db.execute("SELECT * FROM diaryreference ORDER BY reference_id DESC LIMIT 1")
+      # last_inserted_id[0] = db.execute("SELECT COUNT(*) FROM diaryreference")
+      last_inserted_id[0] = index[0]["reference_id"]
+      # TODO: add connect diaryreference and userdaiary table
+      db.execute("INSERT INTO userdiaryreference (ref_id, udr_id) VALUES (?, ?)", last_inserted_id[0], referenced_by_id)
+      
+      
+    return render_template ("experiment.html", cat_1 = referenced_id , cat_2 =  referenced_by_id, cat_3 = last_inserted_id, cat_4 = converted_referenced_id)
     
   else:
-    
+    datas = [{'fname':"thomas"}, {'id': 12}]
+    return datas
     return apology("hello thomas kitaba")
-
+    
+    
 
 #|||||||||||||||||| -- CATAGORY -- |||||||||||||||||||
 @app.route("/changecatagory", methods=["Get", "POST"])  # type: ignore
@@ -1427,7 +1466,7 @@ def removecatagory():
         
         # this is the main UPDATE (update removed data to userdiary catagory )
         #TODO: send udc_id   to be used as ID  - inorder to take user back to the editeded row
-
+        
         db.execute ("DELETE FROM userdiarycatagory WHERE udc_id = ?", user_diary_catagory_id)
         
         global_edited_diary[0] = diary_element_id     # type: ignore

@@ -9,6 +9,8 @@ var save_reference = document.getElementById("save-reference");
 var cancel_reference = document.getElementById("cancel-reference");
 var reference_name_list = document.querySelectorAll("#reference-name-list");
 var reference_form = document.getElementById("reference-form");
+var text_box_User_diary_id = document.getElementById("referenced-diary-id")
+var clicked_index;
 var referencer_diary_id;
 var referenced_diary_id;
 var selected_index = -1;
@@ -34,7 +36,7 @@ function showReferencerCheckboxes() // todo: references          show
     
   } 
   
-  // hideReferencedCheckbox();  // todo: referenced hide
+  // hideReferencedCheckbox();  // todo: referenced          hide
   
 }
 function showSaveReference()
@@ -48,9 +50,17 @@ function diaryReference()
   
   for(let i = 0; i < referenced_by.length; i++)
   {
-    
+    clicked_index = $(this).closest('input').index();
+
+
+
     if (referenced_by[i].checked)
     {
+    
+      // todo: place ud_id in hidden textbox
+      $('#referenced-by-input-id').val() = 1;
+      
+      document.getElementById('referenced-by-input-id').val = 1;
       save_reference.style.visibility = "visible";
       reference_form.style.visibility = "visible";
       cancel_reference.style.visibility = "visible";
@@ -73,11 +83,14 @@ function diaryReference()
       // showReferencedCheckbox();
       
     }
-    
+    else {
+      showReferencerCheckboxes();
+    }
 
   }
+      alert(clicked_index);
+      console.log(clicked_index);
 }
-
 
 function addDiaryReference()
 {
@@ -85,22 +98,19 @@ function addDiaryReference()
   $(document).ready(function() {
     $("#save-reference").on('click', function(event) {
       $.ajax({
-        // data : {
-        //     referencer_id : $("#referencer-diary-id").val(),
-        //     referenced_id: $("#referenced-diary-id").val(),
-        //     reference_name_id: 1
+        data : {
+            referencer_id : $("#referencer-diary-id").val(),
+            referenced_id: $("#referenced-diary-id").val(),
+            reference_name_id: 1
 
-              type : 'Get',
-              url : '/adddiaryreference',
-              success: function(datas){
-                    $.each(datas, function(i,data){
-                        console.log(data);
-                    });
-              }
-        
-        
-        })
-        
+                },
+            type : 'POST',
+            url : '/adddiaryreference'
+          })
+      .done(function() {
+        console.log("thomas kitaba")
+    });
+    event.preventDefault();
     });
 });
 

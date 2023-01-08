@@ -109,7 +109,7 @@ a {
   text-decoration: none;
 }
 /*--------------NAVDOWN--------------------------------- */
-.nav-down:hover .profile-popup,
+/* .nav-down:hover .profile-popup,
 .nav-down:hover .edit-popup,
 .nav-down:hover .catagory-popup {
   background-color: rgb(222, 217, 217);
@@ -119,27 +119,29 @@ a {
   align-items: center;
   z-index: 10;
 }
+*/
 
-.nav-down:hover .diary-popup {
+.nav-down:hover .profile-popup
+{
   background-color: rgb(222, 217, 217);
   position: absolute;
   display: block;
-
+  flex-direction: column;
   align-items: center;
   z-index: 10;
 }
-
+/*
 .nav-down:hover .profile li {
   width: max-content;
   border-bottom: 2px solid black;
-}
+} */
 
 .nav-down {
   padding: 10px;
 }
 
 /*------------DIARY-DOWN --------------------------- */
-
+/* TODO: turn this on if you want to use the hover effect */
 .nav-down:hover .diary-popup {
   background-color: rgb(222, 217, 217);
   position: absolute;
@@ -193,6 +195,26 @@ ul li {
   height: 200px;
   width: 100%;
 }
+#diary-popup {
+  background: linear-gradient(to left, rgb(244, 143, 246), rgb(187, 244, 244));
+  position: absolute;
+  display: none;
+
+  bottom: 100%;
+  height: auto;
+  left: 0px;
+  list-style: none;
+  border-radius: 5px;
+
+  width: max-content;
+  box-shadow: -2px 0 4px 0 rgb(8, 245, 237, 0.5),
+    2px 0 4px 0 rgb(8, 245, 237, 0.5), 0px 2px 4px 0 rgb(8, 245, 237, 0.5);
+}
+#diary-popup textarea {
+  height: 200px;
+  width: 100%;
+}
+
 .catagory-popup {
   background: linear-gradient(to left, rgb(244, 143, 246), rgb(187, 244, 244));
   position: absolute;

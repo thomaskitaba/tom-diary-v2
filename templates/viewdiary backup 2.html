@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+{% if view_all %}
+
+    {% for diary_info in diary %}
+        <p>{{ index(diary_info) + 1}}--{{ diary_info["diary_content"]  }} --{{ diary_info["username"]  }}---{{ diary_info["catagory_name"] }} ---{{ diary_info["diary_written_date"] }}--{{ diary_info["  "] }} </p>
+
+    {% endfor %}
+
+{% endif %}
+
+{% if view_all_condensed %}
+
+    <div class="">
+        
+            <div class = "green-border cyan-box-shadow ">
+                {% if diary %}
+                    {% for diary_info in diary %}
+                            
+                                <div class = "  view-flex flex magenta-box-shadow padding-s">
+
+                                    <div class = "padding-s view-flex">
+                                        <div> <span>{{diary_info["number"]}} </span>
+                                        {{ diary_info["diary_content"] }}</div>
+                                    </div>
+
+                                    <div class = " padding-s view-flex flex no-wrap">
+                                        <div class = "view-flex">{{diary_info["diary_written_date"]}}</div>
+                                        
+                                        <div class = "view-flex">{{diary_info["catagory0"]}}, {{diary_info["catagory1"]}}, {{diary_info["catagory2"]}}</div>
+                                        <div class="view-flex">{{ diary_info["discription"]}}</div>
+                                        <div class = " view-flex flex-end flex no-wrap "> 
+                                            <div class = " view-flex">
+                                                <form action="/viewalldiary" method = "POST" class = "flex-end">
+                                                    <input type="text" hidden name = "diary-id" value='{{ diary_info["id"] }}'>
+                                                    <button type = "submit" class=" my-button-1"> Edit</button> 
+                                                </form>
+                                              
+                                            </div>
+                                    
+                                        </div>
+                                        
+                                            
+                                    </div>
+                                
+                                
+                                </div>
+
+                    {% endfor %}
+                {% endif %}
+                </div>
+
+        
+    </div>
+        
+
+{% endif %}
+
+    <!--
+
+    {% if view_writen_diary %}
+    <p>{{diary["diary_id"]}}-- {{diary["diary_content"]}}</p>
+        {% if catagory %}
+    <p>  {% for cat_info in catagory %}
+            <span> ({{cat_info["catagory_name"]}}) </span> 
+
+        {% endfor %}
+        {% endif %}
+        
+    </p> 
+    {% endif %}
+-->
+    
+
+    
+    
+
+
+
+
+
+
+{% endblock %}
+
+

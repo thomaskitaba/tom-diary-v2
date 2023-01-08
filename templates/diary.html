@@ -64,8 +64,7 @@
             <tr>
 
                 <td colspan="2"><div class ="fit-content main-title center-center-body"> Write your diary here </div>  </td>
-                
-                
+              
             </tr>
             <tr>
                 
@@ -359,13 +358,9 @@
                                               
                                         <li id = "edit-catagory-button" class=" nav-down padding-zero"> 
                                             
-                                            <h3 class = "my-button-1 cyan-box-shadow" >
+                                            <!------------------     form action action action -->   
                                               
-                                              {{diary_catagories[1]}}
-                                              
-                                            </h3><!------------------     form action action action -->   
-                                              
-                                                <ul id = '{{diary_catagories[0]}}' class="catagory-popup equal-flex make-visibel">
+                                                <ul  class="catagory-popup diary-popup equal-flex make-visibel" id = '{{diary_catagories[0]}}'>
                                                         
                                                     <li>
                                                         <div class="edit-div flex">
@@ -414,13 +409,16 @@
                                                     <!-- <li>Go and Add catagory in <br> <a href="/managecatagrory">manage catagory section</a></li> -->
                                                     
                                                 </ul>
-                                        
+                                                <button id="diary-catagory" class = "my-button-1 cyan-box-shadow" >
+                                              
+                                                  {{diary_catagories[1]}}
+                                                  
+                                                </button>
                                         </li>
                                         
                                   </ul>
 
-                                
-                                {% endfor %} <!-- end of diary_catagories in diary_info["diary_catagories"]-->
+                                  {% endfor %} <!-- end of diary_catagories in diary_info["diary_catagories"]-->
 
                               {% endif %}  <!-- end of diary info-->
                             </div>
@@ -437,7 +435,7 @@
                                         
                                         <li class="edit-form-popup  nav-down padding-zero "> {{diary_info["given_date"]}} | {{diary_info["given_time"]}}
                                             <!------------------form action action action -------------------->    
-                                                <ul class="edit-popup equal-flex ">
+                                                <ul class="edit-popup diary-popup equal-flex ">
                                                         <li>Date: {{diary_info["diary_written_date"]}}</li>
                                                         <li>Time: {{diary_info["diary_written_date"]}} </li>   
                                                         <li>
@@ -460,7 +458,7 @@
                                         
                                     </ul> 
                                     
-                                </form>
+                                  </form>
                                 
                                 </div>
                             </div>
@@ -480,11 +478,10 @@
                   <!------------------------>
                   <ul class=" nav margin-zero ">
                       
-                      <li class="nav-down padding-zero "> <button  type = "submit" class="my-button-1 cyan-box-shadow" >Edit Content </button>
+                      <li class="nav-down padding-zero "> 
                           <!------------------form action action action -------------------->    
-                              <ul class="edit-form-popup diary-popup padding-bottom-s">
-                                <li>Change content of Your Note <br>(your {{diary_info["ud_id"]}} <sup>th</sup> diary log)</li>                                                     <li>
-                                          
+                              <ul class="diary-popup" id = "diary-popup">
+                                <li>Change content of Your Note <br>(your {{diary_info["ud_id"]}} <sup>th</sup> diary log)</li>                                                
                                             <textarea  id="textarea" class=" border-green diary-box neon-box-shadow" name="diary-content" row= "50" cols="48"
                                             placeholder="Write your diary Here" type="text" style="width: 100%;
                                             min-height: 100px;" value = '{{diary_info["diary_content"] }}'> 
@@ -498,17 +495,19 @@
                                             <input name = "diary-id" type="text" hidden value = '{{diary_info["diary_id"]}}' >
                                             <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
 
-                                            <button  type="submit" class="my-button-1 margin-zero" >Save</button>
+                                            <button type="submit" class="my-button-1 margin-zero" >Save</button>
                                                   
-                                                                                    
-                                      </li>
+                                                  
+                                  </li>
                                       
-                          
+                                
+                                </ul>
                       </li>
-                      
+                      <li></li>
                   </ul> 
-                  
+                  <li> <button   id="edit-content" class="my-button-1 cyan-box-shadow" >Edit Content </button> </li>
               </form>
+              
 
             <!--=======================================================================================-->
                             <!--        Edit Diary    
@@ -536,28 +535,28 @@
                                     
                                     <!------------------------>
                                     <ul class=" nav margin-zero ">
-                                        
-                                        <li class="nav-down padding-zero "> <button  type = "submit" class="my-button-1 cyan-box-shadow" >Add-catagory  </button>
+                                        <li>
                                             <!------------------form action action action -------------------->    
-                                                <ul class="edit-popup">
+                                                <ul class="edit-popup diary-popup">
                                                         <li>Add Catagory for current diary ({{diary_info["ud_id"]}})</li>                                                        <li>
                                                             <div>
                                                                 <select class="select-s" name="catagory-id-list">
                                                                     
                                                                     {% for catagory in catagories %}
                                                                         {% if catagory["catagory_name"]%}
+
                                                                             <option value= "{{catagory['catagory_id']}}" >{{catagory["catagory_name"]}}</option>
                                                                             
                                                                         {% endif %}
                                                                     {% endfor %}
-                                                                            
+                                                                        
                                                                 </select>
                                                             </div>
                                                                 <div class = " flex padding-zero margin-top-s">
                                                                   
                                                                     <input name = "ud-id" type="text" hidden value = '{{diary_info["ud_id"]}}' >
                                                                     <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
-
+ 
                                                                     <button  type="submit" class="my-button-1 margin-zero" > ADD New</button>
                                                                     
                                                                 </div>
@@ -570,6 +569,7 @@
                                                 </ul>
                                             
                                         </li>
+                                        <li class="nav-down padding-zero "> <button  id="add-catagory" class="my-button-1 cyan-box-shadow" > Add-catagory </button>
                                         
                                     </ul> 
                                     
@@ -584,8 +584,8 @@
                               </form>
                             </div>
                         </div>
-                            
-                                
+                          
+                          
                     </div>
                     
                     
