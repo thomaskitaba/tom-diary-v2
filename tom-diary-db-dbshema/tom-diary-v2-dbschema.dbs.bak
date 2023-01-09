@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="tom-diary-db-txt.txt" id="Project-13c" database="Sqlite" >
+	<schema name="public" >
+		<table name="catagory" spec="" >
+			<column name="catagory_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="cat_type_id" type="VARCHAR" jt="12" mandatory="y" >
+				<defo><![CDATA[1]]></defo>
+			</column>
+			<column name="catagory_name" type="TEXT" jt="-1" mandatory="y" />
+			<column name="insertion_date" type="VARCHAR" jt="12" />
+			<column name="insertion_time" type="VARCHAR" jt="12" />
+			<index name="pk_catagory" unique="PRIMARY_KEY" >
+				<column name="catagory_id" />
+			</index>
+			<fk name="FK_catagory catagorytype" to_schema="public" to_table="catagorytype" options="" >
+				<fk_column name="cat_type_id" pk="catagory_type_id" />
+			</fk>
+		</table>
+		<table name="catagorytype" spec="" >
+			<column name="catagory_type_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="catagory_type_name" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="catagory_type_creation_date" type="VARCHAR" jt="12" />
+			<column name="catagory_type_creation_time" type="VARCHAR" jt="12" />
+			<column name="type_description" type="VARCHAR" jt="12" />
+			<index name="pk_catagorytype" unique="PRIMARY_KEY" >
+				<column name="catagory_type_id" />
+			</index>
+		</table>
+		<table name="diary" spec="" >
+			<column name="diary_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="diary_content" type="TEXT" jt="-1" />
+			<column name="diary_status" type="TEXT" jt="-1" >
+				<defo><![CDATA[Active]]></defo>
+			</column>
+			<column name="description" type="VARCHAR" jt="12" />
+			<index name="pk_diary" unique="PRIMARY_KEY" >
+				<column name="diary_id" />
+			</index>
+		</table>
+		<table name="diaryreference" spec="" >
+			<column name="reference_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="referenced_by_ud_id" type="INTEGER" jt="4" />
+			<column name="referenced_ud_id" type="INTEGER" jt="4" />
+			<column name="ref_name_id" type="INTEGER" jt="4" />
+			<column name="diary_ref_insertion_date" type="TEXT" jt="-1" />
+			<column name="diary_ref_insertion_time" type="TEXT" jt="-1" />
+			<index name="pk_diaryreference" unique="PRIMARY_KEY" >
+				<column name="reference_id" />
+			</index>
+			<fk name="FK_diaryreference referencename" to_schema="public" to_table="referencename" options="" >
+				<fk_column name="ref_name_id" pk="reference_name_id" />
+			</fk>
+		</table>
+		<table name="referencename" spec="" >
+			<column name="reference_name_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="reference_name" type="VARCHAR" jt="12" />
+			<column name="ref_type_id" type="INTEGER" jt="4" />
+			<column name="u_ref_id" type="INTEGER" jt="4" />
+			<column name="reference_name_description" type="VARCHAR" jt="12" />
+			<column name="reference_name_insertion_date" type="VARCHAR" jt="12" />
+			<column name="reference_name_insertion_time" type="VARCHAR" jt="12" />
+			<index name="pk_referencename" unique="PRIMARY_KEY" >
+				<column name="reference_name_id" />
+			</index>
+			<fk name="FK_referencename referencetype" to_schema="public" to_table="referencetype" options="" >
+				<fk_column name="ref_type_id" pk="reference_type_id" />
+			</fk>
+			<fk name="FK_referencename users" to_schema="public" to_table="users" options="" >
+				<fk_column name="u_ref_id" pk="id" />
+			</fk>
+		</table>
+		<table name="referencetype" >
+			<column name="reference_type_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="reference_type_name" type="TEXT" jt="-1" />
+			<column name="reference_type_discription" type="TEXT" jt="-1" />
+			<column name="reference_type_insertion_date" type="TEXT" jt="-1" />
+			<index name="pk_referencetype" unique="PRIMARY_KEY" >
+				<column name="reference_type_id" />
+			</index>
+		</table>
+		<table name="sqlite_sequence" />
+		<table name="usercatagory" spec="" >
+			<column name="user_catagory_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="u_id_in_uc" type="VARCHAR" jt="12" />
+			<column name="cat_type_id_in_uc" type="VARCHAR" jt="12" />
+			<column name="type_creation_date" type="VARCHAR" jt="12" />
+			<column name="type_creation_time" type="VARCHAR" jt="12" />
+			<index name="pk_usercatagory" unique="PRIMARY_KEY" >
+				<column name="user_catagory_id" />
+			</index>
+			<fk name="FK_usercatagory users" to_schema="public" to_table="users" options="" >
+				<fk_column name="u_id_in_uc" pk="id" />
+			</fk>
+			<fk name="FK_usercatagory catagorytype" to_schema="public" to_table="catagorytype" options="" >
+				<fk_column name="cat_type_id_in_uc" pk="catagory_type_id" />
+			</fk>
+		</table>
+		<table name="userdiary" spec="" >
+			<column name="ud_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="d_id" type="INTEGER" jt="4" />
+			<column name="u_id" type="INTEGER" jt="4" />
+			<column name="given_date" type="TEXT" jt="-1" >
+				<defo><![CDATA[CURRENT_TIMESTAMP]]></defo>
+			</column>
+			<column name="diary_written_date" type="VARCHAR" jt="12" />
+			<column name="diary_written_time" type="VARCHAR" jt="12" />
+			<column name="given_time" type="VARCHAR" jt="12" />
+			<column name="number_of_edits" type="VARCHAR" jt="12" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="number_of_" type="VARCHAR" jt="12" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<index name="pk_userdiary" unique="PRIMARY_KEY" >
+				<column name="ud_id" />
+			</index>
+			<fk name="FK_userdiary diary" to_schema="public" to_table="diary" options="" >
+				<fk_column name="d_id" pk="diary_id" />
+			</fk>
+			<fk name="FK_userdiary users" to_schema="public" to_table="users" options="" >
+				<fk_column name="u_id" pk="id" />
+			</fk>
+		</table>
+		<table name="userdiarycatagory" spec="" >
+			<column name="udc_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="ud_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="c_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="catagory_insertion_time" type="VARCHAR" jt="12" />
+			<column name="catagory_insertion_date" type="VARCHAR" jt="12" />
+			<column name="number_of_edits_made" type="VARCHAR" jt="12" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<index name="pk_userdiarycatagory" unique="PRIMARY_KEY" >
+				<column name="udc_id" />
+			</index>
+			<fk name="FK_userdiarycatagory userdiary" to_schema="public" to_table="userdiary" options="" >
+				<fk_column name="ud_id" pk="ud_id" />
+			</fk>
+			<fk name="FK_userdiarycatagory catagory" to_schema="public" to_table="catagory" options="" >
+				<fk_column name="c_id" pk="catagory_id" />
+			</fk>
+		</table>
+		<table name="userdiaryreference" spec="" >
+			<column name="user_diary_reference_id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="ref_id" type="INTEGER" jt="4" />
+			<column name="udr_id" type="INTEGER" jt="4" />
+			<index name="pk_userdiaryreference" unique="PRIMARY_KEY" >
+				<column name="user_diary_reference_id" />
+			</index>
+			<fk name="FK_userdiaryreference diaryreference" to_schema="public" to_table="diaryreference" options="" >
+				<fk_column name="ref_id" pk="reference_id" />
+			</fk>
+			<fk name="FK_userdiaryreference userdiary" to_schema="public" to_table="userdiary" options="" >
+				<fk_column name="udr_id" pk="ud_id" />
+			</fk>
+		</table>
+		<table name="users" spec="" >
+			<column name="id" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="username" type="TEXT" jt="-1" mandatory="y" />
+			<column name="hash" type="TEXT" jt="-1" mandatory="y" />
+			<column name="fname" type="VARCHAR" jt="12" />
+			<column name="lname" type="VARCHAR" jt="12" />
+			<column name="useremail" type="TEXT" jt="-1" />
+			<column name="dateregistered" type="VARCHAR" jt="12" />
+			<column name="dateofbirth" type="VARCHAR" jt="12" />
+			<column name="primaryphone" type="VARCHAR" jt="12" />
+			<column name="country" type="VARCHAR" jt="12" />
+			<column name="secondaryphone" type="VARCHAR" jt="12" />
+			<column name="city" type="VARCHAR" jt="12" />
+			<column name="gender" type="VARCHAR" jt="12" />
+			<column name="facebookaddress" type="VARCHAR" jt="12" />
+			<column name="telegramaddress" type="VARCHAR" jt="12" />
+			<column name="instagramaddress" type="VARCHAR" jt="12" />
+			<column name="twitteraddress" type="VARCHAR" jt="12" />
+			<column name="useraddress" type="VARCHAR" jt="12" />
+			<column name="numberofprofilechanges" type="VARCHAR" jt="12" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="emailconfirmed" type="VARCHAR" jt="12" >
+				<defo><![CDATA['False']]></defo>
+			</column>
+			<index name="pk_users" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="username" unique="UNIQUE_INDEX" >
+				<column name="username" />
+			</index>
+		</table>
+		<view name="diarycatagoryview" >
+			<view_script><![CDATA[CREATE VIEW diarycatagoryview AS SELECT * FROM userdiarycatagory JOIN catagory ON catagory.catagory_id = userdiarycatagory.c_id]]></view_script>
+		</view>
+		<view name="diarydatabaseview" >
+			<view_script><![CDATA[CREATE VIEW diarydatabaseview AS SELECT * FROM userdiaryview LEFT JOIN diarycatagoryview ON diarycatagoryview.ud_id = userdiaryview.ud_id]]></view_script>
+		</view>
+		<view name="userCatagoryInfo" >
+			<view_script><![CDATA[CREATE VIEW userCatagoryInfo AS SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON usercatagory.u_id_in_uc = users.id]]></view_script>
+		</view>
+		<view name="userdiaryview" >
+			<view_script><![CDATA[CREATE VIEW userdiaryview AS SELECT * FROM users JOIN userdiary ON userdiary.u_id = users.id JOIN diary ON diary.diary_id = userdiary.d_id]]></view_script>
+		</view>
+	</schema>
+	<layout name="Layout" id="Layout-eda" show_relation="columns" >
+		<entity schema="public" name="catagory" color="C7F4BE" x="976" y="464" />
+		<entity schema="public" name="catagorytype" color="C7F4BE" x="960" y="288" />
+		<entity schema="public" name="diary" color="BED3F4" x="1776" y="448" />
+		<entity schema="public" name="diarycatagoryview" color="BED3F4" x="1968" y="592" />
+		<entity schema="public" name="diarydatabaseview" color="BED3F4" x="1968" y="512" />
+		<entity schema="public" name="diaryreference" color="BED3F4" x="1904" y="176" />
+		<entity schema="public" name="referencename" color="C7F4BE" x="1568" y="48" />
+		<entity schema="public" name="referencetype" color="C7F4BE" x="1872" y="48" />
+		<entity schema="public" name="sqlite_sequence" color="3986C1" x="1632" y="608" />
+		<entity schema="public" name="userCatagoryInfo" color="BED3F4" x="1424" y="608" />
+		<entity schema="public" name="usercatagory" color="C7F4BE" x="992" y="96" />
+		<entity schema="public" name="userdiary" color="BED3F4" x="1568" y="272" />
+		<entity schema="public" name="userdiarycatagory" color="C7F4BE" x="1184" y="480" />
+		<entity schema="public" name="userdiaryreference" color="BED3F4" x="1920" y="368" />
+		<entity schema="public" name="userdiaryview" color="BED3F4" x="1808" y="608" />
+		<entity schema="public" name="users" color="C7F4BE" x="1280" y="64" />
+		<callout x="48" y="192" pointer="Round" >
+			<comment><![CDATA[Add tables to the layout diagram (here) by drag & drop from the Project Tree.
+Drop this callout from its right-click pop-up.]]></comment>
+		</callout>
+	</layout>
+</project>

@@ -109,7 +109,7 @@ a {
   text-decoration: none;
 }
 /*--------------NAVDOWN--------------------------------- */
-/* .nav-down:hover .profile-popup,
+.nav-down:hover .profile-popup,
 .nav-down:hover .edit-popup,
 .nav-down:hover .catagory-popup {
   background-color: rgb(222, 217, 217);
@@ -119,7 +119,7 @@ a {
   align-items: center;
   z-index: 10;
 }
-*/
+
 
 .nav-down:hover .profile-popup
 {
@@ -130,11 +130,11 @@ a {
   align-items: center;
   z-index: 10;
 }
-/*
+
 .nav-down:hover .profile li {
   width: max-content;
   border-bottom: 2px solid black;
-} */
+} 
 
 .nav-down {
   padding: 10px;
@@ -306,12 +306,9 @@ button {
   text-decoration: none;
 }
 
-/* index page elements */
 .home-section > article {
   flex: 1;
 }
-
-/* used in manage diary */
 
 .manage-diary a {
   text-decoration: none;

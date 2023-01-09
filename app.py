@@ -180,13 +180,19 @@ def get_diary_database_view():
     diary_database_view = db.execute("SELECT * FROM diarydatabaseview WHERE diary_status = ?", "Active")
     return diary_database_view
 
-def get_diary_catagory_table(diaryid):
-    diary_catagory_database_table = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id JOIN userdiarycatagory ON userdiarycatagory.ud_id = userdiary.ud_id JOIN catagory ON catagory.catagory_id = userdiarycatagory.c_id WHERE diary_id = ?", diaryid)
+def get_diary_content_info(user_diary_id):
+  
+  ud_id_info = db.execute("SELECT ud_id, u_id, trim(diary_content), given_date FROM diarydatabaseview WHERE u_id = ? AND ud_id = ? AND diary_status = ?",  session["user_id"], user_diary_id, 'Active')
+  return ud_id_info
 
-    return diary_catagory_database_table
+def get_diary_catagory_table(diaryid):
+  diary_catagory_database_table = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id JOIN userdiarycatagory ON userdiarycatagory.ud_id = userdiary.ud_id JOIN catagory ON catagory.catagory_id = userdiarycatagory.c_id WHERE diary_id = ?", diaryid)
+
+  return diary_catagory_database_table
 
 def get_catagory_name(userdiaryid):
-
+    
+    
     # for security purpose we used the diarydatabaseview   view to show information
     
     catagory = db.execute("SELECT * FROM diarycatagoryview WHERE ud_id = ?", userdiaryid)
@@ -960,7 +966,7 @@ def generatecatagory():
   if request.method == "POST":
     catagory_type_id = request.form.get("catagory-type")
     diary_content = request.form.get("diarytextarea")
-    
+    diary_content = diary_content.strip()  #type: ignore
     if not diary_content:
       diary_content= "empty content"
     
@@ -1014,6 +1020,7 @@ def jsonajax():
     multiple_catagories_selected = request.form.getlist("native-select")
     # return render_template("experiment.html", cat_3 = multiple_catagories_selected )
     diary_text = request.form["diarytextarea"] # works
+    diary_text = diary_text.strip()
     diary_description = request.form["diary-description"]
     
     # return render_template("experiment.html", cat_3 = multiple_catagories_selected )
@@ -1131,6 +1138,7 @@ def diarywrite():
     """Buy shares of stock"""
     if request.method == "POST":
         diary_text = request.form["diarytextarea"] # works
+        diary_text = diary_text.strip()
         given_date = request.form["given-date"] # works
         given_time = request.form["given-time"]
         diary_description = request.form["diary-description"]
@@ -1412,12 +1420,22 @@ def addDiaryReference():
     return render_template ("experiment.html", cat_1 = referenced_id , cat_2 =  referenced_by_id, cat_3 = last_inserted_id, cat_4 = converted_referenced_id)
     
   else:
-    datas = [{'fname':"thomas"}, {'id': 12}]
-    return datas
-    return apology("hello thomas kitaba")
+    return redirect("search.html")
     
     
+@app.route("/viewreferences", methods=["GET", "POST"]) #type: ignore
+@login_required
+def viewreference():
 
+  if request.method == "POST":
+    user_diary_id = request.form.get("referenced-by-id") #type: ignore
+    user_diary_info = get_diary_content_info(user_diary_id)
+    return render_template("experiment.html",cat_2 = user_diary_id, cat_3 = user_diary_info)
+    
+  else:
+    return render_template("experiment.html" , cat_3 = "request = GET")
+  
+  
 #|||||||||||||||||| -- CATAGORY -- |||||||||||||||||||
 @app.route("/changecatagory", methods=["Get", "POST"])  # type: ignore
 @login_required
@@ -1656,7 +1674,6 @@ def searchdates():
       if search_task_to_do_additional[0] == "add-sub-catagories":
         # return render_template("experiment.html", cat_3 = session["sub_catagory_id"][0])
         sub_catagory = []
-        
         
         if session["sub_catagory_id"][0] != 0:
           sub_catagory = session["sub_catagory_id"][0].split(",")
@@ -2097,20 +2114,37 @@ def takelog():
     catagory_types= db.execute("SELECT * FROM catagorytype JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON users.id= usercatagory.u_id_in_uc WHERE usercatagory.u_id_in_uc = ?", session["user_id"])
     
     # catagories = db.execute("SELECT * FROM catagory")  
-    
     # catagories = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON usercatagory.cat_type_id_in_uc = catagorytype.catagory_type_id JOIN users ON users.id = usercatagory.u_id_in_uc WHERE id = ?", session["user_id"])
     
     catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ? AND catagorytype.catagory_type_id = ?", session["user_id"], 1)
     
     # catagories = db.execute("SELECT * FROM catagory")
+    
     json_catagories = reloadJsonCatagory()
     # return render_template("experiment.html", cat_3= json_catagories)
     return render_template("jsonajax.html", json_catagories = reloadJsonCatagory(), catagory_types= catagory_types, catagories = catagories, current_user_name= global_user_name())
     
-  
-  
-
     
+    
+@app.route("/stripdiary", methods=["GET", "POST"]) #type: ignore
+@login_required
 
+def stripdiary():
+  if request.method == "POST":
+    
+    return render_template("experiment.html", cat_3= "Post request for thomas kitaba diary")
+  else:
+    rows = db.execute("SELECT * FROM diary")
+    
+    for row in rows:
+      new_diary_content = row["diary_content"]
+      
+      new_diary_content = new_diary_content.strip()
+      
+      db.execute("UPDATE diary SET diary_content = ? WHERE diary_id = ?", new_diary_content, row["diary_id"] )
+    
+    
+    rows = db.execute("SELECT * FROM diary")
+    return render_template("experiment.html", cat_3 = rows)
 
 

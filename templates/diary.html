@@ -477,10 +477,10 @@
                   
                   <!------------------------>
                   <ul class=" nav margin-zero ">
-                      
+                    <li> <button   id="edit-content" class="my-button-1 cyan-box-shadow" >Edit Content </button> </li>
                       <li class="nav-down padding-zero "> 
                           <!------------------form action action action -------------------->    
-                              <ul class="diary-popup" id = "diary-popup">
+                              <ul class="diary-popup edit-popup" id = "diary-popup">
                                 <li>Change content of Your Note <br>(your {{diary_info["ud_id"]}} <sup>th</sup> diary log)</li>                                                
                                             <textarea  id="textarea" class=" border-green diary-box neon-box-shadow" name="diary-content" row= "50" cols="48"
                                             placeholder="Write your diary Here" type="text" style="width: 100%;
@@ -505,7 +505,7 @@
                       </li>
                       <li></li>
                   </ul> 
-                  <li> <button   id="edit-content" class="my-button-1 cyan-box-shadow" >Edit Content </button> </li>
+                  
               </form>
               
 
@@ -556,7 +556,7 @@
                                                                   
                                                                     <input name = "ud-id" type="text" hidden value = '{{diary_info["ud_id"]}}' >
                                                                     <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
- 
+
                                                                     <button  type="submit" class="my-button-1 margin-zero" > ADD New</button>
                                                                     
                                                                 </div>
