@@ -22,7 +22,7 @@ JOIN userdiary ON userdiary.u_id = users.id
 JOIN diary ON diary.diary_id = userdiary.d_id
 /* userdiaryview(id,username,hash,fname,lname,useremail,dateregistered,dateofbirth,primaryphone,country,secondaryphone,city,gender,facebookaddress,telegramaddress,instagramaddress,twitteraddress,useraddress,numberofprofilechanges,emailconfirmed,ud_id,d_id,u_id,given_date,diary_written_date,diary_written_time,given_time,number_of_edits,number_of_,diary_id,diary_content,diary_status,description) */;
 CREATE VIEW diarydatabaseview AS
-SELECT * FROM userdiaryview
+SELECT * FROM userdiaryview 
 LEFT JOIN diarycatagoryview
 ON diarycatagoryview.ud_id = userdiaryview.ud_id
 /* diarydatabaseview(id,username,hash,fname,lname,useremail,dateregistered,dateofbirth,primaryphone,country,secondaryphone,city,gender,facebookaddress,telegramaddress,instagramaddress,twitteraddress,useraddress,numberofprofilechanges,emailconfirmed,ud_id,d_id,u_id,given_date,diary_written_date,diary_written_time,given_time,number_of_edits,number_of_,diary_id,diary_content,diary_status,description,udc_id,"ud_id:1",c_id,catagory_insertion_time,catagory_insertion_date,number_of_edits_made,catagory_id,cat_type_id,catagory_name,insertion_date,insertion_time) */;
@@ -35,5 +35,8 @@ JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id
 JOIN usercatagory ON catagorytype.catagory_type_id = usercatagory.cat_type_id_in_uc
 JOIN users ON usercatagory.u_id_in_uc = users.id
 /* userCatagoryInfo(catagory_id,cat_type_id,catagory_name,insertion_date,insertion_time,catagory_type_id,catagory_type_name,catagory_type_creation_date,catagory_type_creation_time,type_description,user_catagory_id,u_id_in_uc,cat_type_id_in_uc,type_creation_date,type_creation_time,id,username,hash,fname,lname,useremail,dateregistered,dateofbirth,primaryphone,country,secondaryphone,city,gender,facebookaddress,telegramaddress,instagramaddress,twitteraddress,useraddress,numberofprofilechanges,emailconfirmed) */;
-CREATE TABLE referencename (reference_name_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, reference_name TYPE TEXT,reference_name_description TYPE TEXT, reference_name_insertion_date TYPE TEXT , reference_name_insertion_time TYPE TEXT);
-CREATE TABLE diaryreference (reference_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, referenced_by_id INTEGER , referenced_id INTEGER, ref_name_id INTEGER, FOREIGN KEY(referenced_by_id) REFERENCES userdiary(d_id), FOREIGN KEY(referenced_id) REFERENCES userdiary(d_id), FOREIGN KEY(ref_name_id) REFERENCES referencename(reference_name_id));
+CREATE TABLE referencetype (reference_type_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, reference_type_name TEXT, reference_type_discription TEXT, reference_type_insertion_date TEXT, reference_type_insertion_time);
+CREATE TABLE userdiaryreference (user_diary_reference_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, ref_id INTEGER , udr_id INTEGER, FOREIGN KEY(ref_id) REFERENCES diaryreference(reference_id), FOREIGN KEY(udr_id) REFERENCES userdiary(ud_id) );
+CREATE UNIQUE INDEX ud_id ON userdiary (ud_id);
+CREATE TABLE diaryreference (reference_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, referenced_by_ud_id INTEGER , referenced_ud_id INTEGER, diary_ref_insertion_date TEXT, diary_ref_insertion_time TEXT);
+CREATE TABLE referencename (reference_name_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, reference_name TYPE TEXT, diary_ref_id INTEGER, ref_type_id INTEGER, u_ref_id INTEGER, reference_name_description TYPE TEXT, reference_name_insertion_date TYPE TEXT , reference_name_insertion_time TYPE TEXT, FOREIGN KEY (ref_type_id) REFERENCES referencetype(reference_type_id), FOREIGN KEY (u_ref_id) REFERENCES users(id), FOREIGN KEY (diary_ref_id) REFERENCES diaryreference(reference_id));

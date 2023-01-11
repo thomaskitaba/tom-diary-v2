@@ -207,6 +207,37 @@ def get_diary_content(diaryid):
     # for security purpose we used the userdiaryview    view to show information
     diary = db.execute("SELECT * FROM userdiaryview WHERE d_id = ? ORDER BY diary_written_date DESC", diaryid) 
     return diary
+#TODO: IMPORTANT ---------------------------------------------------------  
+def get_userdiary_catagories(user_diary_id):
+  #loop
+  
+  temp = []
+  catagory_info = { }
+  
+  
+  user_diary_sub_catagories = db.execute("SELECT  cat_type_id, catagory_id, catagory_name FROM catagory JOIN userdiarycatagory ON catagory.catagory_id = userdiarycatagory.c_id JOIN userdiary ON userdiarycatagory.ud_id = userdiary.ud_id JOIN users ON userdiary.u_id = users.id JOIN diary ON userdiary.d_id = diary.diary_id WHERE users.id = ? AND diary.diary_status = ? AND userdiary.ud_id = ?", session["user_id"], 'Active', user_diary_id)
+
+  
+  
+  return user_diary_sub_catagories
+
+def get_userdiary_reference(user_diary_id):
+  
+  
+  
+  user_diary_references = db.execute("SELECT referencename.ref_type_id, referencetype.reference_type_name, referencename.reference_name_id, diaryreference.referenced_by_ud_id,diaryreference.referenced_ud_id, diary.diary_content FROM referencetype JOIN referencename  ON referencetype.reference_type_id = referencename.ref_type_id JOIN diaryreference ON referencename.reference_name_id = diaryreference.ref_name_id JOIN userdiaryreference  ON diaryreference.reference_id = userdiaryreference.ref_id JOIN userdiary ON userdiaryreference.udr_id = userdiary.ud_id JOIN diary ON userdiary.ud_id = diary.diary_id WHERE userdiary.u_id = ? AND userdiaryreference.udr_id = ?", session["user_id"], user_diary_id) 
+  
+  
+  if not user_diary_references:
+    
+    user_diary_references = []
+    temp = {}
+    temp["content_reference"] = "Empty Reference"
+    user_diary_references.append(temp)
+    return user_diary_references
+  
+  # user_diary_references = db.execute("select * from users")                   
+  return user_diary_references
 def get_reference_name():
   reference_name = db.execute("SELECT * FROM referencename ORDER BY reference_name")
   return reference_name
@@ -408,8 +439,9 @@ def after_request(response):
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
     return response
+# CREATE TABLE diaryreference (reference_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, referenced_by_ud_id INTEGER , referenced_ud_id INTEGER, diary_ref_insertion_date TEXT, diary_ref_insertion_time TEXT);
 
-
+# CREATE TABLE referencename (reference_name_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, reference_name TYPE TEXT, ref_type_id INTEGER, u_ref_id INTEGER, reference_name_description TYPE TEXT, reference_name_insertion_date TYPE TEXT , reference_name_insertion_time TYPE TEXT, FOREIGN KEY (ref_type_id) REFERENCES referencetype(reference_type_id), FOREIGN KEY (u_ref_id) REFERENCES users(id));
 @app.route("/")
 def index():
     """Show portfolio of stocks"""
@@ -1014,7 +1046,7 @@ def jsonajax():
   
   if request.method == "POST":
                 
-    given_date = str(request.form["given-date"]) # works
+    given_date = str(request.form["given-date"]) # works 
     given_time = str(request.form["given-time"])
     
     multiple_catagories_selected = request.form.getlist("native-select")
@@ -1375,16 +1407,14 @@ def addDiaryReference():
     user_diary_id = request.form.get("referenced-by-diary-id")
     referenced_id = request.form.getlist("referenced-id")
     referenced_by_id = request.form.getlist("referenced-by-id")
-    reference_by_id = int(reference_by_id[0]) #type: ignore
-    reference_name_id = [request.form.get("reference_name_id")]
+    referenced_by_id = int(referenced_by_id[0]) #type: ignore
+    reference_name_id = [request.form.get("reference-name-id")]
     last_inserted_id = [-1]
     rows = ['']
     
     if not reference_name_id:
       reference_name_id[0] = 1 #type: ignore
       
-    
-    
     
     
     converted_referenced_id = []
@@ -1579,6 +1609,9 @@ def diarysearch():
     
     if not search_catagory_id:
       results = db.execute("SELECT * FROM diarydatabaseview WHERE id= ? ORDER BY given_date DESC", session["user_id"])
+      
+      #TODO:  loop across results and call get_userdiary_catagory and get_userdiary_reference functions and add sub_catagory and content_reference key value pair
+      
     else:
       results = db.execute("SELECT * FROM diarydatabaseview WHERE c_id= ? and u_id = ? ORDER BY given_date DESC", search_catagory_id, session["user_id"] )  
     
@@ -1623,7 +1656,7 @@ def searchdates():
         # return render_template("experiment.html", cat_3 = "search using provided sub catagories")
         sub_catagory = []
         
-                                        
+                        
         if session["sub_catagory_id"][0] != 0:
           sub_catagory = session["sub_catagory_id"][0].split(",")
         # return render_template("experiment.html", cat_3= sub_catagory)
@@ -2037,6 +2070,7 @@ def takelog():
       flash("nothing to save")
       return render_template("takelog.html", current_user_name=global_user_name(), catagory_types= catagory_types, catagories = user_catagories())
     # check if user has given his own date diffrent from current writing date
+    
     if not given_date:
       
       given_date = currentday() # works
@@ -2123,17 +2157,58 @@ def takelog():
     json_catagories = reloadJsonCatagory()
     # return render_template("experiment.html", cat_3= json_catagories)
     return render_template("jsonajax.html", json_catagories = reloadJsonCatagory(), catagory_types= catagory_types, catagories = catagories, current_user_name= global_user_name())
+
+
+#TODO: STILL ON PROGRESS 
+
+
+@app.route("/test1") #type: ignore
+@login_required
+def universaldiary():
+    
+    rows = [db.execute("SELECT * FROM userdiary")]
     
     
+    for row in rows[0]:
+      temp_cat = get_userdiary_catagories(row["ud_id"])
+      
+      row["sub_catagory"] = temp_cat
+      #todo: call get_useridary_reference(row["ud_id"])
+      
+      temp_ref = get_userdiary_reference(row["ud_id"])
+      
+      #todo: add references: to each userdiary row["diary_references"]
+      row["content_reference"] = temp_ref
+    return render_template("experiment.html",current_user_name= global_user_name(), cat_3 = rows[0]) #type: ignore
+
+@app.route("/test2") #type: ignore
+@login_required
+
+def references():
     
+    rows = [db.execute("SELECT * FROM userdiary ")]
+                                                  
+    temp = get_userdiary_reference(223) #type: ignore
+    # for row in rows[0]:
+    #   temp = get_userdiaries_catagories(row["ud_id"])
+    #   row["sub_catagory"] = temp
+    
+      
+    return render_template("experiment.html",current_user_name= global_user_name(), cat_3 = temp) #type: ignore
+
+
+#TODO: TEMPORARY TOOLS TO TWEAK THE DATABASE   
 @app.route("/stripdiary", methods=["GET", "POST"]) #type: ignore
 @login_required
 
 def stripdiary():
-  if request.method == "POST":
+  if request.method == "post":
     
-    return render_template("experiment.html", cat_3= "Post request for thomas kitaba diary")
+    return render_template("experiment.html", current_user_name= global_user_name(), cat_3= "Post request for thomas kitaba diary")
   else:
+    return render_template("experiment.html", current_user_name= global_user_name(), cat_3 = get_userdiaries_catagories()) #type: ignore
+    get_userdiaries_catagories()
+    
     rows = db.execute("SELECT * FROM diary")
     
     for row in rows:

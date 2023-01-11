@@ -16,8 +16,8 @@
     <form action="/takelog" method="POST">
       
       <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/generatecatagory" >
-    
-          
+      
+      
       <div class="flex-horizontal  padding-s float-bg-cyan">
         
         <div class = "margin-m align-left  align-left float-bg-light-s padding-s">
@@ -43,6 +43,16 @@
         </select>
       </div>
       <div class=" width-100 margin-s float-bg-light-s">
+        <!-- <select name="native-select" id="field2" class = "width-100" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="3" onchange="console.log(this.selectedOptions)">
+          {% if catagories %}
+          {% for catagory in catagories %}
+              {% if catagory["catagory_name"]%}
+                  <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
+              {% endif %}
+          {% endfor %}
+        {% endif %}
+      
+      </select> -->
         <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
           {% if catagories %}
             {% for catagory in catagories %}

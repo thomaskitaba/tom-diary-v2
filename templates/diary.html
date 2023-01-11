@@ -331,9 +331,10 @@
 <!-- <div class="center-elements magenta-text-shadow" {% if global_edited_diary %} onload="showedited()" {% endif %}><h1  >View/ Edit you diary</h1> </div> -->
 
     <div class="">
-
+    
         <div class = "float-bg-dark cyan-box-shadow "  >
                 {% if diary %}
+                <div> <button type="submit" formaction = "/stripdiary" > Trim your diary </button></div>
                     {% for diary_info in diary %}
                 <!------- ALL IN ONE -------->
                 <!--todo:   here we have ID-->
