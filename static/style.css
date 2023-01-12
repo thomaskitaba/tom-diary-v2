@@ -409,6 +409,10 @@ background: #5bc0de;
   align-items: center;
 }
 
+.flex-search{
+  display: flex;
+  
+}
 .flex-form
 {
   display: flex;
@@ -654,16 +658,17 @@ input.chekbox-size-m{
 .float-bg-light {
   /* background-color: green; */
   background: rgba(243, 237, 237, 0.4);
-  border-radius: 20px;
+  border-radius: 10px;
 }
+
 .float-bg-light-s {
   /* background-color: green; */
-  background: rgba(243, 237, 237, 0.4);
+  background: rgba(243, 237, 237);
   border-radius: 8px;
 }
 .float-bg-cyan {
   background: rgba(45, 251, 234, 0.4);
-  border-radius: 20px;
+  border-radius: 10px;
 }
 .float-bg-dark {
   /* background-color: yellow; */

@@ -143,7 +143,8 @@
               
               
             </div>
-            <table class="float-bg-cyan">
+            <div class="float-bg-cyan width-100" >
+            <table class="float-bg-white width-100">
             
             <!-- TODO: ============= START OF TOP BOTTOM DISPLAY FORM ======================= -->
               <!-- <form  action = "/addreference" method ="POST" > -->
@@ -199,8 +200,38 @@
                   </div>
                 </td>
                 <tr class = "float-bg-dark">
-                  <td class="align-left ">[user-diary-id:- {{result["ud_id"]}} ][d-id:- {{result["d_id"]}}] <h3> {{result["given_date"]}} </h3> {{result["catagory_name"]}}  </td>
+                  <td class="align-left ">[user-diary-id:- {{result["ud_id"]}} ][d-id:- {{result["d_id"]}}]  {{result["given_date"]}}  {{result["catagory_name"]}}   </td>
                   <td class="align-left "> {{result["diary_content"]}} </td>
+                  <td class = "align-left" >
+                    <div class = "flex-search border-red">  
+                    {% for catagory in result["sub_catagories"] %} 
+
+                    
+                        <div class=" flex-searh margin-m border-green">
+                          [{{catagory["catagory_id"]}}- {{catagory["catagory_name"]}} ]
+                        </div>
+                      
+                    {% endfor %}
+                  </div>
+                  </td>
+                  <td class = "align-left" > 
+                    
+
+                      <div class="reference-box flex-search border-black">
+                        {% for reference in result["content_reference"] %} 
+                          
+                            
+                              <div class="flex-vertical float-bg-light padding-s margin-s">
+                                <div> [{{ reference["referenced_ud_id"]}} - {{ reference["reference_name"]}}]</div>
+                                <div>  {{reference["referenced_diary_content"]}}</div>
+                              </div>
+                              
+                            
+                        {% endfor %}
+                      </div>
+
+                    
+                  </td>
                   <!-- <input type="text" id="referenced-by-diary-id"  name="user-diary-id" value = '{{result["ud_id"]}}' > -->
                 </tr>
                 
@@ -210,7 +241,7 @@
             <!-- </form> -->
             </table>
             <!-- TODO: ============= START OF TOP BOTTOM DISPLAY FORM ======================= -->
-          
+          </div>
       {% endfor %} 
     </div>  
     
