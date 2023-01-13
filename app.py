@@ -267,9 +267,10 @@ def get_reference_name():
 def get_all_user_diary(userid):
     diary = db.execute("SELECT * FROM userdiaryview WHERE id= ? and diary_status = ?", userid, "Active")
     return diary
-  
+def loadJsonReference():
+  pass
 def get_all_user_diary_detail(userid):
-  diary = db.execute("SELECT * FROM diarydatabaseview JOIN diarycatagoryview on diarydatabaseview.ud_id = diarycatagoryview.ud_id WHERE diarydatabaseview.id = ? and diarydatabaseview.diary_status=?", session["user_id"], "Active")
+  diary = db.execute("SELECT  * FROM diarydatabaseview JOIN diarycatagoryview on diarydatabaseview.ud_id = diarycatagoryview.ud_id WHERE diarydatabaseview.id = ? and diarydatabaseview.diary_status=?", session["user_id"], "Active")
   # diary = db.execute("SELECT * FROM userdiarycatagoryview  WHERE user_id = ? and diary_status=?", userid, "Active")
   return diary
 def backtoedited(udcid,diaryelementid):
@@ -1203,9 +1204,11 @@ def diarywrite():
         
         
         # return render_template("experiment.html", cat_3= multiple_catagories_selected)
+        
         if not diary_text:
           flash("nothing to save")
           return render_template("diary.html", catagory_types= catagory_types, current_user_name=global_user_name(), catagories=global_catagory(), writediary= 1)
+        
         cat_1 = ""
         cat_2 = ""
         cat_3 = ""
@@ -1420,7 +1423,13 @@ def diaryview():
         return render_template("viewdiary.html", diary=diary, catagory=catagory, view_writen_diary = 1)
     #return render_template("diary.html",current_user_name=global_user_name(), catagories=global_catagory(global_catagory_type[0]), viewdiary=1)
     #------------------------ WORKS ------------------------------------------------------------------------------
-
+@app.route("/loadjsonreference", methods = ['GET', 'POST']) #type: ignore
+@login_required
+def loadreference():
+  pass
+  loadJsonReference = loadjsonreference() #type: ignore
+  return render_template("experiment.html", current_user_name=global_user_name(), cat_3 = loadJsonReference)
+  
 @app.route("/addreference", methods=["GET", "POST"])#type: ignore
 @login_required
 def addDiaryReference():
@@ -1432,7 +1441,7 @@ def addDiaryReference():
     referenced_by_id = request.form.getlist("referenced-by-id")
     referenced_by_id = int(referenced_by_id[0]) #type: ignore
     reference_name_id = [request.form.get("reference-name-id")]
-    last_inserted_id = [-1]
+    last_inserted_id = [-1] 
     rows = ['']
     
     if not reference_name_id:
@@ -1631,7 +1640,9 @@ def diarysearch():
     all_catagories = db.execute("SELECT * FROM catagory")
     
     if not search_catagory_id:
-      results = [db.execute("SELECT * FROM diarydatabaseview WHERE id= ? AND diary_status = ? ORDER BY given_date DESC" , session["user_id"], 'Active')]
+      results = [db.execute("SELECT DISTINCT * FROM diarydatabaseview WHERE id= ? AND diary_status = ? ORDER BY given_date DESC" , session["user_id"], 'Active')]
+      
+      
       
       return render_template("experiment.html", cat_3 = results[0])
       for result in results[0]:
@@ -1647,7 +1658,7 @@ def diarysearch():
       #TODO:  loop across results and call get_userdiary_catagory and get_userdiary_reference functions and add sub_catagory and content_reference key value pair
       
     else:
-      results = [db.execute("SELECT * FROM diarydatabaseview WHERE c_id= ? and u_id = ? and diary_status = ? ORDER BY given_date DESC", search_catagory_id, session["user_id"] , 'Active')]
+      results = [db.execute("SELECT DISTINCT * FROM diarydatabaseview WHERE c_id= ? and u_id = ? and diary_status = ? ORDER BY given_date DESC", search_catagory_id, session["user_id"] , 'Active')]
       
       # for result in results[0]:
         
@@ -1697,7 +1708,10 @@ def searchdates():
       
       if search_task_to_do_additional[0] == "add-catagory-type":
         # return render_template("experiment.html", cat_3 = "search by adding th provided catagory type")
-        results[0] = db.execute("SELECT * FROM diarydatabaseview WHERE cat_type_id = ? AND (given_date >= ? AND given_date <= ?) ORDER BY given_date DESC", session["catagory_type_id"], session["start_date"], session["end_date"])
+        
+        
+        results[0] = db.execute("SELECT DISTINCT * FROM diarydatabaseview WHERE cat_type_id = ? AND (given_date >= ? AND given_date <= ?) ORDER BY given_date DESC", session["catagory_type_id"], session["start_date"], session["end_date"])
+        
         
         # return render_template("experiment.html", cat_3 = results[0])
         number_of_results = len(results[0])
@@ -1705,7 +1719,24 @@ def searchdates():
         results[0] = add_catagory_and_reference(results[0]) #type: ignore
         
         return render_template("search.html", reference_name = get_reference_name(), all_catagories= default_all_user_catagories(),catagories=catagories, start_date= session["start_date"] , end_date= session["end_date"], catagory_types= catagory_types, all_catagory = default_all_user_catagories(), normal_search= 1, number_of_results = number_of_results, results = results[0])
+      #todo:----------------------------------------------------------------------
+      
+      if search_task_to_do_additional[0] == "only-date-upto":
+        # return render_template("experiment.html", cat_3 = "search by adding th provided catagory type")
         
+        results[0] = db.execute("SELECT DISTINCT * FROM diarydatabaseview WHERE (given_date >= ? AND given_date <= ?) ORDER BY given_date DESC", session["start_date"], session["end_date"])
+        
+        # return render_template("experiment.html", cat_3 = results[0])
+        number_of_results = len(results[0])
+        
+        results[0] = add_catagory_and_reference(results[0]) #type: ignore
+        
+        return render_template("search.html", reference_name = get_reference_name(), all_catagories= default_all_user_catagories(),catagories=catagories, start_date= session["start_date"] , end_date= session["end_date"], catagory_types= catagory_types, all_catagory = default_all_user_catagories(), normal_search= 1, number_of_results = number_of_results, results = results[0])
+      
+      
+      
+      #todo: ---------------------------------------------------------------------
+      
       if search_task_to_do_additional[0] == "add-sub-catagories":
         # return render_template("experiment.html", cat_3 = "search using provided sub catagories")
         sub_catagory = []
@@ -1719,7 +1750,7 @@ def searchdates():
         
         for i in range(len(sub_catagory)):
           
-          rows = db.execute("SELECT * FROM diarydatabaseview WHERE catagory_id = ? AND id = ? AND given_date >= ? AND given_date <= ? ORDER BY given_date DESC", int(sub_catagory[i]), session["user_id"], session["start_date"], session["end_date"])
+          rows = db.execute("SELECT DISTINCT * FROM diarydatabaseview WHERE catagory_id = ? AND id = ? AND given_date >= ? AND given_date <= ? ORDER BY given_date DESC", int(sub_catagory[i]), session["user_id"], session["start_date"], session["end_date"])
           if rows:
             for row in rows:
               results.append(row)
@@ -1735,7 +1766,7 @@ def searchdates():
       
       if search_task_to_do_additional[0] == "all-sub-catagories":
         # return render_template("experiment.html", cat_3 = "search all sub catagories")
-        results[0] = db.execute("SELECT * FROM diarydatabaseview WHERE given_date >= ? AND given_date <= ? ORDER BY given_date DESC", session["start_date"], session["end_date"])
+        results[0] = db.execute("SELECT DISTINCT * FROM diarydatabaseview WHERE given_date >= ? AND given_date <= ? ORDER BY given_date DESC", session["start_date"], session["end_date"])
         number_of_results = len(results[0])
 
         results[0] = add_catagory_and_reference(results[0]) #type: ignore
@@ -1756,7 +1787,7 @@ def searchdates():
         results.clear()
         # results = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id WHERE u_id = ? AND catagory_id = ? AND userdiary.given_date Like ? AND diary_status = ?", session["user_id"], session["catagory_type_id"], "%" + global_search_start_date[0] + "%", "Active")
         
-        results= db.execute("SELECT * FROM diarydatabaseview WHERE cat_type_id = ? AND id = ? AND given_date Like ? AND diary_status= ? ORDER BY given_date DESC" , session["catagory_type_id"], session["user_id"], "%" + global_search_start_date[0] + "%",  "Active")
+        results= db.execute("SELECT DISTINCT * FROM diarydatabaseview WHERE cat_type_id = ? AND id = ? AND given_date Like ? AND diary_status= ? ORDER BY given_date DESC" , session["catagory_type_id"], session["user_id"], "%" + global_search_start_date[0] + "%",  "Active")
         number_of_results = len(results)
         
         results= add_catagory_and_reference(results)
@@ -1775,7 +1806,7 @@ def searchdates():
         
         for i in range(len(sub_catagory)):
           
-          rows = db.execute("SELECT * FROM diarydatabaseview WHERE catagory_id = ? AND id = ? AND given_date Like ? AND diary_status= ? ORDER BY given_date DESC", int(sub_catagory[i]), session["user_id"], "%" + global_search_start_date[0] + "%",  "Active")
+          rows = db.execute("SELECT DISTINCT * FROM diarydatabaseview WHERE catagory_id = ? AND id = ? AND given_date Like ? AND diary_status= ? ORDER BY given_date DESC", int(sub_catagory[i]), session["user_id"], "%" + global_search_start_date[0] + "%",  "Active")
           if rows:
             for row in rows:
               results.append(row)
@@ -1794,7 +1825,7 @@ def searchdates():
       if search_task_to_do_additional[0] == "all-sub-catagories":
         # return render_template("experiment.html", cat_3 = "search all sub catagories")
         results.clear()
-        results = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id WHERE u_id = ? AND  userdiary.given_date Like ? AND diary_status = ? ORDER BY userdiary.given_date DESC", session["user_id"], "%" + global_search_start_date[0] + "%",  "Active")
+        results = db.execute("SELECT DISTINCT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id WHERE u_id = ? AND  userdiary.given_date Like ? AND diary_status = ? ORDER BY userdiary.given_date DESC", session["user_id"], "%" + global_search_start_date[0] + "%",  "Active")
       
         #todo: output the search result
         
@@ -1855,10 +1886,12 @@ def simpledate():
         session["start_date"] = begnning_date
         session["end_date"] = currentday()
         
-        
-          
         search_task_to_do[0] = "start-to-end-date"
+        
+        if not sub_catagory_id and not search_by_catagory_type:
+          search_task_to_do_additional[0] = "only-date-upto" 
         return redirect("/searchdate")
+      
       
         return render_template("experiment.html", cat_3="both date fields empty so search for diary written on current date")
       if not start_date and end_date:
@@ -1956,6 +1989,7 @@ def editprofile():
     dateofbirth= request.form.get("dateofbirth")
     rows = db.execute("SELECT * FROM users WHERE id LIKE ?", session["user_id"])
     
+    
     # rows = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
     # if check_password_hash(rows[0]["hash"], str(old_password)):
     #   flash("Incorrect old password entry!  Try again")
@@ -1963,8 +1997,6 @@ def editprofile():
     
     
     #TODO:   step 1 check if empty then assign origninal value of user profile information to variables
-    
-    
     
     upi= user_profile_information()[0] #type: ignore
     if not upi:

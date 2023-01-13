@@ -8,7 +8,7 @@
 
 {% if normal_search %} 
 
-<div class="search-container float-bg-dark width-100"> <!-- search container  -->
+<div class="search-container  width-100"> <!-- search container  -->
   
   <!-- <div id="save-reference" class="flex-vertical-center" > 
     <div class = "save-reference-text" formaction = "/addreference"> <a href="/addreference" >Save</a> </div>
@@ -44,28 +44,28 @@
           </div>
         </div>  <!-- end of search catagory section-->
       
-      <div class="float-bg-cyan">
+      <div class="float-bg-light">
         <div class="search-date border-blue width-auto normal-flex-horizontal wrap">
           <!-- <form action="/seachdate"> -->
             <div class = "normal-flex-vertical wrap">
               <input type="date" name="start-date" class = "border-green">
               <!-- <label for="date-upto">upto</label> -->
             </div>
-
+            
             <div>
               <input class = "chekbox-size-m" name="date-upto-check-box" type="checkbox" value="upto"> Upto 
             </div>
-
+            
             <div>
               <input type="date" name="end-date">
             </div>
-
+            
             <div>
             
             </div>
           
         </div>
-        <div class="padding-s float-bg-light-s">
+        <div class="padding-s float-bg-light">
           <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
             <!-- TODO: catagory type -->
             <select  name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
@@ -100,13 +100,18 @@
   </div> <!-- end of search-header-->
 <!-- </form> -->
 <!-- TODO: ============= END OF  OF TOP ADVANCED SEARCH PART ======================= -->
+<div class="flex-horizontal-center">
 
+<button type="submit" formaction = "/viewreferences"> view reference </button>
+<button type="submit" formaction = "/loadjsonreference">  reference JSON data </button>
+</div>
   <!--TODO: RESULT PART RESULT CONTAINER  --------------------------------------------------------------->
   <div class="search-result width-100">
     <div class = "center-elements flex">
       <div class="width-100 float-bg-light flex-horizontal">
         <div class= "flex-horizontal  center-text">
           <h3 class="margin-right-s">  {% if results %}  {{ number_of_results }} results  {% endif %} </h3>
+          
           <h3 class="margin-right-s">
             {% if start_date %} {{start_date }} {% endif %}  
             {% if end_date %} to {{ end_date }} {% endif %}
@@ -115,35 +120,28 @@
     </div>
     </div>
     {% if results %} 
-    <div class="align-left border-red">
+    <div class="align-left ">
       <input type="text" id="referenced-by-input-id"  name="user-diary-id" value = 0 >
       {% for result in results %}
             <div id = "reference-form" class="flex-form">
               <div class="margin-bottom-s">  
                 <select name="reference-type"  id="reference-type-id" class = "width-190 padding-s">
-                  <option value="11">18888</option>
-                  <option value="2">2jhgh</option>
-                  <option value="3">3iuhoi</option>
-                  <option value="4">4oluh</option>
-                  <option value="5">5555</option>
+                  <option value="11">1</option>
                 </select>
               </div>
 
               <div>
                 <select name="reference-name-id" id="reference-name-id" class = " width-190 padding-s">
                   <option value="1">1</option>
-                  <option value="2">2jhgh</option>
-                  <option value="3">3iuhoi</option>
-                  <option value="4">4oluh</option>
-                  <option value="5">5555</option>
-                </select>
                   
+                </select>
+                
                 
               </div>
               
               
             </div>
-            <div class="float-bg-cyan width-100" >
+            <div class="float-bg-yellow width-100" >
             <table class="float-bg-white width-100">
             
             <!-- TODO: ============= START OF TOP BOTTOM DISPLAY FORM ======================= -->
@@ -161,8 +159,8 @@
                 <div  class="flex-vertical-center" >
                   <div class = "save-reference-text"> 
                     <button id="save-reference" type="submit" formaction="/addreference"> Save </button>
-                    <button type="submit" formaction = "/viewreferences"> view reference </button>
-
+                    
+                    
                   </div>
                   <!-- <div>..|.. </div> -->
                   <!-- <div class = "save-reference-text" ><button id="cancel-reference"  onclick="showReferencerCheckboxes()" >Cancel</button> </div> -->
@@ -170,10 +168,10 @@
                 </div>
               <!-- todo:end of popup save form design--------------------------- -->
               <tbody>
-                <div class="float-bg-cyan">
-                <tr class="float-bg-dark">
+                <div class="black-box-shadow">
+                <tr class="float-bg-light">
                   <td>
-                  <div class = "flex-horizontal float-bg-dark">
+                  <div class = "flex-horizontal ">
 
                     <!-- <input type="text" id="referenced-by-diary-id" hidden name="user-diary-id" value = '{{result["ud_id"]}}' > -->
                     <!-- <input type="text" id="referencer-diary-id" hidden name="user-diary-id------" value = '{{result["ud_id"]}}'> -->
@@ -198,15 +196,25 @@
                       <button type="submit" class= "my-button-1" id = "link-button" onclick="showReferencerCheckboxes()">Link</button>
                       
                   </div>
-                </td>
-                <tr class = "float-bg-dark">
-                  <td class="align-left ">[user-diary-id:- {{result["ud_id"]}} ][d-id:- {{result["d_id"]}}]  {{result["given_date"]}}  {{result["catagory_name"]}}   </td>
-                  <td class="align-left "> {{result["diary_content"]}} </td>
+                </td> 
+                </tr>
+                  
+                  <td class="align-left padding-m flex">
+                    <div class="">
+                      <span class=" width-190 margin-right-m">[user-diary-id:- {{result["ud_id"]}} ]</span >
+                      <span class=" width-190 margin-m"> [d-id:- {{result["d_id"]}}] </span>
+                      <span class=" width-190 margin-m">{{result["given_date"]}} </span>
+                      
+                    </div>
+                  </td>
+                  <td class="align-left ">
+                    <div class="float-bg-light padding-m">
+                      {{result["diary_content"]}} </td>
+                    </div>
                   <td class = "align-left" >
-                    <div class = "flex-search border-red">  
+                    <div class = "flex-search">  
                     {% for catagory in result["sub_catagories"] %} 
-
-                    
+                        
                         <div class=" flex-searh margin-m border-green">
                           [{{catagory["catagory_id"]}}- {{catagory["catagory_name"]}} ]
                         </div>
@@ -214,14 +222,13 @@
                     {% endfor %}
                   </div>
                   </td>
-                  <td class = "align-left" > 
+                  <td class = "align-left " > 
                     
-
-                      <div class="reference-box flex-search border-black">
+                      <div class="flex float-bg-red  margin-left-m">
                         {% for reference in result["content_reference"] %} 
                           
                             
-                              <div class="flex-vertical float-bg-light padding-s margin-s">
+                              <div class=" float-bg-light padding-s margin-s">
                                 <div> [{{ reference["referenced_ud_id"]}} - {{ reference["reference_name"]}}]</div>
                                 <div>  {{reference["referenced_diary_content"]}}</div>
                               </div>

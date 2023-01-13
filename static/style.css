@@ -661,9 +661,17 @@ input.chekbox-size-m{
   border-radius: 10px;
 }
 
+.float-bg-red{
+  background: rgb(246, 19, 19);
+  border-radius: 8px;
+}
+.float-bg-yellow{
+  background: rgb(250, 231, 84);
+  border-radius: 8px;
+}
 .float-bg-light-s {
   /* background-color: green; */
-  background: rgba(243, 237, 237);
+  background: rgb(215, 10, 10);
   border-radius: 8px;
 }
 .float-bg-cyan {
@@ -702,6 +710,10 @@ input.chekbox-size-m{
     0px 0px 8px 2px cyan;
 }
 
+.black-box-shadow {
+  box-shadow: 0 2px 2px 2px rgb(107, 124, 61), 2px 2px 4px 1px rgb(250, 252, 252),
+    0px 2px 8px 2px rgb(138, 29, 138);
+}
 .magenta-box-shadow {
   
   box-shadow: 0 2px 2px 2px rgb(188, 255, 6), 2px 2px 4px 1px rgb(250, 252, 252),
