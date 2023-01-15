@@ -47,7 +47,7 @@ body {
 }
 .center-body {
   /* border: 2px solid red; */
-  background-image: url("diary-book.png");
+  /* background-image: url("diary-book.png"); */
   background-size: contain;
   background-repeat:no-repeat;
   background-position: center center;
@@ -632,6 +632,19 @@ background: #5bc0de;
 }
 .width-auto {
   width: auto;
+}
+
+.height-10{
+  height: 10px;
+}
+.height-15{
+  height: 15px;
+}
+.height-20{
+  height: 20px;
+}
+.height-max-content{
+  height: fit-content;
 }
 .border-red {
   border: 2px dashed red;

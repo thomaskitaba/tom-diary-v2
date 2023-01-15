@@ -116,24 +116,35 @@
             {% if start_date %} {{start_date }} {% endif %}  
             {% if end_date %} to {{ end_date }} {% endif %}
           </h3>
+
         </div>
     </div>
     </div>
     {% if results %} 
     <div class="align-left ">
-      <input type="text" id="referenced-by-input-id"  name="user-diary-id" value = 0 >
+      
       {% for result in results %}
             <div id = "reference-form" class="flex-form">
               <div class="margin-bottom-s">  
                 <select name="reference-type"  id="reference-type-id" class = "width-190 padding-s">
-                  <option value="11">1</option>
+                  {% for reference in json_reference %}  
+                  <option value='{{reference[reference_type_id]}}'>{{reference["reference_type_name"]}}</option>
+                  {% endfor %}
                 </select>
-              </div>
 
+              </div>
+              
               <div>
-                <select name="reference-name-id" id="reference-name-id" class = " width-190 padding-s">
-                  <option value="1">1</option>
-                  
+                
+                  {% if reference_name %}
+                  <select name="reference-name-id" id="reference-name-id" class = " width-190 padding-s">
+                          <option value="1">Default-Link</option>
+                          {% for ref_name in reference_name %}
+                            <option value= 'ref_name["reference_name_id"]}}'> {{ref_name["reference_name"]}} </option>
+                          {% endfor %}
+                          
+                        </select>
+                      {% endif %}
                 </select>
                 
                 
@@ -199,11 +210,12 @@
                 </td> 
                 </tr>
                   
-                  <td class="align-left padding-m flex">
+                  <td class="height-fit-content align-left  flex">
                     <div class="">
-                      <span class=" width-190 margin-right-m">[user-diary-id:- {{result["ud_id"]}} ]</span >
-                      <span class=" width-190 margin-m"> [d-id:- {{result["d_id"]}}] </span>
-                      <span class=" width-190 margin-m">{{result["given_date"]}} </span>
+                      
+                      <span class=" width-190 margin-right-m ">[user-diary-id:- {{result["ud_id"]}} ]</span >
+                      <span class=" width-190 margin-right-m "> [d-id:- {{result["d_id"]}}] </span>
+                      <span class=" width-190 margin-right-m ">{{result["given_date"]}} </span>
                       
                     </div>
                   </td>
@@ -215,7 +227,7 @@
                     <div class = "flex-search">  
                     {% for catagory in result["sub_catagories"] %} 
                         
-                        <div class=" flex-searh margin-m border-green">
+                        <div class=" flex-searh margin-m ">
                           [{{catagory["catagory_id"]}}- {{catagory["catagory_name"]}} ]
                         </div>
                       

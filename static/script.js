@@ -2,6 +2,7 @@
 
 
 
+
 var catagory_type_id = document.getElementById ("catagory-type");
 var sub_catagory_id = document.getElementById("mulitpleSelect");
 var temp_catagory = document.getElementById("new-catagory");
