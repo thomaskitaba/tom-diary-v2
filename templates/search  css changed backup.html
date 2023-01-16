@@ -21,7 +21,7 @@
   <form action="/search" method="POST"> 
     <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/advancedsearchcatagories" >
   <div class = " normal-flex-horizontal align-center wrap float-bg-dark">
-    <div class="normal-flex-horizontal align-center wrap float-bg-dark margin-s padding-m box-shadow-cyan height-max-content width-100">
+    <div class="float-bg-dark margin-m padding-m">
         <div class="search-catagory width-auto  align-center  width-auto ">
           <div class="margin-top-m center-text width-100">
             Search Sub_catagory
@@ -39,15 +39,15 @@
           </div>
           
           <div class="search-header" >
-            <button name="search-button" type="submit" class="box-shadow-black  my-button-1 self-align-center black-box-shadow"
+            <button name="search-button" type="submit" class="my-button-1 self-align-center black-box-shadow"
               formaction="/search">
               search
             </button>
           </div>
         </div>  <!-- end of search catagory section-->
       
-      <div class=" float-bg-cyan height-max-content padding-s">
-        <div class="search-date  width-auto normal-flex-horizontal wrap">
+      <div class="">
+        <div class="search-date border-blue width-100 normal-flex-horizontal wrap">
           <!-- <form action="/seachdate"> -->
             <div class = "normal-flex-vertical wrap  padding-s">
               <input type="date" name="start-date" class = "">
@@ -67,11 +67,14 @@
             </div>
           
         </div>
-        <div class="padding-s float-bg-light flex-horizontal-center ">
+
+        <!-- todo: -->
+        <div class = " normal-flex-horizontal width-auto margin-m align-center padding-m wrap float-bg-dark">
+        <div class="padding-s float-bg-light">
           <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
             <!-- TODO: catagory type -->
-            <div class="margin-right-s">
-            <select  name="catagory-type" class="padding-s" placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
+
+            <select  name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
               
               {% for type in catagory_types %}
                 
@@ -82,11 +85,12 @@
             </select>
           </div>
           <div>
-            <input class ="chekbox-size-m" name="search-type-check-box" type="checkbox" value="search-by-type" class="margin-top-m"> Search By CatagoryType 
+            <input class ="chekbox-size-m" name="search-type-check-box" type="checkbox" value="search-by-type" class="padding-s"> Search By CatagoryType 
           </div>
-          </div>
-          <div class=" width-100 margin-m height-max-content ">
-            <select name="field2" id="field2" class = "width-100" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="3">         
+        <!--todo: end of catagory type and search by catagory type check box-->
+
+          <div class=" width-100 margin-m ">
+            <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="sub-catagory" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
               {% for catagory in catagories %}
                   {% if catagory["catagory_name"]%}
                       <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
