@@ -294,6 +294,7 @@ button {
 .my-button-fixed {
   width: max-content;
 }
+
 .side-buttons {
   width: max-content;
 }
@@ -1016,7 +1017,7 @@ th {
   position: fixed;
   display: flex;
   width: 200px;
-  height: 100px;
+  height: 150px;
   justify-content: center;
   align-items: center;
   top: 520px;

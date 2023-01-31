@@ -16,7 +16,7 @@
     <form action="/jsonajax" method="POST">
       
       <!-- <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/generatecatagory" > -->
-    
+      
       
       <div class="flex-horizontal  padding-s float-bg-cyan">
         
@@ -36,6 +36,7 @@
         
         <select  id = "catagory-type" name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" onchange= 'getCatagories()'>
           
+
           {% for type in catagory_types %}
             
             <option value="{{type['catagory_type_id']}}"> {{ type["catagory_type_name"] }} </option>
@@ -46,16 +47,34 @@
       </div>
 
       <div class=" width-100 margin-s float-bg-light-s">
-        <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
+        <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="true" data-silent-initial-value-set="true">            
           {% if catagories %}
             {% for catagory in catagories %}
                 {% if catagory["catagory_name"]%}
                     <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
                 {% endif %}
+                
             {% endfor %}
+          {% else %}
+          
           {% endif %}
         </select>
-
+        </div>
+        <!-- TODO: second select -->
+        <div class=" width-100 margin-s float-bg-light-s">
+          <select id ="mulitpleSelect1" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="test sub cataogory" >            
+            {% if catagories %}
+              {% for catagory in catagories %}
+                  {% if catagory["catagory_name"]%}
+                      <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
+                  {% endif %}
+                  
+              {% endfor %}
+            {% else %}
+            
+            {% endif %}
+          </select>
+          </div>
         <div id="new-sub-catagory" >
           <select name="field2" id="field2" class = "width-100" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="3" onchange="console.log(this.selectedOptions)">
             {% if catagories %}
@@ -66,7 +85,7 @@
             {% endfor %}
           {% endif %}
         
-        </select>
+          </select>
         
         <select name="" id="new-catagory">
           
@@ -95,6 +114,7 @@
   </div>
   
 </form>
+
 {{json_catagories}}
 {% endblock %}
 

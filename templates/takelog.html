@@ -12,25 +12,23 @@
     {% endif %}
   
   <div class="float-bg-dark width-100">
-    
     <form action="/takelog" method="POST">
       
       <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/generatecatagory" >
       
-      
       <div class="flex-horizontal  padding-s float-bg-cyan">
         
-        <div class = "margin-m align-left  align-left float-bg-light-s padding-s">
+        <div class = "margin-m align-left  align-left float-bg-dark padding-s">
           <div class="margin-top-s margin-bottom-s">give log DATE</div>
           <input class="input-width center-text border-radius-s" name = "given-date" type="date"> 
         </div>
-        <div class = "center-elements margin-m align-left float-bg-light-s padding-s">
+        <div class = "center-elements margin-m align-left float-bg-dark padding-s">
           <div class="center-elements margin-top-s margin-bottom-s">give log TIME</div>
           <input class="input-width center-text padding-m border-radius-s" name = "given-time" type="time"> 
         </div>
       
       </div>
-      <div class="padding-s float-bg-light-s">
+      <div class="padding-s float-bg-light">
       <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
         <select  name="catagory-type" class="padding-s margin-bottom-s" placeholder="Select Catagory Type" onchange = 'document.getElementById("generate_catagory").click()' onload = 'document.getElementById("generate_catagory").click()'>
           
@@ -50,7 +48,7 @@
                   <option value= '{{catagory["catagory_id"] }}' >{{catagory["catagory_name"]}}</option>
               {% endif %}
           {% endfor %}
-        {% endif %}
+        {% endif %}F
       
       </select> -->
         <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            

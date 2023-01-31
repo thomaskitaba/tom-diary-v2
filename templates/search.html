@@ -35,7 +35,6 @@
               </option>
               {% endfor %}
             </select>
-
           </div>
           
           <div class="search-header" >
@@ -113,6 +112,8 @@
 </div>
   <!--TODO: RESULT PART RESULT CONTAINER  --------------------------------------------------------------->
   <div class="search-result width-100">
+
+    <!-- TODO:  -->
     <div class = "center-elements flex">
       <div class="width-100 float-bg-light flex-horizontal">
         <div class= "flex-horizontal  center-text">
@@ -131,13 +132,16 @@
       
       {% for result in results %}
             <div id = "reference-form" class="flex-form">
+              <div class = "save-reference-text margin-s"> 
+                <button class = "my-button-fixed" type="submit" formaction="/search"> Refresh </button>
+              </div>
+              
               <div class="margin-bottom-s">  
                 <select name="reference-type"  id="reference-type-id" class = "width-190 padding-s">
                   {% for reference in json_reference %}  
                   <option value='{{reference[reference_type_id]}}'>{{reference["reference_type_name"]}}</option>
                   {% endfor %}
                 </select>
-
               </div>
               
               <div>
@@ -187,6 +191,7 @@
               <tbody>
                 <div class="black-box-shadow">
                 <tr class="float-bg-light">
+
                   <td>
                   <div class = "flex-horizontal ">
 
@@ -202,7 +207,7 @@
                       <!-- todo: if there is a reference name then display it in drop down option -->
                       
                       {% if reference_name %}
-                        <select name="reference-name-list" id="reference-name-list">
+                        <select name="reference-name-list" id="reference-name-list" onchange>
                           <option value="1">Default-Link</option>
                           {% for ref_name in reference_name %}
                             <option value= 'ref_name["reference_name_id"]}}'> {{ref_name["reference_name"]}} </option>

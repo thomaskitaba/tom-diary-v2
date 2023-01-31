@@ -1788,8 +1788,6 @@ def searchdates():
             
     # start_date = "%"+ str(global_search_start_date[0]) + "%"
     
-    
-    
     if search_task_to_do[0] == "specific-date":
       # start_date = "%"+str(global_search_start_date[0])+"%"
       # results = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id WHERE u_id = ? and userdiary.given_date Like ?", session["user_id"], "%" + global_search_start_date[0] + "%")
@@ -1826,15 +1824,14 @@ def searchdates():
             
         # return render_template("experiment.html", cat_3= results)
         
-        
         number_of_results = len(results)
         results = add_catagory_and_reference(results)
         # return render_template("experiment.html", cat_2= number_of_results, cat_3= results)
         
         return render_template("search.html", reference_name = get_reference_name(), all_catagories= default_all_user_catagories(), catagories=catagories, start_date= global_search_start_date[0], catagory_types= catagory_types,all_catagory = user_catagories(), normal_search= 1, number_of_results = number_of_results,  results = results)
         
-      
-      
+        
+        
       if search_task_to_do_additional[0] == "all-sub-catagories":
         # return render_template("experiment.html", cat_3 = "search all sub catagories")
         results.clear()

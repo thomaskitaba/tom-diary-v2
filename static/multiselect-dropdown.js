@@ -105,7 +105,7 @@ function MultiselectDropdown(options){
         Object.keys(attrs[k]).forEach(ks=>{
           e.style[ks]=attrs[k][ks];
         });
-       }
+      }
       else if(k==='text'){attrs[k]===''?e.innerHTML='&nbsp;':e.innerText=attrs[k]}
       else e[k]=attrs[k];
     });
@@ -153,7 +153,7 @@ function MultiselectDropdown(options){
           if(ic.checked && existsNotSelected) ic.checked=false;
           else if(ic.checked==false && existsNotSelected===undefined) ic.checked=true;
         });
-  
+        
         list.appendChild(op);
       }
 
