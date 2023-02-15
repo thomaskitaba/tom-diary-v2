@@ -1487,8 +1487,15 @@ def addDiaryReference():
       last_inserted_id[0] = index[0]["reference_id"]
       # TODO: add connect diaryreference and userdaiary table
       db.execute("INSERT INTO userdiaryreference (ref_id, udr_id) VALUES (?, ?)", last_inserted_id[0], referenced_by_id)
-      
-      
+    
+    #TODO: redisplay search results with all user diary data
+    rows = db.execute("SELECT * FROM userdiary WHERE u_id = ? lIMIT 1 ", session["user_id"])
+    begning_date = rows[0]["given_date"]
+    session["start_date"] = begning_date
+    session["end_date"] = currentday()
+    search_task_to_do[0] = "start-to-end-date"
+    
+    return redirect("/searchdate")
     return render_template ("experiment.html", cat_1 = referenced_id , cat_2 =  referenced_by_id, cat_3 = last_inserted_id, cat_4 = converted_referenced_id)
     
   else:

@@ -78,9 +78,7 @@ last_index_of_sub_cat = json_catagories[0].sub_catagories.length - 1;
   console.log("hello thomas kitaba here is your data" + 1)
   console.log(sub_catagory);
   // var selectd_cat_type_id = $(".catagory-type").value();
-  
-    
-    if (sub_catagory != null)
+  if (sub_catagory != null)
     {
       //if append not selected 
       // clear html_sub_catagory = "" ;
@@ -94,11 +92,10 @@ last_index_of_sub_cat = json_catagories[0].sub_catagories.length - 1;
         
         
         html_sub_catagory +=  "<option value=" + sub_catagory[ii].catagory_id + ">" + sub_catagory[ii].catagory_name + "</option>";
-
         
-      
-      
-      
+        
+        
+        
       } // todo: end of loop ii
       console.log( html_sub_catagory)
         console.log("==========");

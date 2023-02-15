@@ -194,7 +194,7 @@
 
                   <td>
                   <div class = "flex-horizontal ">
-
+                    
                     <!-- <input type="text" id="referenced-by-diary-id" hidden name="user-diary-id" value = '{{result["ud_id"]}}' > -->
                     <!-- <input type="text" id="referencer-diary-id" hidden name="user-diary-id------" value = '{{result["ud_id"]}}'> -->
                       <!-- TODO: Check boxes -------------------------------------------------- -->
@@ -249,7 +249,7 @@
                     
                       <div class="flex float-bg-red  margin-left-m">
                         {% for reference in result["content_reference"] %} 
-                          
+                            
                             
                               <div class=" float-bg-light padding-s margin-s">
                                 <div> [{{ reference["referenced_ud_id"]}} - {{ reference["reference_name"]}}]</div>
