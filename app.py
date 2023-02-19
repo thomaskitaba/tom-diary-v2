@@ -24,6 +24,8 @@ from validate_email_address import validate_email
 # Configure application
 app = Flask(__name__)
 
+
+
 # 
 if __name__ == "__main__":
     app.run(debug=True)
@@ -40,6 +42,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['SESSION_COOKIE_NAME'] = 'session'
 Session(app)
 
 # Configure CS50 Library to use SQLite database
@@ -1219,9 +1222,8 @@ def viewtodo():
     
     return render_template("todo.html")
   else:
-    rows = db.execute("SELECT * FROM diarydatabaseview WHERE diary_status = ? and cat_type_id = ? and id = ?", "Active", 10, session["user_id"])
     
-    todolist = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id JOIN userdiarycatagory ON userdiarycatagory.ud_id = userdiary.ud_id JOIN catagory ON catagory.catagory_id = userdiarycatagory.c_id JOIN catagorytype ON catagorytype.catagory_type_id =catagory.cat_type_id WHERE u_id = ? and catagory_type_name = ? ", session["user_id"], "My Todo List")
+    todolist = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id JOIN userdiarycatagory ON userdiarycatagory.ud_id = userdiary.ud_id JOIN catagory ON catagory.catagory_id = userdiarycatagory.c_id JOIN catagorytype ON catagorytype.catagory_type_id =catagory.cat_type_id WHERE u_id = ? and catagory_type_name = ? and diary_status = ?", session["user_id"], "My Todo List", "Active")
     
     return render_template("todo.html", current_user_name=global_user_name(), todolist = todolist)
   
