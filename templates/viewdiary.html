@@ -2,6 +2,15 @@
 
 {% block main %}
 
+
+<div class = "magenta-box-shadow">
+
+
+
+
+    
+
+
 {% if view_all %}
 
     {% for diary_info in diary %}
@@ -13,50 +22,11 @@
 
 {% if view_all_condensed %}
 
-    <div class="">
-        
-        
-        
-            <div class = "green-border cyan-box-shadow ">
-                {% if diary %}
-                    {% for diary_info in diary %}
-                            
-                                <div class = "  view-flex flex magenta-box-shadow padding-s">
+    {% for diary_info in diary %}
+    <p>{{ diary_info["number"]  }} --{{ diary_info["username"]  }}---{{ diary_info["diary_content"] }} ---{{ diary_info["diary_written_date"] }}- <span class="cyan-box-shadow">{{ diary_info["catagory0"] }}--{{ diary_info["catagory1"] }}--- {{ diary_info["catagory2"] }}</span></p>
 
-                                    <div class = "padding-s view-flex">
-                                        <div> <span>{{diary_info["number"]}} </span>
-                                        {{ diary_info["diary_content"] }}</div>
-                                    </div>
 
-                                    <div class = " padding-s view-flex flex no-wrap">
-                                        <div class = "view-flex">{{diary_info["diary_written_date"]}}</div>
-                                        
-                                        <div class = "view-flex">{{diary_info["catagory0"]}}, {{diary_info["catagory1"]}}, {{diary_info["catagory2"]}}</div>
-                                        <div class="view-flex">{{ diary_info["discription"]}}</div>
-                                        <div class = " view-flex flex-end flex no-wrap "> 
-                                            <div class = " view-flex">
-                                                <form action="/viewalldiary" method = "POST" class = "flex-end">
-                                                    <input type="text" hidden name = "diary-id" value='{{ diary_info["id"] }}'>
-                                                    <button type = "submit" class=" my-button-1"> Edit</button> 
-                                                </form>
-                                    
-                                            </div>
-                                    
-                                        </div>
-                                        
-                                            
-                                    </div>
-                                
-                                    
-                                </div>
-
-                    {% endfor %}
-                {% endif %}
-                </div>
-
-        
-    </div>
-        
+    {% endfor %}
 
 {% endif %}
 
@@ -82,8 +52,15 @@
 
 
 
+</div>
 
+<div>
 
+</div>
+
+<div>
+    
+</div>
 {% endblock %}
 
 
