@@ -1,3 +1,4 @@
+# pylint: disable=bad-indentation
 
 
 import os
@@ -124,9 +125,9 @@ def global_catagories():
   return catagories
 
 def global_catagory_with_parameter(cattype):
-    catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id WHERE catagory_type_id = ?", cattype)
-    # catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id WHERE catagorytype.catagory_type_id= ? ", cattype )
-    return (catagories)
+  catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id WHERE catagory_type_id = ?", cattype)
+  # catagories = db.execute("SELECT * FROM catagory JOIN catagorytype ON catagory.cat_type_id = catagorytype.catagory_type_id WHERE catagorytype.catagory_type_id= ? ", cattype )
+  return (catagories)
   
 def user_catagories():
   catagories = db.execute("SELECT * FROM catagorytype JOIN usercatagory ON usercatagory.cat_type_id_in_uc = catagorytype.catagory_type_id JOIN users ON users.id = usercatagory.u_id_in_uc WHERE users.id = ? ", session["user_id"]) 
@@ -623,7 +624,7 @@ def register():
           
           
         count_letters = [0]
-        # STEP 1  collect submition data data
+        # STEP 1  collect submition data
         if len(firstname) > 0 or len(lastname) > 0 or len(birthday) > 0 or len(useremail) > 0 or len(password) >= 6  or len(confirmation) > 0 or (country):  # type: ignore
             # validate collected data
             #validate Password
@@ -636,6 +637,8 @@ def register():
             
             if str(password) != str(confirmation):
                 return apology("Password confirmation does not match your password")
+              
+              
             #validate if username already exists
             rows = db.execute("SELECT * FROM users WHERE username = ?", username)
             if len(rows) == 1:
@@ -646,11 +649,16 @@ def register():
             #rows = db.execute("INSERT INTO users (username, hash, fname, lname, useremail, dateofbirth, dateregistered, gender )_ VALUES (?, ? , ? , ? , ? , ?, ?)", username, generate_password_hash(password), firstname, lastname, useremail, birthday, datetime.datetime.now())
             rows = db.execute("INSERT INTO users (username, hash, fname, lname, useremail, dateofbirth, dateregistered, gender, primaryphone, secondaryphone, country, city, useraddress, facebookaddress, telegramaddress,instagramaddress, twitteraddress, emailconfirmed ) VALUES (?, ? , ? , ? , ? , ?, ?, ?, ? , ? , ? , ? , ?, ?, ?, ?, ?, ?)", username, generate_password_hash(password), firstname, lastname, useremail, birthday, datetime.datetime.now(),gender, primary_phone, seconday_phone, country, city, user_address, facebook_address, telegram_address, instagram_address, twitter_address, "False")  # type: ignore
             #get the user id
+            
+            
             rows = db.execute("SELECT * FROM users WHERE username= ?", username )
             current_user_id = rows[0]["id"]
-
+            
             current_user_name[0] = rows[0]["username"]
             session["user_id"] = current_user_id
+            
+            #TODO: GIVE USER DEFAULT CATAGORIES
+            #TODO: 
             
             
             # to be sent to diary page so as to display catagories in select element
@@ -1082,6 +1090,8 @@ def jsonajax():
                 
     given_date = str(request.form["given-date"]) # works 
     given_time = str(request.form["given-time"])
+    end_date = str(request.form["end-date"])
+    start_date = str(request.form["start-date"])
     
     multiple_catagories_selected = request.form.getlist("native-select")
     # return render_template("experiment.html", cat_3 = multiple_catagories_selected )
@@ -1104,9 +1114,12 @@ def jsonajax():
     if not given_time:
       given_time = str(currentclock()) # works
       
-      
+    if not end_date:
+      end_date = 00/00/0000
     # return render_template("experiment.html", cat_3=multiple_catagories_selected)
-    
+    if not start_date:
+      start_date = 00/00/0000
+      
     if len(diary_description) == 0:
       diary_description = "No Description"
     #return render_template("experiment.html", cat_1 = given_date, cat_2 = given_time)
@@ -1124,7 +1137,7 @@ def jsonajax():
     
     #step 3   update user diary table with diaryid and and user id
     
-    db.execute("INSERT INTO userdiary (d_id, u_id, given_date, given_time, diary_written_date, diary_written_time) VALUES (?, ?, ?, ?, ?, ?)", new_diary_id[0]["diary_id"], session["user_id"], given_date , given_time, currentday(), currentclock())
+    db.execute("INSERT INTO userdiary (d_id, u_id, given_date, given_time, diary_written_date, diary_written_time, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", new_diary_id[0]["diary_id"], session["user_id"], given_date , given_time, currentday(), currentclock(), start_date, end_date)
     
     # session["added_user_diary_id"] = db.execute("SELECT * FROM userdiary ORDER BY ud_id DESC LIMIT 1")
     rows = db.execute("SELECT * FROM userdiary ORDER BY ud_id DESC LIMIT 1")
@@ -1196,8 +1209,22 @@ def diaryreference():
   else: 
     # return render_template("experiment.html", cat_3=  get_all_user_diary(session["user_id"]))
     return render_template("diaryreference.html",catagory_types= catagory_types(), catagories = user_catagories(), user_diary = get_all_user_diary_detail(session["user_id"]))    
+
+@app.route("/todo", methods = ["GET", "POST"]) #type: ignore
+@login_required
+def viewtodo():
+  
+  if request.method== "POST": 
+    #TODO: write code to save discription information then send back json data
     
+    return render_template("todo.html")
+  else:
+    rows = db.execute("SELECT * FROM diarydatabaseview WHERE diary_status = ? and cat_type_id = ? and id = ?", "Active", 10, session["user_id"])
     
+    todolist = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id JOIN userdiarycatagory ON userdiarycatagory.ud_id = userdiary.ud_id JOIN catagory ON catagory.catagory_id = userdiarycatagory.c_id JOIN catagorytype ON catagorytype.catagory_type_id =catagory.cat_type_id WHERE u_id = ? and catagory_type_name = ? ", session["user_id"], "My Todo List")
+    
+    return render_template("todo.html", current_user_name=global_user_name(), todolist = todolist)
+  
 @app.route("/writediary" , methods=["GET", "POST"]) 
 @login_required
 def diarywrite():

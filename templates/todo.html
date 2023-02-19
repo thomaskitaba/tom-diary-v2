@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+
+<div class="width-100 border-red margin-s">
+  
+  {%if todolist %} 
+        
+        
+        <table class = " width-100">
+          <thead>
+            <tr>
+            <th class="width-50">To do list</th>
+            <th> Start date</th>
+            <th>End date</th>
+            <th>Desc</th>
+          </tr>
+          </thead>
+          <tbody>
+            {% for todo in todolist %} 
+          <tr>
+          <td>{{todo["diary_content"]}}</td>
+          <td>{{todo["start_date"]}}</td>
+          <td>{{todo["end_date"]}}</td>
+          <td>{{todo["description"]}}</td>
+        </tr>
+        
+        
+        {% endfor %}
+          </tbody>
+        </table>
+        {% for todo in todolist %} 
+          <p>{{todo["diary_content"]}} </p>
+        
+        
+        {% endfor %}
+    
+    
+  {% endif %}
+  
+</div>
+
+{% endblock %}
+
+

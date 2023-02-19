@@ -10,6 +10,7 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: rgb(158, 178, 180);
 }
 .container {
   position: relative;
@@ -901,7 +902,7 @@ table,
 tr,
 td,
 th {
-  border: 0px dashed green;
+  border: 2px dashed green;
 }
 
 @media (min-width: 1000px) {
@@ -969,7 +970,9 @@ th {
 #referenced-text{
   visibility: hidden;
 }
-
+.small-text{
+  font-size: small;
+}
 #link-button{
   visibility: hidden;
   display: none;
