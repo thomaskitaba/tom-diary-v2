@@ -13,7 +13,8 @@ from helpers import apology, login_required
 import datetime
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
-from validate_email_address import validate_email
+# from validate_email_address import validate_email
+
 
 
 # ----------------- Email configuration --------------------------
@@ -618,10 +619,10 @@ def register():
         if not twitter_address:
             twitter_address = "------"
         
-        if not validate_email(useremail, verify=True):
+        # if not validate_email(useremail, verify=True):
           
-          flash("Email does not Exist")
-          return redirect("/register")
+        #   flash("Email does not Exist")
+        #   return redirect("/register")
           
           
         count_letters = [0]
@@ -2111,9 +2112,9 @@ def editprofile():
         flash("Password shold be more than 5 character long and should contain at least 1 letter")
         return redirect ("/editprofile")
     
-      if not validate_email(user_email, verify=True):
-        flash("Email does not Exist")
-        return redirect("/editprofile")
+      # if not validate_email(user_email, verify=True):
+      #   flash("Email does not Exist")
+      #   return redirect("/editprofile")
 
       number_of_changes = rows[0]["numberofprofilechanges"] + 1
       updated_profile = db.execute("UPDATE users SET useremail = ?, hash = ?, facebookaddress = ?,  telegramaddress = ?, instagramaddress = ?, twitteraddress = ?, country = ?, city = ?, gender = ?, primaryphone = ?, secondaryphone = ? , useraddress = ?, dateofbirth = ?, numberofprofilechanges = ?", user_email, generate_password_hash(str(new_password)), facebook_address, telegram_address, instagram_address, twitter_address, country, city, gender, primary_phone,secondary_phone, user_address, dateofbirth, number_of_changes)
@@ -2138,9 +2139,9 @@ def editprofile():
       #todo: calculate number profile changes
       
       
-      if not validate_email(user_email, verify=True):
-        flash("Email does not Exist")
-        return redirect("/editprofile")
+      # if not validate_email(user_email, verify=True):
+      #   flash("Email does not Exist")
+      #   return redirect("/editprofile")
       
       #todo: increment the number of total edits made on users profile
       number_of_changes = rows[0]["numberofprofilechanges"] + 1
