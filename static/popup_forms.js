@@ -3,18 +3,11 @@ $(document).ready(function(){
 
 
 
-
-
   $('#edit-content').on('click',function(e){
     e.preventDefault();
     // alert("merry christmas thomas kitaba")
     showEditContentForm();
   });
-
-
-
-
-
 
 });
 

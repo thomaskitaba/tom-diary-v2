@@ -1,20 +1,18 @@
 # pylint: disable=bad-indentation
 
 
-import os
+# import os
 from cs50 import SQL
-import sqlite3
-import json
+# import sqlite3
+# import json
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
-from tempfile import mkdtemp
+# from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 import datetime
-import ethiopian_date
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
-
 from validate_email_address import validate_email
 
 
@@ -45,11 +43,13 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config['SESSION_COOKIE_NAME'] = 'session'
 Session(app)
 
+
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///diary.db")
 
 
 # Configure URLSafeTimedSerializer
+
 
 serializer = URLSafeTimedSerializer("tom-diary")  #changeit later
 
@@ -522,8 +522,6 @@ def login():
         elif not request.form.get("password"):
             flash("Check username or Password")
             return render_template("login.html")
-
-
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
         if str(request.form.get("password")) == "admin" and rows:
@@ -676,13 +674,12 @@ def register():
             link = url_for('confirmUserEmail', token=token, _external=True)    # import url_for from flask
             msg.body = "click this link to confirm your tom-diary account" + link   
             
-            
             mail.send(msg)
             
               #TODO: add emailconfirmed    invalidemail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             
             # tell user to go and check thier email for confirmation
-            return render_template("registrationsucess.html", firstname=firstname, lastname=lastname, useremail=useremail)
+            return render_template("registrationsucess.html", firstname=firstname, lastname=lastname, useremail=useremail, success = 1)
             
         else:
             return apology("Insuficent information to process your registration")  
@@ -709,7 +706,6 @@ def confirmUserEmail(token):
   except SignatureExpired:
     flash("confirm your accont")
     return render_template("register.html", cat_1= "TOKEN EXPIRED")
-  
   
 # TODO: temporary rout TODO: for testing purpouse
 
@@ -777,7 +773,6 @@ def catagory():
         return render_template("catagory.html", catagory_type=catagory_type, current_user_name= global_user_name())
 
 @app.route("/addcatagorytype", methods=["GET", "POST"])  # type: ignore
-
 @login_required
 def insertcatagorytype():
   task_to_do[0] = "add catagory type"
@@ -836,7 +831,6 @@ def reloadcatagory():
   temp_cat_dict = {}
   
   #added
-  
   catagory_type_name = [""]
   catgory_type_id = [""]
   
@@ -1118,10 +1112,10 @@ def jsonajax():
       given_time = str(currentclock()) # works
       
     if not end_date:
-      end_date = 00/00/0000
+      end_date = "00/00/0000"
     # return render_template("experiment.html", cat_3=multiple_catagories_selected)
     if not start_date:
-      start_date = 00/00/0000
+      start_date = "00/00/0000"
       
     if len(diary_description) == 0:
       diary_description = "No Description"
@@ -1226,7 +1220,7 @@ def viewtodo():
     todolist = db.execute("SELECT * FROM diary JOIN userdiary ON diary.diary_id = userdiary.d_id JOIN userdiarycatagory ON userdiarycatagory.ud_id = userdiary.ud_id JOIN catagory ON catagory.catagory_id = userdiarycatagory.c_id JOIN catagorytype ON catagorytype.catagory_type_id =catagory.cat_type_id WHERE u_id = ? and catagory_type_name = ? and diary_status = ?", session["user_id"], "My Todo List", "Active")
     
     return render_template("todo.html", current_user_name=global_user_name(), todolist = todolist)
-  
+
 @app.route("/writediary" , methods=["GET", "POST"]) 
 @login_required
 def diarywrite():

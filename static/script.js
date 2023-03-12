@@ -1,8 +1,4 @@
 
-
-
-
-
 var catagory_type_id = document.getElementById ("catagory-type");
 var sub_catagory_id = document.getElementById("mulitpleSelect");
 var sub_catagory_check = document.getElementById("mulitpleSelect1");
@@ -13,7 +9,6 @@ var sub_catagory = [];
 var recived_data ;
 var selected_type_index;
 var suffix = "";
-
 
 function get_multipleSelects_suffix(string)
 {
@@ -27,7 +22,7 @@ function get_multipleSelects_suffix(string)
       {
         count += 1;
       }
-
+      
       if (count == 3)
       {
         suffix += string[j];

@@ -359,7 +359,7 @@ input:hover {
 .input-width {
   position: relative;
   width: max-content;
-  font-size: 1.05rem;
+  font-size: 0.75rem;
 }
 
 .form-element {
@@ -641,6 +641,10 @@ background: #5bc0de;
 .width-400{
   width: 200px;
 }
+.width-date{
+  width: 120px;
+  font-size: smaller;
+}
 .height-10{
   height: 10px;
 }
@@ -902,7 +906,7 @@ table,
 tr,
 td,
 th {
-  border: 2px dashed green;
+  border: 0px dashed green;
 }
 
 @media (min-width: 1000px) {
