@@ -1517,9 +1517,13 @@ def addDiaryReference():
     session["start_date"] = begning_date
     session["end_date"] = currentday()
     search_task_to_do[0] = "start-to-end-date"
+    #todo: return data to search page
+    all_catagories = db.execute("SELECT * FROM catagory")
+    json_reference = loadJsonReference()
+    return render_template("search.html",  reference_name = get_reference_name(), json_reference = json_reference, current_user_name=global_user_name(), catagory_types= catagory_types(), catagories = default_user_catagories(), all_catagories = default_all_user_catagories(), normal_search= 1)
 
-    return redirect("/searchdate")
-    return render_template ("experiment.html", cat_1 = referenced_id , cat_2 =  referenced_by_id, cat_3 = last_inserted_id, cat_4 = converted_referenced_id)
+    # return redirect("/searchdate")
+    # return render_template ("experiment.html", cat_1 = referenced_id , cat_2 =  referenced_by_id, cat_3 = last_inserted_id, cat_4 = converted_referenced_id)
 
   else:
     return redirect("search.html")
