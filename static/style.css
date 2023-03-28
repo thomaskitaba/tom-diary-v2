@@ -869,6 +869,14 @@ select:hover {
   font-size: 1.15rem;
   width: max-content;
 }
+.min_content
+{
+  width: min-content;
+}
+.max_content
+{
+  witdt: max-content;
+}
 .vscomp-toggle-button{
 
   padding: 8px;
