@@ -9,13 +9,13 @@
     <div class = "alert-red">
         
       <p> {{ message}}  <a href="gmail.google.com"> {{address}} </a></p>
-        
+      
     </div>
   {% endif %}
-<div class="float-above float-bg-light magenta-box-shadow padding-s min-content">
+<div class="float-above float-bg-dark magenta-box-shadow padding-s min-content">
     <form action="/login" method="post" class="padding-s">
         <div class="input-box  padding-s">
-            <input autocomplete="off" autofocus  id="username" name="username" placeholder="Username" type="text">
+            <input class = "float-bg-red" autocomplete="off" autofocus  id="username" name="username" placeholder="Username" type="text">
         </div>
         <div class=" input-box  padding-s">
             <input id="password" name="password" placeholder="Password" type="password">

@@ -785,7 +785,9 @@ input.chekbox-size-m{
 }
 
 .top-part .write-diary:hover,
-.top-part .edit-diary:hover {
+.top-part .edit-diary:hover,
+.top-part .view-diary:hover,
+.top-part .search-diary:hover {
   box-shadow: 0 0 2px 2px rgb(188, 255, 6), 2px 2px 4px 1px rgb(250, 252, 252),
     0px 0px 8px 2px magenta;
   background: rgb(254, 251, 251, 0.8);
@@ -941,7 +943,9 @@ th {
     margin: 0 100%;
     transform: translateX(-100%);
   }
-
+  .inline{
+    display: inline;
+  }
 }
 @media (max-width: 750px) {
   .form-element {
