@@ -711,7 +711,9 @@ input.chekbox-size-m{
   background: rgba(243, 237, 237, 0.4);
   border-radius: 10px;
 }
-
+.input-bg-light{
+  background-color: white;
+}
 .float-bg-red{
   background: rgb(246, 19, 19);
   border-radius: 8px;
