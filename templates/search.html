@@ -22,13 +22,13 @@
     <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/advancedsearchcatagories" >
   <div class = " normal-flex-horizontal align-center wrap float-bg-dark">
     <div class="normal-flex-horizontal align-center wrap float-bg-dark margin-s padding-m box-shadow-cyan height-max-content width-100">
-        <div class="search-catagory width-auto  align-center  width-auto ">
+        <div class="search-catagory padding-s align-center  width-auto ">
           <div class="margin-top-m center-text width-100">
             Search Sub_catagory
           </div>
           <div class = "margin-s">
             
-            <select id= "multipleSelect" class="padding-s width-400" name="search-catagory-id" data-search="True">
+            <select id= "multipleSelect" class="padding-s width-auto" name="search-catagory-id" data-search="True">
               {% for cat_info in all_catagories %}
               <option value='{{ cat_info["catagory_id"]}}' >
                 {{ cat_info["catagory_name"]}}

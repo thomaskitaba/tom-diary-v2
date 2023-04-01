@@ -1467,7 +1467,6 @@ def loadreference():
 @login_required
 def addDiaryReference():
 
-
   if request.method == "POST": #type: ignore
     user_diary_id = request.form.get("referenced-by-diary-id")
     referenced_id = request.form.getlist("referenced-id")
@@ -1479,9 +1478,6 @@ def addDiaryReference():
 
     if not reference_name_id:
       reference_name_id[0] = 1 #type: ignore
-
-
-
     converted_referenced_id = []
     # diary_ref_insertion_date = 1
     #todo: convert strings in referenced_id checkbox list to integers (by eliminating duplicate)

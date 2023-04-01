@@ -344,6 +344,15 @@ button:hover {
   display: flex;
   justify-content: center;
 }
+.input-box-height-s{
+height: 10px;
+}
+.input-box-height-m{
+height: 15px;
+}
+.input-box-height-b{
+height: 20px; 
+}
 input {
   align-self: center;
   
@@ -581,7 +590,24 @@ background: #5bc0de;
 .margin-left-b{
   margin-left: 100px;
 }
-
+.padding-right-s{
+padding-right: 10px;
+}
+.padding-right-m{
+  padding-right: 15px;
+}
+.padding-right-b{
+  padding-right: 20px;
+}
+.padding-light-s{
+padding-left: 10px;
+}
+.padding-light-m{
+  padding-left: 15px;
+}
+.padding-light-b{
+  padding-left: 20px;
+}
 
 
 .margin-zero {
