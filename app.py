@@ -1332,8 +1332,6 @@ def diarywrite():
                 insert_user_diary_catagory(get_ud_id(),cat_3)
                 #udc3= get_udc_id()
 
-
-
                 return redirect ("/viewdiary")
             #return render_template("experiment.html", test1=get_ud_id(), udc1=udc1, udc2=udc2, udc3=udc3)
 
@@ -1514,7 +1512,6 @@ def addDiaryReference():
       #TODO:  add referenced_id and referencer_id in diary reference
       db.execute("INSERT INTO diaryreference (referenced_by_ud_id, referenced_ud_id, ref_name_id, diary_ref_insertion_date, diary_ref_insertion_time) VALUES (?, ?, ?, ?, ?)", referenced_by_id, converted_referenced_id[i], reference_name_id[0], currentday(), currentclock() )
 
-
       #TODO: find ref_id of last inserted data in diaryreference
       index = db.execute("SELECT * FROM diaryreference ORDER BY reference_id DESC LIMIT 1")
       # last_inserted_id[0] = db.execute("SELECT COUNT(*) FROM diaryreference")
@@ -1539,7 +1536,6 @@ def addDiaryReference():
   else:
     return redirect("search.html")
 
-
 @app.route("/viewreferences", methods=["GET", "POST"]) #type: ignore
 @login_required
 def viewreference():
@@ -1551,7 +1547,6 @@ def viewreference():
 
   else:
     return render_template("experiment.html" , cat_3 = "request = GET")
-
 
 #|||||||||||||||||| -- CATAGORY -- |||||||||||||||||||
 @app.route("/changecatagory", methods=["Get", "POST"])  # type: ignore
@@ -1585,7 +1580,6 @@ def changecatagory():
 def removecatagory():
 
     if request.method == "POST":
-
 
         user_diary_catagory_id = request.form.get("user-diary-catagory-id")
         user_diary_id = request.form.get("ud-id")
@@ -1680,7 +1674,6 @@ def advancedsearchcatagories():
       return render_template("search.html", reference_name = get_reference_name(), catagory_types= catagory_types, catagories = global_catagory_with_parameter(catagory_type_id), all_catagories= all_catagories, normal_search= 1)
 
       # return render_template("experiment.html", cat_3 = " catagory id not empty")
-
     return render_template("search.html",  reference_name = get_reference_name(), catagory_types= catagory_types, catagories = global_catagory_with_parameter(catagory_type_id), all_catagories= all_catagories, normal_search= 1)
 
 #TODO: return render_template("search.html",catagory_types= catagory_types(), catagories = user_catagories(), all_catagories= all_catagories, normal_search= 1)
@@ -1696,9 +1689,6 @@ def diarysearch():
 
     if not search_catagory_id:
       results = [db.execute("SELECT DISTINCT * FROM diarydatabaseview WHERE id= ? AND diary_status = ? ORDER BY given_date DESC" , session["user_id"], 'Active')]
-
-
-
       # return render_template("experiment.html", cat_3 = results[0])
       # for result in results[0]:
 

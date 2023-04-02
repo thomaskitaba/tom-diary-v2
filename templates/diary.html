@@ -336,7 +336,7 @@
                 <!--todo:   here we have ID-->
                     <div   class = "  equal-flex flex magenta-box-shadow padding-s ">
                     <!-------  content and numbering  -------->
-                        <div class = "float-bg-light padding-s equal-flex ">
+                        <div class = "float-bg-white padding-s equal-flex ">
                             <p class = "line-space-b diary-text"> <span id = '{{diary_info["number"]}}' class="magenta-box-shadow numbering">{{diary_info["number"]}}-- {{ diary_info["diary_id"]}} </span>
                             {{ diary_info["diary_content"] }} </p>
                         </div>
@@ -349,13 +349,13 @@
                               
 <!-----ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED-->  
                               {% if diary_info["diary_catagories"] %}
+                              <h3>sub catagories</h3> <br>
                                   {% for diary_catagories in diary_info["diary_catagories"] %}
-
                                     <ul  class=" nav margin-zero">
-                                              
-                                        <li id = "edit-catagory-button" class=" nav-down padding-zero"> 
+                                      
+                                        <li id = "edit-catagory-button" class="nav-down padding-zero"> 
                                             
-                                            <h3 class = "my-button-1 cyan-box-shadow" >
+                                            <h3 class = "my-button-2 cyan-box-shadow smaller-text" >
                                               
                                               {{diary_catagories[1]}}
                                               
@@ -365,7 +365,6 @@
                                                         
                                                     <li>
                                                         <div class="edit-div flex">
-
                                                             <form action="/changecatagory" method="POST" class="float-bg-light bring-to-front ">
                                                                 <div class=" padding-s">
                                                                   <div class = "padding-m">catagory: {{diary_catagories[1]}}</div>
@@ -373,19 +372,16 @@
                                                                     <select name="catagory-id-list" class="  select-s block margin-bottom-s" >
                                                                     
                                                                         {% for catagory in catagories %}
-
                                                                             {% if catagory["catagory_name"]%}
                                                                               
                                                                               <option  value= '{{catagory["catagory_id"]}}' > {{catagory["catagory_name"]}}</option>
                                                                               
                                                                             {% endif %}
-
                                                                         {% endfor %}
                                                                                 
                                                                     </select>
                                                                   </div>
-                                                                <!-- to be used in /remove-->
-                                                                    
+                                                                <!-- to be used in /remove--
                                                                   <input name = "diary-element-id" type="text" hidden value='{{diary_info["number"]}}'>
                                                                   <input name = "ud-id" type="text" hidden value = '{{diary_info["ud_id"]}}' >
                                                                   <input name = "catagory-id" type="text" hidden value = '{{diary_catagories[0]}}' >
