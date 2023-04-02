@@ -344,14 +344,14 @@
                         <div class = " padding-s equal-flex no-wrap  flex-vertical-center">
                             
                         <!------- other info  CATAGORY -------->
-                            <div class = " flex-wrap padding-s flex-start width-auto">
+                            <div class = " flex padding-s flex-start width-auto">
       
                               
 <!-----ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED-->  
                               {% if diary_info["diary_catagories"] %}
-                              <h3>sub catagories</h3> <br>
+                              
                                   {% for diary_catagories in diary_info["diary_catagories"] %}
-                                    <ul  class=" nav margin-zero">
+                                    <ul  class="nav margin-zero flex">
                                       
                                         <li id = "edit-catagory-button" class="nav-down padding-zero"> 
                                             
@@ -403,18 +403,17 @@
                                                     </li>
                                                         
                                                         
-                                                    <!-- <li>Go and Add catagory in <br> <a href="/managecatagrory">manage catagory section</a></li> -->
+                                                    <li>Go and Add catagory in <br> <a href="/managecatagrory">manage catagory section</a></li> -->
                                                     
                                                 </ul>
                                         
                                         </li>
                                         
                                   </ul>
-
                                 
                                 {% endfor %} <!-- end of diary_catagories in diary_info["diary_catagories"]-->
-
                               {% endif %}  <!-- end of diary info-->
+                              
                             </div>
 
 <!-----ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED ADDED-->  
@@ -470,7 +469,7 @@
               
                   
                   <!------------------------>
-                  <ul class=" nav margin-zero ">
+                  <ul class="nav margin-zero ">
                       
                       <li class="nav-down padding-zero "> <button  type = "submit" class="my-button-1 cyan-box-shadow" >Edit Content </button>
                           <!------------------form action action action -------------------->    
