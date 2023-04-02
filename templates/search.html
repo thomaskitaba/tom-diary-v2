@@ -248,14 +248,12 @@
                     
                       <div class="flex float-bg-red  margin-left-m">
                         {% for reference in result["content_reference"] %} 
-                            
-                            
+                              
                               <div class=" float-bg-light padding-s margin-s">
                                 <div> [{{ reference["referenced_ud_id"]}} - {{ reference["reference_name"]}}]</div>
                                 <div>  {{reference["referenced_diary_content"]}}</div>
                               </div>
                               
-                            
                         {% endfor %}
                       </div>
                     

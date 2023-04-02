@@ -345,13 +345,13 @@ button:hover {
   justify-content: center;
 }
 .input-box-height-s{
-height: 10px;
+height: 25px;
 }
 .input-box-height-m{
-height: 15px;
+height: 30px;
 }
 .input-box-height-b{
-height: 20px; 
+height: 40px; 
 }
 input {
   align-self: center;
@@ -899,26 +899,44 @@ select:hover {
   font-size: 1.15rem;
   width: max-content;
 }
+.select-width-s{
+max-width: 100px;
+
+}
+.select-width-m{
+  max-width: 170px;
+  
+}
+.select-width-b{
+  max-width: 300px;
+  
+}
+.select-height-s{
+  height: 20px;
+  
+  }
+  .select-height-m{
+    
+    height: 30px;
+  }
+  .select-height-b{
+    
+    height: 40px;
+  }
 .min_content
 {
   width: min-content;
 }
 .max_content
 {
-  witdt: max-content;
+  width: max-content;
 }
 .vscomp-toggle-button{
 
   padding: 8px;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
 }
-.select-width-s{
-  width: 100px;
-  
-}
-.select-width-m{
-  width: 200px;
-}
+
 .select-width-100{
   width: 100%;
 }

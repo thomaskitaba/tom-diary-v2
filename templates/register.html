@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<div class="float-bg-light magenta-box-shadow padding-b">
+<div class="float-bg-light magenta-box-shadow padding-s margin-m">
     
         <div class=" flex center-elements">
         <tr> 
@@ -31,7 +31,7 @@
                 <td> 
 
                     <div class="select-container ">
-                        <select name="gender" >
+                        <select name="gender" class="select-width-b select-height-m">
                             <option disabled selected = true>gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -41,7 +41,6 @@
                 </div>
                 </td>
             </tr>
-            
             <tr>
                 <td> primary phone </td>
                 <td><input class="input-box add-space-s width-80" autocomplete="off"  name="primaryphone" placeholder="primaryphone" type="text"></td>
@@ -55,10 +54,9 @@
 `
                <!----> <td> Country <span class = "red-star width-80"> * </span> </td>
                 <td>
-
                     <div class="select-container">
                         
-                        <select  name="country">
+                        <select  name="country" class = "select-width-m select-height-m">
                             <option value="Afghanistan">Afghanistan</option>
                 <option value="Åland Islands">Åland Islands</option>
                 <option value="Albania">Albania</option>

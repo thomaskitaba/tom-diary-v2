@@ -9,12 +9,25 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_session import Session
 # from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import apology, login_required
+from helpers import apology
+# from helpers import login_required
+from functools import wraps
+
 import datetime
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
 # from validate_email_address import validate_email
+def login():
+    session['logged_in'] = True
 
+# Define a login required decorator function
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('logged_in'):
+            return redirect('/login')
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 # ----------------- Email configuration --------------------------
@@ -529,6 +542,7 @@ def login():
             session["user_id"] = rows[0]["id"]
             current_user_name[0] = rows[0]["username"]
             session["username"] = rows[0]["username"]
+            session['logged_in'] = True
 
             return render_template("diary.html", current_user_name=global_user_name(), catagories=global_catagory(), manage_diary=1)
         # Ensure username exists and password is correct
@@ -541,6 +555,7 @@ def login():
         # Remember which user has logged in
           session["user_id"] = rows[0]["id"]
           session["username"] = rows[0]["username"]
+          session['logged_in'] = True
         else:
           message = "Account not confirmed go and find the Confirmation mail sent  to your email account: "
           address = rows[0]["useremail"]
