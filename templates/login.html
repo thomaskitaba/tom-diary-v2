@@ -9,16 +9,16 @@
     <div class = "alert-red">
         
       <p> {{ message}}  <a href="gmail.google.com"> {{address}} </a></p>
-        
+      
     </div>
   {% endif %}
-<div class="float-above float-bg-dark magenta-box-shadow padding-b">
-    <form action="/login" method="post" class="padding-m">
-        <div class="input-box  padding-m">
-            <input autocomplete="off" autofocus  id="username" name="username" placeholder="Username" type="text">
+<div class="float-above float-bg-dark magenta-box-shadow padding-s min-content">
+    <form action="/login" method="post" class="padding-s">
+        <div class="input-box  padding-s">
+            <input class = "input-bg-light" autocomplete="off" autofocus  id="username" name="username" placeholder="Username" type="text">
         </div>
-        <div class=" input-box  padding-m">
-            <input id="password" name="password" placeholder="Password" type="password">
+        <div class="input-box  padding-s">
+            <input class = "input-bg-light" id="password" name="password" placeholder="Password" type="password" >
         </div>
         <div class="add-space-m">
         <button class="my-button-1" type="submit">Log In</button>

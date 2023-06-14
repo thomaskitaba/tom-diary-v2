@@ -22,13 +22,13 @@
     <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/advancedsearchcatagories" >
   <div class = " normal-flex-horizontal align-center wrap float-bg-dark">
     <div class="normal-flex-horizontal align-center wrap float-bg-dark margin-s padding-m box-shadow-cyan height-max-content width-100">
-        <div class="search-catagory width-auto  align-center  width-auto ">
+        <div class="search-catagory padding-s align-center  width-auto ">
           <div class="margin-top-m center-text width-100">
             Search Sub_catagory
           </div>
           <div class = "margin-s">
             
-            <select id= "multipleSelect" class="padding-s width-400" name="search-catagory-id" data-search="True">
+            <select id= "multipleSelect" class="padding-s width-auto" name="search-catagory-id" data-search="True">
               {% for cat_info in all_catagories %}
               <option value='{{ cat_info["catagory_id"]}}' >
                 {{ cat_info["catagory_name"]}}
@@ -36,7 +36,6 @@
               {% endfor %}
             </select>
           </div>
-          
           <div class="search-header" >
             <button name="search-button" type="submit" class="box-shadow-black  my-button-1 self-align-center black-box-shadow"
               formaction="/search">
@@ -44,7 +43,6 @@
             </button>
           </div>
         </div>  <!-- end of search catagory section-->
-      
       <div class=" float-bg-cyan height-max-content padding-s">
         <div class="search-date  width-auto normal-flex-horizontal wrap">
           <!-- <form action="/seachdate"> -->
@@ -64,7 +62,6 @@
             <div>
             
             </div>
-          
         </div>
         <div class="padding-s float-bg-light flex-horizontal-center ">
           <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
@@ -107,8 +104,8 @@
 <!-- TODO: ============= END OF  OF TOP ADVANCED SEARCH PART ======================= -->
 <div class="flex-horizontal-center">
 
-<button type="submit" formaction = "/viewreferences"> view reference </button>
-<button type="submit" formaction = "/loadjsonreference">  reference JSON data </button>
+<!-- <button type="submit" formaction = "/viewreferences"> view reference </button>
+<button type="submit" formaction = "/loadjsonreference">  reference JSON data </button>  -->
 </div>
   <!--TODO: RESULT PART RESULT CONTAINER  --------------------------------------------------------------->
   <div class="search-result width-100">
@@ -176,12 +173,9 @@
                   <div class = "save-reference-text" ><button id="cancel-reference"  onclick="showReferencerCheckboxes()" >Cancel</button> </div>
                   
                 </div>
-                
                 <div  class="flex-vertical-center" >
                   <div class = "save-reference-text"> 
                     <button id="save-reference" type="submit" formaction="/addreference"> Save </button>
-                    
-                    
                   </div>
                   <!-- <div>..|.. </div> -->
                   <!-- <div class = "save-reference-text" ><button id="cancel-reference"  onclick="showReferencerCheckboxes()" >Cancel</button> </div> -->
@@ -191,7 +185,6 @@
               <tbody>
                 <div class="black-box-shadow">
                 <tr class="float-bg-light">
-
                   <td>
                   <div class = "flex-horizontal ">
                     
@@ -249,17 +242,14 @@
                     
                       <div class="flex float-bg-red  margin-left-m">
                         {% for reference in result["content_reference"] %} 
-                            
-                            
+                              
                               <div class=" float-bg-light padding-s margin-s">
                                 <div> [{{ reference["referenced_ud_id"]}} - {{ reference["reference_name"]}}]</div>
                                 <div>  {{reference["referenced_diary_content"]}}</div>
                               </div>
                               
-                            
                         {% endfor %}
                       </div>
-
                     
                   </td>
                   <!-- <input type="text" id="referenced-by-diary-id"  name="user-diary-id" value = '{{result["ud_id"]}}' > -->

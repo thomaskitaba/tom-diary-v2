@@ -15,42 +15,33 @@
     <form action="/takelog" method="POST">
       
       <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/generatecatagory" >
-      
-      <div class="flex-horizontal  padding-s float-bg-cyan">
-        
-        <div class = "margin-m align-left  align-left float-bg-dark padding-s">
-          <div class="margin-top-s margin-bottom-s">give log DATE</div>
-          <input class="input-width center-text border-radius-s" name = "given-date" type="date"> 
-        </div>
-        <div class = "center-elements margin-m align-left float-bg-dark padding-s">
-          <div class="center-elements margin-top-s margin-bottom-s">give log TIME</div>
-          <input class="input-width center-text padding-m border-radius-s" name = "given-time" type="time"> 
-        </div>
-        
-      </div>
-      <!-- <div class = "margin-m align-left  align-left float-bg-dark padding-s"> -->
-        <div class="flex-horizontal  padding-s float-bg-cyan">
-          <div class = "margin-s align-left  align-left float-bg-dark padding-s">
-            <div class="margin-top-s margin-bottom-s">start date           </div>
-            <input class="input-width center-text border-radius-s" name = "start-date" type="date">
+        <div class="flex" >
+          <div class="flex-horizontal width-auto padding-s float-bg-cyan">
+            
+            <div class = "margin-m  align-left float-bg-dark ">
+              <div class="width-date center-text">...log date</div>
+              <input class="input-width center-text border-radius-s" name = "given-date" type="date"> 
+            </div>
+            <div class = "margin-m  align-left float-bg-dark ">
+              <div class="width-date center-text padding-right-b">....log time</div>
+              <input class="width-date center-text padding-m border-radius-s" name = "given-time" type="time"> 
+            </div>
+            
           </div>
-          <div class = "margin-s align-left  align-left float-bg-dark padding-s">
-            <div class="margin-top-s margin-bottom-s">end date </div>
-            <input class="input-width center-text border-radius-s" name = "end-date" type="date"> 
-          
+          <!-- <div class = "margin-m align-left  align-left float-bg-dark padding-s"> -->
+            <div class="flex-horizontal width-auto padding-s float-bg-cyan">
+              <div class = "margin-s align-left  align-left float-bg-dark">
+                <div class="width-date center-text">...start date           </div>
+                <input class="input-width center-text border-radius-s" name = "start-date" type="date">
+              </div>
+              <div class = "margin-s align-left  align-left float-bg-dark ">
+                <div class="width-date center-text">...end date </div>
+                <input class="input-width center-text border-radius-s" name = "end-date" type="date"> 
+              
+              </div>
+            </div>
           </div>
-        </div>
-
-
-
-
-
-
-
         <!-- ----------------- -->
-        
-        
-        
       <!-- </div> -->
       <div class="padding-s float-bg-light">
       <!-- <select id ="mulitpleSelect" multiple name="native-select" placeholder="Native Select" data-search="True" data-silent-initial-value-set="true"> -->
@@ -75,7 +66,7 @@
         {% endif %}F
       
       </select> -->
-        <select id ="mulitpleSelect" class="mulitple-select  custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
+        <select id ="mulitpleSelect" class="mulitple-select custom-width-400" multiple name="native-select" placeholder="Select SUB Catagories" data-search="True" data-silent-initial-value-set="true">            
           {% if catagories %}
             {% for catagory in catagories %}
                 {% if catagory["catagory_name"]%}
@@ -91,19 +82,28 @@
     <textarea id = "get-diary-text-area" class="diary-box neon-box-shadow" name="diarytextarea" row= "20"
                             placeholder="Write your diary Here" type="text" style="width: 100%;
                             min-height: 25vh;"> 
-
           {% if diary_text %}
               {{diary_text}}
           {% endif %}
-                            
+                    
     </textarea>
     
   </div>
+
   <div>
     <input name="diary-description" type="text" name="discription" placeholder = "type in description">
   </div>
-  <div>
-    <button type="submit" class="my-button-1">Save </button>
+  <div class="flex-horizontal">
+    <div>
+      <button type="submit" class="my-button-1">Save </button>
+    </div>
+  <!-- #TODO: add catagory button here -->
+    <div class="catagory-flex">
+    
+      <input id = "generate_catagory" class= "generate-catagory-button" name = "generate_catagory" type="submit" formaction="/generatecatagory" >
+      <div id = "get-diary-text" class = "my-button-1 box-shadow add-space-m "> <a href="/catagory">Add Catagory</a> </div>
+      
+    </div>
   </div>
   
 </form>

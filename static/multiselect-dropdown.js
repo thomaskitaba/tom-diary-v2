@@ -111,7 +111,6 @@ function MultiselectDropdown(options){
     });
     return e;
   }
-
   
   document.querySelectorAll("select[multiple]").forEach((el,k)=>{
     
