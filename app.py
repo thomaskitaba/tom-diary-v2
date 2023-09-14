@@ -1502,7 +1502,7 @@ def diarywrite():
 @app.route("/viewdiary", methods=["GET", "POST"])
 @login_required
 def diaryview():
-    """Sell shares of stock"""
+    """View diary"""
 
     diary = []
     temp_diary = {}
